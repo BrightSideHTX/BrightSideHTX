@@ -3598,8 +3598,159 @@
             }
         );
 
-    </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    const bookingMenuButton =
+        document.getElementById("bookingMenuButton");
+
+    const bookingMobileMenu =
+        document.getElementById("bookingMobileMenu");
+
+
+    /*
+       Stop if the booking navigation does not
+       exist on this page.
+    */
+
+    if (!bookingMenuButton || !bookingMobileMenu) {
+        return;
+    }
+
+
+    /*
+       Open / close booking mobile navigation.
+    */
+
+    bookingMenuButton.addEventListener("click", () => {
+
+        const isOpen =
+            bookingMobileMenu.classList.toggle("mobile-open");
+
+
+        bookingMenuButton.classList.toggle(
+            "is-open",
+            isOpen
+        );
+
+
+        bookingMenuButton.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+
+
+        bookingMenuButton.setAttribute(
+            "aria-label",
+            isOpen
+                ? "Close navigation menu"
+                : "Open navigation menu"
+        );
+
+    });
+
+
+    /*
+       Close the menu when a navigation link
+       is selected.
+    */
+
+    bookingMobileMenu
+        .querySelectorAll("a")
+        .forEach((link) => {
+
+            link.addEventListener("click", () => {
+
+                bookingMobileMenu.classList.remove(
+                    "mobile-open"
+                );
+
+                bookingMenuButton.classList.remove(
+                    "is-open"
+                );
+
+                bookingMenuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                bookingMenuButton.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+
+            });
+
+        });
+
+
+    /*
+       Close the menu when clicking outside it.
+    */
+
+    document.addEventListener("click", (event) => {
+
+        if (
+            !bookingMobileMenu.contains(event.target) &&
+            !bookingMenuButton.contains(event.target)
+        ) {
+
+            bookingMobileMenu.classList.remove(
+                "mobile-open"
+            );
+
+            bookingMenuButton.classList.remove(
+                "is-open"
+            );
+
+            bookingMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            bookingMenuButton.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
+
+        }
+
+    });
+
+
+    /*
+       Close the mobile menu if the screen
+       becomes desktop-sized.
+    */
+
+    window.addEventListener("resize", () => {
+
+        if (window.innerWidth > 900) {
+
+            bookingMobileMenu.classList.remove(
+                "mobile-open"
+            );
+
+            bookingMenuButton.classList.remove(
+                "is-open"
+            );
+
+            bookingMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            bookingMenuButton.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
+
+        }
+
+    });
+
+});
+</script>
 </body>
 
 </html>

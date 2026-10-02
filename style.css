@@ -1048,8 +1048,14 @@ footer {
    BOOKING PAGE MOBILE NAVIGATION
    ======================================================= */
 
-.bs-booking-menu-button {
+/*
+   Booking-page hamburger button.
 
+   Hidden on desktop and shown only on
+   smaller screens.
+*/
+
+.bs-booking-menu-button {
     display: none;
 
     width: 44px;
@@ -1059,7 +1065,6 @@ footer {
 
     align-items: center;
     justify-content: center;
-
     flex-direction: column;
 
     gap: 5px;
@@ -1068,23 +1073,28 @@ footer {
 
     padding: 0;
 
-    border:
-        1px solid
-        var(--bs-border);
-
+    border: 1px solid #dce6ef;
     border-radius: 10px;
 
     background: white;
+    color: #102033;
 
     cursor: pointer;
 
-    z-index: 100;
+    z-index: 1001;
 
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
 
-.bs-booking-menu-button span {
+/*
+   Hamburger lines.
+*/
 
+.bs-booking-menu-button span {
     display: block;
 
     width: 20px;
@@ -1092,236 +1102,221 @@ footer {
 
     border-radius: 999px;
 
-    background:
-        var(--bs-text);
+    background: currentColor;
 
     transition:
         transform 0.2s ease,
         opacity 0.2s ease;
-
 }
 
 
-.bs-booking-menu-button.is-open span:nth-child(1) {
+/*
+   Hover state.
+*/
 
+.bs-booking-menu-button:hover {
+    border-color: #1769aa;
+    color: #1769aa;
+    background: #f7fbff;
+}
+
+
+/*
+   Turn the hamburger into an X
+   when the booking menu is open.
+*/
+
+.bs-booking-menu-button.is-open span:nth-child(1) {
     transform:
         translateY(7px)
         rotate(45deg);
-
 }
-
 
 .bs-booking-menu-button.is-open span:nth-child(2) {
-
     opacity: 0;
-
 }
 
-
 .bs-booking-menu-button.is-open span:nth-child(3) {
-
     transform:
         translateY(-7px)
         rotate(-45deg);
-
 }
 
+
+/*
+   Booking mobile menu is hidden by default.
+*/
 
 .bs-booking-mobile-menu {
-
     display: none;
-
 }
 
+
+/* =========================================
+   BOOKING MOBILE NAVIGATION
+========================================= */
 
 @media (max-width: 900px) {
 
-    .bs-booking-header-inner {
+    /*
+       Make sure the booking header can contain
+       the mobile navigation correctly.
+    */
 
+    .bs-booking-header {
         position: relative;
+        z-index: 1000;
+        overflow: visible;
+    }
 
+
+    .bs-booking-header-inner {
+        position: relative;
     }
 
 
     /*
-       Hide the desktop navigation completely
-       on smaller screens.
+       Hide the desktop booking navigation.
     */
 
     .bs-booking-nav {
-
         display: none;
-
     }
 
 
     /*
-       Show hamburger.
+       Show the booking hamburger.
     */
 
     .bs-booking-menu-button {
-
         display: flex;
-
     }
 
 
     /*
-       Full-width mobile dropdown.
+       Mobile dropdown.
+
+       Fixed positioning prevents the menu from
+       being hidden behind booking-page content.
     */
 
     .bs-booking-mobile-menu {
+        position: fixed;
 
-        position: absolute;
+        top: 82px;
+        left: 14px;
+        right: 14px;
 
-        top: 100%;
-
-        left: 0;
-        right: 0;
-
-        z-index: 90;
+        z-index: 9999;
 
         display: none;
 
         flex-direction: column;
 
-        padding:
-            10px 20px 18px;
+        padding: 10px;
 
-        background:
-            rgba(
-                255,
-                255,
-                255,
-                0.98
-            );
+        background: white;
 
-        border-top:
-            1px solid
-            var(--bs-border);
-
-        border-bottom:
-            1px solid
-            var(--bs-border);
+        border: 1px solid #dce6ef;
+        border-radius: 16px;
 
         box-shadow:
-            0 18px 40px
-            rgba(
-                15,
-                23,
-                42,
-                0.12
-            );
+            0 18px 45px
+            rgba(15, 23, 42, 0.18);
 
-        backdrop-filter:
-            blur(12px);
-
+        overflow: hidden;
     }
 
+
+    /*
+       This is the class that JavaScript adds
+       when the hamburger is opened.
+    */
 
     .bs-booking-mobile-menu.mobile-open {
-
         display: flex;
-
     }
 
 
-    .bs-booking-mobile-menu a {
+    /*
+       Mobile navigation links.
+    */
 
+    .bs-booking-mobile-menu a {
         display: flex;
 
+        width: 100%;
         min-height: 48px;
 
         align-items: center;
 
-        padding:
-            0 4px;
+        padding: 0 14px;
 
-        color:
-            #4b5563;
+        border-radius: 9px;
 
-        font-size:
-            16px;
+        color: #4b5563;
 
-        font-weight:
-            600;
+        font-size: 15px;
+        font-weight: 600;
 
-        border-bottom:
-            1px solid
-            #f0f2f5;
-
-    }
-
-
-    .bs-booking-mobile-menu a:last-child {
-
-        border-bottom: 0;
-
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
     }
 
 
     .bs-booking-mobile-menu a:hover {
-
-        color:
-            var(--bs-blue);
-
+        background: #f5f9fd;
+        color: #1769aa;
     }
 
+
+    /*
+       Book Your Detail button.
+    */
 
     .bs-booking-mobile-menu
     .bs-booking-mobile-button {
 
         justify-content: center;
 
-        margin-top:
-            10px;
+        margin-top: 5px;
 
-        min-height:
-            48px;
+        background: #1769aa;
 
-        border: 0;
-
-        border-radius:
-            10px;
-
-        background:
-            var(--bs-blue);
-
-        color:
-            white;
-
+        color: white;
     }
 
 
     .bs-booking-mobile-menu
     .bs-booking-mobile-button:hover {
 
-        background:
-            var(--bs-blue-dark);
-
-        color:
-            white;
-
+        background: #0f548b;
+        color: white;
     }
 
 }
 
 
+/* =========================================
+   BOOKING MOBILE NAVIGATION - SMALL PHONES
+========================================= */
+
 @media (max-width: 600px) {
 
     .bs-booking-menu-button {
-
         width: 42px;
         height: 42px;
-
     }
 
 
     .bs-booking-mobile-menu {
+        top: 72px;
 
-        padding:
-            10px 14px 16px;
+        left: 10px;
+        right: 10px;
 
+        border-radius: 14px;
     }
 
 }

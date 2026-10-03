@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- =========================================================
+         BRIGHTSIDE HOUSTON DETAILING
+         Customer Thank-You Page
+         
+         This page is intentionally not linked in the main website.
+         It is designed to be accessed through the QR code given
+         to customers after their detail.
+         ========================================================= -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <!-- Keep this page out of search engine results -->
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <meta
+        name="description"
+        content="Thank you for choosing BrightSide Houston Mobile Detailing."
+    >
+
+    <title>
+        Thank You | BrightSide Houston Mobile Detailing
+    </title>
+
+
+    <!-- =========================================================
+         GOOGLE FONTS
+         ========================================================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =========================================================
+           BRIGHTSIDE COLOR SYSTEM
+           Matches the existing BrightSide website
+           ========================================================= */
+
+        :root {
+
+            --blue: #1769aa;
+            --blue-dark: #12558c;
+            --navy: #102033;
+
+            --text: #243447;
+            --muted: #667085;
+
+            --white: #ffffff;
+            --background: #f6f9fc;
+
+            --border: #dce5ed;
+
+            --shadow:
+                0 20px 55px rgba(16, 32, 51, 0.10);
+
+            --radius-large: 28px;
+            --radius-medium: 14px;
+
+        }
+
+
+        /* =========================================================
+           GLOBAL RESET
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top center,
+                    rgba(23, 105, 170, 0.10),
+                    transparent 40%
+                ),
+                var(--background);
+
+            color: var(--text);
+
+            font-family:
+                "DM Sans",
+                Arial,
+                sans-serif;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 28px 18px;
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* =========================================================
+           BACKGROUND DECORATION
+           ========================================================= */
+
+        .background-glow {
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(23, 105, 170, 0.13),
+                    transparent 70%
+                );
+
+            top: -180px;
+            right: -150px;
+
+            pointer-events: none;
+
+        }
+
+
+        .background-glow-two {
+
+            position: fixed;
+
+            width: 360px;
+            height: 360px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(23, 105, 170, 0.08),
+                    transparent 70%
+                );
+
+            bottom: -180px;
+            left: -150px;
+
+            pointer-events: none;
+
+        }
+
+
+        /* =========================================================
+           MAIN WRAPPER
+           ========================================================= */
+
+        .thank-you-wrapper {
+
+            width: 100%;
+
+            max-width: 720px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+        .thank-you-card {
+
+            background: var(--white);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius-large);
+
+            box-shadow:
+                var(--shadow);
+
+            padding:
+                54px 52px 48px;
+
+            text-align: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+            opacity: 0;
+
+            transform:
+                translateY(24px)
+                scale(0.98);
+
+            animation:
+                cardEnter 0.75s
+                cubic-bezier(.22, 1, .36, 1)
+                forwards;
+
+        }
+
+
+        /* =========================================================
+           BLUE TOP ACCENT
+           ========================================================= */
+
+        .thank-you-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    #4d9bd1,
+                    var(--blue)
+                );
+
+        }
+
+
+        /* =========================================================
+           BRIGHTSIDE BRAND
+           ========================================================= */
+
+        .brand {
+
+            display: inline-flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 3px;
+
+            margin-bottom: 32px;
+
+            opacity: 0;
+
+            animation:
+                fadeUp 0.65s
+                0.15s
+                ease
+                forwards;
+
+        }
+
+
+        .brand-main {
+
+            font-family:
+                "Space Grotesk",
+                Arial,
+                sans-serif;
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            color: var(--navy);
+
+        }
+
+
+        .brand-subtitle {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            color: var(--blue);
+
+        }
+
+
+        /* =========================================================
+           SUCCESS ICON
+           ========================================================= */
+
+        .success-icon {
+
+            width: 76px;
+            height: 76px;
+
+            margin:
+                0 auto 26px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #eaf5fc,
+                    #f7fbfe
+                );
+
+            border:
+                1px solid #cfe5f4;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            opacity: 0;
+
+            transform:
+                scale(0.65);
+
+            animation:
+                iconEnter 0.65s
+                0.35s
+                cubic-bezier(.22, 1, .36, 1)
+                forwards;
+
+        }
+
+
+        .success-icon::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: -7px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(23, 105, 170, 0.14);
+
+            animation:
+                pulseRing 2.2s
+                1.05s
+                ease-out
+                infinite;
+
+        }
+
+
+        .checkmark {
+
+            width: 29px;
+            height: 16px;
+
+            border-left:
+                4px solid var(--blue);
+
+            border-bottom:
+                4px solid var(--blue);
+
+            transform:
+                rotate(-45deg)
+                translateY(-2px);
+
+        }
+
+
+        /* =========================================================
+           HEADLINE
+           ========================================================= */
+
+        .eyebrow {
+
+            color: var(--blue);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+
+            opacity: 0;
+
+            animation:
+                fadeUp 0.65s
+                0.65s
+                ease
+                forwards;
+
+        }
+
+
+        h1 {
+
+            font-family:
+                "Space Grotesk",
+                Arial,
+                sans-serif;
+
+            color: var(--navy);
+
+            font-size:
+                clamp(
+                    34px,
+                    6vw,
+                    52px
+                );
+
+            line-height: 1.08;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 18px;
+
+            opacity: 0;
+
+            animation:
+                fadeUp 0.65s
+                0.78s
+                ease
+                forwards;
+
+        }
+
+
+        /* =========================================================
+           MESSAGE
+           ========================================================= */
+
+        .message {
+
+            max-width: 560px;
+
+            margin:
+                0 auto;
+
+            color: var(--muted);
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            opacity: 0;
+
+            animation:
+                fadeUp 0.65s
+                0.95s
+                ease
+                forwards;
+
+        }
+
+
+        /* =========================================================
+           DIVIDER
+           ========================================================= */
+
+        .divider {
+
+            width: 100%;
+
+            height: 1px;
+
+            background:
+                var(--border);
+
+            margin:
+                34px auto;
+
+            opacity: 0;
+
+            animation:
+                fadeIn 0.6s
+                1.1s
+                ease
+                forwards;
+
+        }
+
+
+        /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+        .actions {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            opacity: 0;
+
+            transform:
+                translateY(12px);
+
+            animation:
+                fadeUp 0.65s
+                1.2s
+                ease
+                forwards;
+
+        }
+
+
+        .button {
+
+            min-height: 56px;
+
+            width: 100%;
+
+            border-radius:
+                var(--radius-medium);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding:
+                14px 20px;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        .button:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* =========================================================
+           PRIMARY BUTTON
+           ========================================================= */
+
+        .button-primary {
+
+            color:
+                var(--white);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--blue-dark)
+                );
+
+            box-shadow:
+                0 10px 22px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.20
+                );
+
+        }
+
+
+        .button-primary:hover {
+
+            box-shadow:
+                0 14px 28px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.27
+                );
+
+        }
+
+
+        /* =========================================================
+           SECONDARY BUTTON
+           ========================================================= */
+
+        .button-secondary {
+
+            color:
+                var(--navy);
+
+            background:
+                var(--white);
+
+            border:
+                1px solid var(--border);
+
+        }
+
+
+        .button-secondary:hover {
+
+            border-color:
+                #b8ccdc;
+
+            background:
+                #f8fbfd;
+
+        }
+
+
+        /* =========================================================
+           THIRD BUTTON
+           ========================================================= */
+
+        .button-tertiary {
+
+            color:
+                var(--blue);
+
+            background:
+                transparent;
+
+            border:
+                1px solid transparent;
+
+        }
+
+
+        .button-tertiary:hover {
+
+            background:
+                #f3f8fc;
+
+        }
+
+
+        /* =========================================================
+           SMALL FOOTER MESSAGE
+           ========================================================= */
+
+        .small-note {
+
+            margin-top: 30px;
+
+            color:
+                #8a97a5;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            opacity: 0;
+
+            animation:
+                fadeIn 0.6s
+                1.45s
+                ease
+                forwards;
+
+        }
+
+
+        .small-note strong {
+
+            color:
+                var(--navy);
+
+            font-weight: 700;
+
+        }
+
+
+        /* =========================================================
+           ANIMATIONS
+           ========================================================= */
+
+        @keyframes cardEnter {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(24px)
+                    scale(0.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        @keyframes fadeUp {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(14px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+            }
+
+            to {
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        @keyframes iconEnter {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(0.65);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    scale(1);
+
+            }
+
+        }
+
+
+        @keyframes pulseRing {
+
+            0% {
+
+                opacity: 0.7;
+
+                transform:
+                    scale(0.9);
+
+            }
+
+            70% {
+
+                opacity: 0;
+
+                transform:
+                    scale(1.18);
+
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    scale(1.18);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding:
+                    16px 12px;
+
+            }
+
+
+            .thank-you-card {
+
+                padding:
+                    42px 22px 34px;
+
+                border-radius:
+                    22px;
+
+            }
+
+
+            .brand {
+
+                margin-bottom:
+                    27px;
+
+            }
+
+
+            .brand-main {
+
+                font-size:
+                    22px;
+
+            }
+
+
+            .success-icon {
+
+                width: 68px;
+                height: 68px;
+
+                margin-bottom:
+                    23px;
+
+            }
+
+
+            h1 {
+
+                font-size:
+                    35px;
+
+                letter-spacing:
+                    -1px;
+
+            }
+
+
+            .message {
+
+                font-size:
+                    15px;
+
+                line-height:
+                    1.65;
+
+            }
+
+
+            .divider {
+
+                margin:
+                    28px auto;
+
+            }
+
+
+            .button {
+
+                min-height:
+                    54px;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION ACCESSIBILITY
+           ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    0.01ms !important;
+
+                scroll-behavior:
+                    auto !important;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         BACKGROUND DECORATION
+         ========================================================= -->
+
+    <div
+        class="background-glow"
+        aria-hidden="true"
+    ></div>
+
+    <div
+        class="background-glow-two"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- =========================================================
+         MAIN THANK-YOU CARD
+         ========================================================= -->
+
+    <main class="thank-you-wrapper">
+
+        <section
+            class="thank-you-card"
+            aria-labelledby="thankYouHeading"
+        >
+
+            <!-- =================================================
+                 BRIGHTSIDE BRAND
+                 ================================================= -->
+
+            <div class="brand">
+
+                <span class="brand-main">
+                    BRIGHTSIDE HOUSTON
+                </span>
+
+                <span class="brand-subtitle">
+                    MOBILE DETAILING
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 COMPLETION ICON
+                 ================================================= -->
+
+            <div
+                class="success-icon"
+                aria-hidden="true"
+            >
+
+                <span class="checkmark"></span>
+
+            </div>
+
+
+            <!-- =================================================
+                 THANK-YOU MESSAGE
+                 ================================================= -->
+
+            <p class="eyebrow">
+                Your detail is complete
+            </p>
+
+
+            <h1 id="thankYouHeading">
+                Thank you for choosing BrightSide.
+            </h1>
+
+
+            <p class="message">
+
+                We appreciate you trusting
+                BrightSide Houston to take care
+                of your vehicle. We hope you enjoy
+                the clean and refreshed ride.
+
+            </p>
+
+
+            <!-- =================================================
+                 DIVIDER
+                 ================================================= -->
+
+            <div
+                class="divider"
+                aria-hidden="true"
+            ></div>
+
+
+            <!-- =================================================
+                 CUSTOMER ACTIONS
+                 ================================================= -->
+
+            <div class="actions">
+
+                <!--
+                    GOOGLE REVIEW
+                -->
+
+                <a
+                    class="button button-primary"
+                    href="https://g.page/r/CWmsD6ptwMNMEAI/review"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Leave a Review
+                </a>
+
+
+                <!--
+                    BOOK ANOTHER DETAIL
+                -->
+
+                <a
+                    class="button button-secondary"
+                    href="https://cal.com/brightsidehouston/booking"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Book Another Detail
+                </a>
+
+
+                <!--
+                    MAIN BRIGHTSIDE WEBSITE
+                -->
+
+                <a
+                    class="button button-tertiary"
+                    href="https://brightside-htx.com/"
+                >
+                    Visit BrightSide
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 CLOSING MESSAGE
+                 ================================================= -->
+
+            <p class="small-note">
+
+                Thank you for supporting
+                <strong>BrightSide Houston Mobile Detailing</strong>.
+
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

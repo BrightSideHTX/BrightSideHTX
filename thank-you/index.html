@@ -5,11 +5,7 @@
 
     <!-- =========================================================
          BRIGHTSIDE HOUSTON DETAILING
-         Customer Thank-You Page
-
-         This page is intentionally not linked in the main website.
-         It is designed to be accessed through the QR code given
-         to customers after their detail.
+         QR THANK-YOU PAGE
          ========================================================= -->
 
     <meta charset="UTF-8">
@@ -58,106 +54,146 @@
     <style>
 
         /* =========================================================
-           BRIGHTSIDE COLOR SYSTEM
+           COLORS
            ========================================================= */
 
         :root {
 
             --blue: #1769aa;
             --blue-dark: #12558c;
-            --blue-light: #e8f5ff;
-
             --navy: #102033;
-            --text: #243447;
-            --muted: #667085;
+
+            --text: #30475d;
+            --muted: #607991;
+
+            --sky-top: #a9dcf6;
+            --sky-middle: #dff3fc;
+            --sky-bottom: #f5fbff;
 
             --white: #ffffff;
-            --background: #f7fbff;
-
-            --border: #d7e7f3;
 
         }
 
 
         /* =========================================================
-           GLOBAL RESET
+           RESET
            ========================================================= */
 
         * {
+
             box-sizing: border-box;
+
             margin: 0;
+
             padding: 0;
+
         }
 
 
         html {
-            scroll-behavior: smooth;
+
+            width: 100%;
+
+            min-height: 100%;
+
         }
 
 
         body {
 
+            width: 100%;
+
             min-height: 100vh;
 
-            background:
-                linear-gradient(
-                    180deg,
-                    #dff3ff 0%,
-                    #f7fbff 45%,
-                    #eef8ff 100%
-                );
+            min-height: 100svh;
 
-            color: var(--text);
+            margin: 0;
+
+            overflow: hidden;
 
             font-family:
                 "DM Sans",
                 Arial,
                 sans-serif;
 
-            overflow-x: hidden;
+            color: var(--text);
 
         }
 
 
         /* =========================================================
            PAGE
+
+           The page is divided into two visual areas:
+
+           1. Main thank-you area
+           2. Bottom pixel-art city
+
+           Keeping the city absolutely positioned prevents the
+           content from ever colliding with the buildings.
            ========================================================= */
 
         .thank-you-page {
 
-            min-height: 100vh;
-
             position: relative;
 
-            display: flex;
+            width: 100%;
 
-            flex-direction: column;
+            min-height: 100vh;
 
-            align-items: center;
-
-            justify-content: flex-start;
-
-            padding:
-                48px 20px 0;
+            min-height: 100svh;
 
             overflow: hidden;
+
+            background:
+
+                radial-gradient(
+                    circle at 50% 17%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        0.95
+                    ) 0%,
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        0.55
+                    ) 23%,
+                    transparent 48%
+                ),
+
+                linear-gradient(
+                    180deg,
+                    var(--sky-top) 0%,
+                    var(--sky-middle) 35%,
+                    var(--sky-bottom) 78%,
+                    #e3f5fd 100%
+                );
 
         }
 
 
         /* =========================================================
-           SOFT BACKGROUND GLOW
+           SOFT SUN / LIGHT
            ========================================================= */
 
-        .background-glow {
+        .sun-glow {
 
             position: absolute;
 
-            width: 700px;
-            height: 700px;
+            width:
+                min(720px, 100vw);
 
-            top: -350px;
-            left: 50%;
+            height:
+                min(720px, 100vw);
+
+            top:
+                -410px;
+
+            left:
+                50%;
 
             transform:
                 translateX(-50%);
@@ -194,28 +230,31 @@
 
             position: absolute;
 
-            width: 105px;
-            height: 24px;
+            width: 116px;
+
+            height: 22px;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.68
+                    0.62
                 );
 
-            image-rendering: pixelated;
+            image-rendering:
+                pixelated;
 
-            opacity: 0.8;
+            z-index: 1;
 
             pointer-events: none;
 
             animation:
-                cloudFloat
+                cloudDrift
                 18s
-                linear
-                infinite;
+                ease-in-out
+                infinite
+                alternate;
 
         }
 
@@ -227,9 +266,11 @@
             position: absolute;
 
             width: 38px;
-            height: 30px;
 
-            left: 18px;
+            height: 32px;
+
+            left: 17px;
+
             bottom: 0;
 
             background:
@@ -237,7 +278,7 @@
                     255,
                     255,
                     255,
-                    0.68
+                    0.62
                 );
 
         }
@@ -249,10 +290,12 @@
 
             position: absolute;
 
-            width: 48px;
-            height: 36px;
+            width: 46px;
 
-            left: 50px;
+            height: 38px;
+
+            left: 52px;
+
             bottom: 0;
 
             background:
@@ -260,7 +303,7 @@
                     255,
                     255,
                     255,
-                    0.68
+                    0.62
                 );
 
         }
@@ -268,56 +311,72 @@
 
         .cloud-one {
 
-            top: 145px;
-            left: -130px;
+            top: 118px;
 
-            animation-delay: -4s;
+            left: -45px;
 
         }
 
 
         .cloud-two {
 
-            top: 235px;
-            right: -150px;
+            top: 195px;
+
+            right: -65px;
 
             transform:
-                scale(0.8);
+                scale(0.78);
 
-            animation-duration: 22s;
-
-            animation-delay: -10s;
+            animation-delay:
+                -7s;
 
         }
 
 
         .cloud-three {
 
-            top: 380px;
-            left: -180px;
+            top: 370px;
+
+            left: -105px;
 
             transform:
-                scale(0.65);
+                scale(0.55);
 
-            animation-duration: 25s;
-
-            animation-delay: -17s;
+            animation-delay:
+                -12s;
 
         }
 
 
-        @keyframes cloudFloat {
+        .cloud-four {
+
+            top: 410px;
+
+            right: -100px;
+
+            transform:
+                scale(0.48);
+
+            animation-delay:
+                -3s;
+
+        }
+
+
+        @keyframes cloudDrift {
 
             from {
-                translate: 0 0;
-            }
 
-            50% {
-                translate: 70px 5px;
+                translate:
+                    0 0;
+
             }
 
             to {
-                translate: 140px 0;
+
+                translate:
+                    48px 5px;
+
             }
 
         }
@@ -325,17 +384,44 @@
 
         /* =========================================================
            MAIN CONTENT
+
+           The bottom padding reserves the city area.
+
+           The content itself never enters the skyline zone.
            ========================================================= */
 
-        .thank-you-content {
-
-            width: 100%;
-
-            max-width: 760px;
+        .content {
 
             position: relative;
 
-            z-index: 5;
+            z-index: 10;
+
+            width: min(
+                760px,
+                calc(100% - 40px)
+            );
+
+            height: calc(
+                100vh - 185px
+            );
+
+            min-height: 0;
+
+            margin:
+                0 auto;
+
+            padding-top:
+                clamp(
+                    34px,
+                    5vh,
+                    58px
+                );
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
 
             text-align: center;
 
@@ -348,35 +434,37 @@
 
         .brand {
 
-            display: inline-flex;
+            position: relative;
+
+            display: flex;
 
             flex-direction: column;
 
             align-items: center;
 
-            margin-bottom: 30px;
+            margin-bottom:
+                clamp(
+                    24px,
+                    3.5vh,
+                    34px
+                );
 
             opacity: 0;
 
             transform:
-                translateY(-12px);
+                translateY(-10px);
 
             animation:
-                logoEnter
-                0.75s
-                0.15s
-                cubic-bezier(
-                    .22,
-                    1,
-                    .36,
-                    1
-                )
+                fadeLogo
+                0.7s
+                0.1s
+                ease
                 forwards;
 
         }
 
 
-        .brand-main {
+        .brand-name {
 
             position: relative;
 
@@ -385,39 +473,37 @@
                 Arial,
                 sans-serif;
 
+            color:
+                var(--navy);
+
             font-size:
                 clamp(
-                    30px,
+                    31px,
                     5vw,
-                    46px
+                    48px
                 );
 
             line-height: 1;
 
             font-weight: 700;
 
-            letter-spacing: 3px;
-
-            color: var(--navy);
+            letter-spacing:
+                3px;
 
         }
 
 
-        /*
-         * Small BrightSide sun element.
-         * This keeps the recognizable BrightSide
-         * visual language without turning the logo
-         * into pixel art.
-         */
+        /* BrightSide sun mark */
 
-        .brand-main::before {
+        .brand-name::before {
 
             content: "";
 
             position: absolute;
 
-            width: 34px;
-            height: 17px;
+            width: 29px;
+
+            height: 15px;
 
             left: 50%;
 
@@ -427,44 +513,73 @@
                 translateX(-50%);
 
             border:
-                4px solid var(--blue);
+                4px solid
+                var(--blue);
 
-            border-bottom: 0;
+            border-bottom:
+                0;
 
             border-radius:
-                34px 34px 0 0;
+                30px 30px 0 0;
+
+        }
+
+
+        .brand-name::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 4px;
+
+            height: 13px;
+
+            left: 50%;
+
+            top: -27px;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                var(--blue);
 
         }
 
 
         .brand-subtitle {
 
-            margin-top: 10px;
+            margin-top: 9px;
 
-            color: var(--blue);
+            color:
+                var(--blue);
 
             font-size:
                 clamp(
-                    10px,
-                    2vw,
-                    13px
+                    9px,
+                    1.7vw,
+                    12px
                 );
+
+            line-height: 1;
 
             font-weight: 700;
 
-            letter-spacing: 4px;
+            letter-spacing:
+                4px;
 
         }
 
 
-        @keyframes logoEnter {
+        @keyframes fadeLogo {
 
             from {
 
                 opacity: 0;
 
                 transform:
-                    translateY(-12px);
+                    translateY(-10px);
 
             }
 
@@ -481,18 +596,33 @@
 
 
         /* =========================================================
-           SUCCESS CHECKMARK
+           CHECKMARK
            ========================================================= */
 
-        .success-wrapper {
-
-            width: 96px;
-            height: 96px;
-
-            margin:
-                22px auto 26px;
+        .check {
 
             position: relative;
+
+            width:
+                clamp(
+                    74px,
+                    9vw,
+                    90px
+                );
+
+            height:
+                clamp(
+                    74px,
+                    9vw,
+                    90px
+                );
+
+            margin-bottom:
+                clamp(
+                    20px,
+                    3vh,
+                    27px
+                );
 
             opacity: 0;
 
@@ -500,9 +630,9 @@
                 scale(0.7);
 
             animation:
-                checkEnter
+                checkIn
                 0.7s
-                0.55s
+                0.45s
                 cubic-bezier(
                     .22,
                     1,
@@ -514,19 +644,26 @@
         }
 
 
-        .success-circle {
+        .check-circle {
 
             width: 100%;
+
             height: 100%;
 
             border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.65
+                    0.42
                 );
 
             border:
@@ -535,30 +672,26 @@
                     23,
                     105,
                     170,
-                    0.28
+                    0.25
                 );
 
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
             box-shadow:
-                0 12px 30px
+                0 10px 26px
                 rgba(
                     23,
                     105,
                     170,
-                    0.10
+                    0.08
                 );
 
         }
 
 
-        .success-check {
+        .check-mark {
 
-            width: 35px;
-            height: 20px;
+            width: 33%;
+
+            height: 21%;
 
             border-left:
                 5px solid
@@ -570,20 +703,21 @@
 
             transform:
                 rotate(-45deg)
-                translateY(-3px);
+                translate(
+                    3px,
+                    -3px
+                );
 
         }
 
 
-        .success-wrapper::after {
+        .check::after {
 
             content: "";
 
             position: absolute;
 
-            inset: -10px;
-
-            border-radius: 50%;
+            inset: -9px;
 
             border:
                 2px solid
@@ -594,9 +728,11 @@
                     0.10
                 );
 
+            border-radius: 50%;
+
             animation:
-                checkPulse
-                2.4s
+                pulse
+                2.5s
                 1.2s
                 ease-out
                 infinite;
@@ -604,7 +740,7 @@
         }
 
 
-        @keyframes checkEnter {
+        @keyframes checkIn {
 
             from {
 
@@ -627,7 +763,7 @@
         }
 
 
-        @keyframes checkPulse {
+        @keyframes pulse {
 
             0% {
 
@@ -665,24 +801,34 @@
 
         .eyebrow {
 
-            color: var(--blue);
+            margin-bottom: 10px;
 
-            font-size: 13px;
+            color:
+                var(--blue);
+
+            font-size:
+                clamp(
+                    10px,
+                    1.5vw,
+                    13px
+                );
+
+            line-height: 1;
 
             font-weight: 700;
 
-            letter-spacing: 3px;
+            letter-spacing:
+                3px;
 
-            text-transform: uppercase;
-
-            margin-bottom: 13px;
+            text-transform:
+                uppercase;
 
             opacity: 0;
 
             animation:
                 fadeUp
-                0.65s
-                0.8s
+                0.6s
+                0.72s
                 ease
                 forwards;
 
@@ -693,33 +839,37 @@
 
             max-width: 700px;
 
-            margin:
-                0 auto 20px;
+            margin-bottom: 18px;
 
             font-family:
                 "Space Grotesk",
                 Arial,
                 sans-serif;
 
-            color: var(--navy);
+            color:
+                var(--navy);
 
             font-size:
                 clamp(
                     38px,
-                    7vw,
-                    64px
+                    6.5vw,
+                    62px
                 );
 
-            line-height: 1.03;
+            line-height:
+                1.02;
 
-            letter-spacing: -2.2px;
+            font-weight: 700;
+
+            letter-spacing:
+                -2px;
 
             opacity: 0;
 
             animation:
                 fadeUp
                 0.7s
-                0.92s
+                0.85s
                 ease
                 forwards;
 
@@ -730,27 +880,25 @@
 
             max-width: 610px;
 
-            margin:
-                0 auto;
-
             color:
-                #5e7590;
+                var(--muted);
 
             font-size:
                 clamp(
-                    15px,
-                    2vw,
-                    18px
+                    14px,
+                    1.9vw,
+                    17px
                 );
 
-            line-height: 1.7;
+            line-height:
+                1.65;
 
             opacity: 0;
 
             animation:
                 fadeUp
                 0.7s
-                1.05s
+                0.98s
                 ease
                 forwards;
 
@@ -758,33 +906,39 @@
 
 
         /* =========================================================
-           BUTTON AREA
+           BUTTONS
            ========================================================= */
 
-        .actions {
+        .buttons {
 
             width: 100%;
 
-            max-width: 560px;
+            max-width: 550px;
 
-            margin:
-                38px auto 0;
+            margin-top:
+                clamp(
+                    26px,
+                    3.5vh,
+                    36px
+                );
 
-            display: flex;
+            display:
+                flex;
 
-            flex-direction: column;
+            flex-direction:
+                column;
 
-            gap: 13px;
+            gap: 11px;
 
             opacity: 0;
 
             transform:
-                translateY(15px);
+                translateY(12px);
 
             animation:
                 fadeUp
                 0.7s
-                1.2s
+                1.12s
                 ease
                 forwards;
 
@@ -793,26 +947,40 @@
 
         .button {
 
-            min-height: 60px;
+            position: relative;
 
             width: 100%;
 
+            height:
+                clamp(
+                    53px,
+                    6.5vh,
+                    59px
+                );
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                14px;
+
             padding:
-                15px 22px;
+                12px 22px;
 
-            border-radius: 15px;
+            text-decoration:
+                none;
 
-            display: flex;
+            font-size:
+                15px;
 
-            align-items: center;
-
-            justify-content: center;
-
-            text-decoration: none;
-
-            font-size: 16px;
-
-            font-weight: 700;
+            font-weight:
+                700;
 
             transition:
                 transform 0.2s ease,
@@ -830,13 +998,10 @@
         }
 
 
-        /* =========================================================
-           PRIMARY BUTTON
-           ========================================================= */
+        .button-review {
 
-        .button-primary {
-
-            color: var(--white);
+            color:
+                var(--white);
 
             background:
                 linear-gradient(
@@ -846,7 +1011,7 @@
                 );
 
             box-shadow:
-                0 12px 25px
+                0 10px 24px
                 rgba(
                     23,
                     105,
@@ -857,48 +1022,22 @@
         }
 
 
-        .button-primary:hover {
-
-            box-shadow:
-                0 16px 32px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.27
-                );
-
-        }
-
-
-        /* =========================================================
-           SECONDARY BUTTON
-           ========================================================= */
-
         .button-secondary {
 
-            color: #124c7b;
+            color:
+                #104e80;
 
             background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.82
+                    0.72
                 );
 
             border:
                 1px solid
-                #bcd8ec;
-
-            box-shadow:
-                0 6px 18px
-                rgba(
-                    16,
-                    32,
-                    51,
-                    0.04
-                );
+                #b8d5e9;
 
         }
 
@@ -906,136 +1045,83 @@
         .button-secondary:hover {
 
             background:
-                var(--white);
-
-            border-color:
-                #9dc5e2;
-
-        }
-
-
-        /* =========================================================
-           THIRD BUTTON
-           ========================================================= */
-
-        .button-tertiary {
-
-            color: var(--blue);
-
-            background:
                 rgba(
                     255,
                     255,
                     255,
-                    0.45
-                );
-
-            border:
-                1px solid
-                #b5d4ec;
-
-        }
-
-
-        .button-tertiary:hover {
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.85
+                    0.95
                 );
 
         }
 
 
         /* =========================================================
-           CLOSING MESSAGE
+           PIXEL CITY
+
+           IMPORTANT:
+           This entire element is isolated from the content.
+
+           Nothing inside the content can overlap the buildings.
            ========================================================= */
 
-        .small-note {
-
-            margin:
-                30px auto 150px;
-
-            color:
-                #7790a8;
-
-            font-size: 13px;
-
-            line-height: 1.6;
-
-            opacity: 0;
-
-            animation:
-                fadeIn
-                0.7s
-                1.45s
-                ease
-                forwards;
-
-        }
-
-
-        .small-note strong {
-
-            color: var(--navy);
-
-        }
-
-
-        /* =========================================================
-           PIXEL-ART HOUSTON SKYLINE
-           
-           Built entirely with CSS so there is no separate
-           image file that you need to upload.
-           ========================================================= */
-
-        .pixel-city {
-
-            width: 100vw;
-
-            height: 165px;
+        .city {
 
             position: absolute;
+
+            z-index: 5;
 
             left: 0;
+
             bottom: 0;
 
-            z-index: 2;
+            width: 100%;
 
-            overflow: hidden;
+            height:
+                clamp(
+                    150px,
+                    19vh,
+                    190px
+                );
+
+            pointer-events:
+                none;
 
         }
 
 
         /* =========================================================
-           SKYLINE BACKGROUND
+           CITY BUILDINGS
            ========================================================= */
 
-        .skyline {
+        .buildings {
 
             position: absolute;
-
-            bottom: 34px;
 
             left: 50%;
 
-            width: 720px;
+            bottom: 27px;
 
-            height: 130px;
+            width:
+                min(
+                    760px,
+                    100%
+                );
+
+            height: 155px;
 
             transform:
                 translateX(-50%);
 
-            display: flex;
+            display:
+                flex;
 
-            align-items: flex-end;
+            align-items:
+                flex-end;
 
-            justify-content: center;
+            justify-content:
+                center;
 
-            gap: 5px;
+            gap: 4px;
 
         }
 
@@ -1044,20 +1130,13 @@
 
             position: relative;
 
+            flex-shrink: 0;
+
             background:
                 linear-gradient(
                     90deg,
-                    #438bc4,
-                    #1769aa
-                );
-
-            box-shadow:
-                inset 4px 0
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.08
+                    #5aa0d1,
+                    #1c6fae
                 );
 
             image-rendering:
@@ -1072,229 +1151,212 @@
 
             position: absolute;
 
-            inset:
-                10px 7px;
+            left: 7px;
+
+            right: 7px;
+
+            top: 9px;
+
+            bottom: 7px;
 
             background:
                 repeating-linear-gradient(
                     to bottom,
                     rgba(
-                        224,
-                        243,
+                        225,
+                        246,
                         255,
                         0.55
-                    ) 0px,
-                    rgba(
-                        224,
-                        243,
-                        255,
-                        0.55
-                    ) 3px,
-                    transparent 3px,
-                    transparent 12px
+                    ) 0 3px,
+                    transparent 3px 12px
                 );
 
-            opacity: 0.55;
+        }
+
+
+        .building-1 {
+
+            width: 40px;
+
+            height: 66px;
 
         }
 
 
-        /* =========================================================
-           INDIVIDUAL BUILDINGS
-           ========================================================= */
+        .building-2 {
 
-        .building:nth-child(1) {
+            width: 48px;
 
-            width: 46px;
-            height: 67px;
+            height: 88px;
 
         }
 
 
-        .building:nth-child(2) {
+        .building-3 {
 
-            width: 55px;
-            height: 91px;
+            width: 36px;
 
-        }
-
-
-        .building:nth-child(3) {
-
-            width: 39px;
             height: 75px;
 
         }
 
 
-        .building:nth-child(4) {
+        .building-4 {
 
-            width: 65px;
-            height: 108px;
+            width: 57px;
 
-        }
-
-
-        .building:nth-child(5) {
-
-            width: 45px;
-            height: 82px;
+            height: 106px;
 
         }
 
 
-        .building:nth-child(6) {
+        .building-5 {
 
-            width: 78px;
-            height: 145px;
+            width: 39px;
 
-        }
-
-
-        .building:nth-child(7) {
-
-            width: 50px;
-            height: 93px;
+            height: 83px;
 
         }
 
 
-        .building:nth-child(8) {
+        .building-6 {
 
-            width: 63px;
+            width: 70px;
+
+            height: 151px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #377fb9,
+                    #135e9e
+                );
+
+        }
+
+
+        .building-6::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+
+            height: 28px;
+
+            left: 50%;
+
+            top: -28px;
+
+            transform:
+                translateX(-50%);
+
+            background:
+                #1769aa;
+
+        }
+
+
+        .building-7 {
+
+            width: 43px;
+
+            height: 94px;
+
+        }
+
+
+        .building-8 {
+
+            width: 58px;
+
             height: 118px;
 
         }
 
 
-        .building:nth-child(9) {
+        .building-9 {
 
-            width: 43px;
-            height: 74px;
+            width: 37px;
 
-        }
-
-
-        .building:nth-child(10) {
-
-            width: 71px;
-            height: 101px;
+            height: 73px;
 
         }
 
 
-        .building:nth-child(11) {
+        .building-10 {
 
-            width: 49px;
+            width: 61px;
+
+            height: 103px;
+
+        }
+
+
+        .building-11 {
+
+            width: 45px;
+
             height: 81px;
 
         }
 
 
         /* =========================================================
-           MAIN TOWER
+           PIXEL TREE LINE
            ========================================================= */
 
-        .building-main {
-
-            width: 82px;
-
-            height: 150px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #317dbb,
-                    #125d9d
-                );
-
-        }
-
-
-        .building-main::before {
-
-            content: "";
+        .trees {
 
             position: absolute;
-
-            width: 6px;
-            height: 26px;
-
-            background:
-                #1769aa;
-
-            top: -26px;
-
-            left: 50%;
-
-            transform:
-                translateX(-50%);
-
-        }
-
-
-        .building-main::after {
-
-            inset:
-                13px 11px;
-
-        }
-
-
-        /* =========================================================
-           TREELINE
-           ========================================================= */
-
-        .tree-line {
-
-            position: absolute;
-
-            bottom: 27px;
 
             left: 0;
 
+            bottom: 24px;
+
             width: 100%;
 
-            height: 32px;
+            height: 31px;
 
             background:
-                #7eb5d7;
+                #76b4d8;
 
             clip-path:
                 polygon(
-                    0 70%,
-                    3% 55%,
-                    6% 72%,
-                    9% 45%,
+                    0 72%,
+                    3% 50%,
+                    6% 70%,
+                    9% 44%,
                     12% 68%,
-                    15% 52%,
-                    18% 73%,
-                    21% 48%,
-                    24% 66%,
-                    27% 43%,
+                    15% 48%,
+                    18% 71%,
+                    21% 46%,
+                    24% 68%,
+                    27% 42%,
                     30% 70%,
                     33% 48%,
-                    36% 67%,
+                    36% 68%,
                     39% 44%,
                     42% 70%,
-                    45% 52%,
-                    48% 68%,
+                    45% 49%,
+                    48% 69%,
                     51% 43%,
-                    54% 69%,
-                    57% 47%,
-                    60% 70%,
-                    63% 50%,
-                    66% 68%,
-                    69% 43%,
+                    54% 71%,
+                    57% 48%,
+                    60% 69%,
+                    63% 49%,
+                    66% 69%,
+                    69% 44%,
                     72% 70%,
                     75% 48%,
-                    78% 67%,
+                    78% 69%,
                     81% 45%,
-                    84% 69%,
-                    87% 50%,
-                    90% 71%,
-                    93% 47%,
-                    96% 68%,
+                    84% 70%,
+                    87% 49%,
+                    90% 69%,
+                    93% 46%,
+                    96% 70%,
                     100% 48%,
                     100% 100%,
                     0 100%
@@ -1304,122 +1366,41 @@
 
 
         /* =========================================================
-           WATER / REFLECTION
+           WATER
            ========================================================= */
 
         .water {
 
             position: absolute;
 
-            bottom: 0;
-
             left: 0;
+
+            bottom: 0;
 
             width: 100%;
 
-            height: 32px;
+            height: 25px;
 
             background:
                 repeating-linear-gradient(
                     to bottom,
-                    #b9e2f5 0px,
-                    #b9e2f5 3px,
-                    #8dc8e7 3px,
-                    #8dc8e7 6px
+                    #c2e7f7 0 3px,
+                    #8bc8e7 3px 6px
                 );
-
-            opacity: 0.85;
-
-        }
-
-
-        .water::after {
-
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        0.35
-                    ),
-                    transparent
-                );
-
-            animation:
-                waterShine
-                5s
-                linear
-                infinite;
-
-        }
-
-
-        @keyframes waterShine {
-
-            from {
-
-                transform:
-                    translateX(-100%);
-
-            }
-
-            to {
-
-                transform:
-                    translateX(100%);
-
-            }
 
         }
 
 
         /* =========================================================
-           GENERAL ANIMATIONS
+           DESKTOP
            ========================================================= */
 
-        @keyframes fadeUp {
+        @media (min-width: 901px) {
 
-            from {
+            .content {
 
-                opacity: 0;
-
-                transform:
-                    translateY(15px);
-
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-
-            }
-
-        }
-
-
-        @keyframes fadeIn {
-
-            from {
-
-                opacity: 0;
-
-            }
-
-            to {
-
-                opacity: 1;
+                padding-top:
+                    48px;
 
             }
 
@@ -1427,15 +1408,33 @@
 
 
         /* =========================================================
-           MOBILE
+           TABLET
            ========================================================= */
 
         @media (max-width: 700px) {
 
-            .thank-you-page {
+            body {
 
-                padding:
-                    36px 16px 0;
+                overflow:
+                    hidden;
+
+            }
+
+
+            .content {
+
+                width:
+                    calc(
+                        100% - 32px
+                    );
+
+                height:
+                    calc(
+                        100svh - 150px
+                    );
+
+                padding-top:
+                    30px;
 
             }
 
@@ -1448,26 +1447,18 @@
             }
 
 
-            .success-wrapper {
+            .check {
 
-                width: 78px;
-                height: 78px;
-
-                margin:
-                    16px auto 24px;
-
-            }
-
-
-            .success-check {
-
-                width: 29px;
-                height: 17px;
+                margin-bottom:
+                    21px;
 
             }
 
 
             h1 {
+
+                max-width:
+                    440px;
 
                 font-size:
                     clamp(
@@ -1484,37 +1475,27 @@
 
             .message {
 
+                max-width:
+                    390px;
+
                 font-size:
-                    15px;
+                    14.5px;
 
             }
 
 
-            .actions {
+            .buttons {
+
+                max-width:
+                    440px;
 
                 margin-top:
-                    30px;
+                    27px;
 
             }
 
 
-            .button {
-
-                min-height:
-                    56px;
-
-            }
-
-
-            .small-note {
-
-                margin-bottom:
-                    145px;
-
-            }
-
-
-            .pixel-city {
+            .city {
 
                 height:
                     140px;
@@ -1522,103 +1503,48 @@
             }
 
 
-            .skyline {
+            .buildings {
 
                 width:
-                    620px;
+                    670px;
+
+                height:
+                    130px;
+
+                bottom:
+                    24px;
 
                 transform:
                     translateX(-50%)
-                    scale(0.82);
+                    scale(0.78);
 
                 transform-origin:
                     bottom center;
 
             }
 
-        }
 
+            .trees {
 
-        @media (max-width: 450px) {
-
-            .thank-you-page {
-
-                padding-top:
-                    30px;
+                bottom:
+                    22px;
 
             }
 
 
-            .brand-main {
+            .water {
 
-                font-size:
-                    28px;
-
-            }
-
-
-            .brand-subtitle {
-
-                font-size:
-                    9px;
-
-                letter-spacing:
-                    3px;
+                height:
+                    23px;
 
             }
 
 
-            .eyebrow {
+            .cloud-three,
+            .cloud-four {
 
-                font-size:
-                    11px;
-
-                letter-spacing:
-                    2.3px;
-
-            }
-
-
-            h1 {
-
-                font-size:
-                    37px;
-
-            }
-
-
-            .message {
-
-                max-width:
-                    340px;
-
-            }
-
-
-            .actions {
-
-                max-width:
-                    100%;
-
-            }
-
-
-            .small-note {
-
-                margin-bottom:
-                    125px;
-
-            }
-
-
-            .skyline {
-
-                width:
-                    560px;
-
-                transform:
-                    translateX(-50%)
-                    scale(0.7);
+                display:
+                    none;
 
             }
 
@@ -1626,7 +1552,305 @@
 
 
         /* =========================================================
-           REDUCED MOTION ACCESSIBILITY
+           SMALL PHONES
+           ========================================================= */
+
+        @media (max-width: 430px) {
+
+            .content {
+
+                width:
+                    calc(
+                        100% - 28px
+                    );
+
+                height:
+                    calc(
+                        100svh - 130px
+                    );
+
+                padding-top:
+                    27px;
+
+            }
+
+
+            .brand {
+
+                margin-bottom:
+                    21px;
+
+            }
+
+
+            .brand-name {
+
+                font-size:
+                    29px;
+
+            }
+
+
+            .brand-subtitle {
+
+                font-size:
+                    8px;
+
+                letter-spacing:
+                    3px;
+
+            }
+
+
+            .check {
+
+                width:
+                    72px;
+
+                height:
+                    72px;
+
+                margin-bottom:
+                    19px;
+
+            }
+
+
+            .eyebrow {
+
+                font-size:
+                    9.5px;
+
+                letter-spacing:
+                    2px;
+
+            }
+
+
+            h1 {
+
+                max-width:
+                    350px;
+
+                margin-bottom:
+                    14px;
+
+                font-size:
+                    35px;
+
+            }
+
+
+            .message {
+
+                max-width:
+                    330px;
+
+                font-size:
+                    13.5px;
+
+                line-height:
+                    1.55;
+
+            }
+
+
+            .buttons {
+
+                margin-top:
+                    23px;
+
+                gap:
+                    9px;
+
+            }
+
+
+            .button {
+
+                height:
+                    52px;
+
+                min-height:
+                    52px;
+
+                font-size:
+                    14px;
+
+                border-radius:
+                    13px;
+
+            }
+
+
+            .city {
+
+                height:
+                    119px;
+
+            }
+
+
+            .buildings {
+
+                width:
+                    620px;
+
+                height:
+                    125px;
+
+                bottom:
+                    21px;
+
+                transform:
+                    translateX(-50%)
+                    scale(0.64);
+
+                transform-origin:
+                    bottom center;
+
+            }
+
+
+            .trees {
+
+                bottom:
+                    20px;
+
+                height:
+                    28px;
+
+            }
+
+
+            .water {
+
+                height:
+                    21px;
+
+            }
+
+
+            .cloud-one {
+
+                top:
+                    105px;
+
+                left:
+                    -75px;
+
+                transform:
+                    scale(0.72);
+
+            }
+
+
+            .cloud-two {
+
+                top:
+                    175px;
+
+                right:
+                    -85px;
+
+                transform:
+                    scale(0.62);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           VERY SHORT SCREENS
+
+           Prevents the buttons from being pushed into the city
+           on short phones.
+           ========================================================= */
+
+        @media (
+            max-height: 700px
+        ) {
+
+            .content {
+
+                padding-top:
+                    22px;
+
+            }
+
+
+            .brand {
+
+                margin-bottom:
+                    17px;
+
+            }
+
+
+            .check {
+
+                width:
+                    64px;
+
+                height:
+                    64px;
+
+                margin-bottom:
+                    15px;
+
+            }
+
+
+            h1 {
+
+                font-size:
+                    clamp(
+                        31px,
+                        8vw,
+                        44px
+                    );
+
+                margin-bottom:
+                    11px;
+
+            }
+
+
+            .message {
+
+                font-size:
+                    13px;
+
+            }
+
+
+            .buttons {
+
+                margin-top:
+                    19px;
+
+                gap:
+                    7px;
+
+            }
+
+
+            .button {
+
+                height:
+                    45px;
+
+                min-height:
+                    45px;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
            ========================================================= */
 
         @media (prefers-reduced-motion: reduce) {
@@ -1644,9 +1868,6 @@
                 transition-duration:
                     0.01ms !important;
 
-                scroll-behavior:
-                    auto !important;
-
             }
 
         }
@@ -1663,17 +1884,17 @@
 
 
         <!-- =====================================================
-             BACKGROUND
+             SOFT BACKGROUND LIGHT
              ===================================================== -->
 
         <div
-            class="background-glow"
+            class="sun-glow"
             aria-hidden="true"
         ></div>
 
 
         <!-- =====================================================
-             ANIMATED PIXEL CLOUDS
+             PIXEL CLOUDS
              ===================================================== -->
 
         <div
@@ -1691,21 +1912,26 @@
             aria-hidden="true"
         ></div>
 
+        <div
+            class="pixel-cloud cloud-four"
+            aria-hidden="true"
+        ></div>
+
 
         <!-- =====================================================
-             MAIN CONTENT
+             MAIN THANK-YOU CONTENT
              ===================================================== -->
 
-        <div class="thank-you-content">
+        <section class="content">
 
 
             <!-- =================================================
-                 BRIGHTSIDE LOGO
+                 BRIGHTSIDE BRAND
                  ================================================= -->
 
             <div class="brand">
 
-                <span class="brand-main">
+                <span class="brand-name">
                     BRIGHTSIDE HOUSTON
                 </span>
 
@@ -1717,18 +1943,18 @@
 
 
             <!-- =================================================
-                 SUCCESS CHECKMARK
+                 COMPLETION CHECK
                  ================================================= -->
 
             <div
-                class="success-wrapper"
+                class="check"
                 aria-hidden="true"
             >
 
-                <div class="success-circle">
+                <div class="check-circle">
 
                     <span
-                        class="success-check"
+                        class="check-mark"
                     ></span>
 
                 </div>
@@ -1737,7 +1963,7 @@
 
 
             <!-- =================================================
-                 MESSAGE
+                 TEXT
                  ================================================= -->
 
             <p class="eyebrow">
@@ -1764,13 +1990,13 @@
                  ACTION BUTTONS
                  ================================================= -->
 
-            <div class="actions">
+            <div class="buttons">
 
 
-                <!-- GOOGLE REVIEW -->
+                <!-- REVIEW -->
 
                 <a
-                    class="button button-primary"
+                    class="button button-review"
                     href="https://g.page/r/CWmsD6ptwMNMEAI/review"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1779,7 +2005,7 @@
                 </a>
 
 
-                <!-- CAL.COM BOOKING -->
+                <!-- BOOK AGAIN -->
 
                 <a
                     class="button button-secondary"
@@ -1791,10 +2017,10 @@
                 </a>
 
 
-                <!-- MAIN WEBSITE -->
+                <!-- HOMEPAGE -->
 
                 <a
-                    class="button button-tertiary"
+                    class="button button-secondary"
                     href="https://brightside-htx.com/"
                 >
                     Visit BrightSide
@@ -1804,68 +2030,87 @@
             </div>
 
 
-            <!-- =================================================
-                 CLOSING MESSAGE
-                 ================================================= -->
-
-            <p class="small-note">
-
-                Thank you for supporting
-                <strong>BrightSide Houston Mobile Detailing.</strong>
-
-            </p>
-
-
-        </div>
+        </section>
 
 
         <!-- =====================================================
-             PIXEL-ART HOUSTON SKYLINE
+             PIXEL-ART CITY
+
+             This is completely independent from the content
+             section, so text cannot overlap the buildings.
              ===================================================== -->
 
         <div
-            class="pixel-city"
+            class="city"
             aria-hidden="true"
         >
 
 
-            <div class="skyline">
+            <!-- =================================================
+                 BUILDINGS
+                 ================================================= -->
 
-                <div class="building"></div>
-
-                <div class="building"></div>
-
-                <div class="building"></div>
-
-                <div class="building"></div>
-
-                <div class="building"></div>
+            <div class="buildings">
 
                 <div
-                    class="building building-main"
+                    class="building building-1"
                 ></div>
 
-                <div class="building"></div>
+                <div
+                    class="building building-2"
+                ></div>
 
-                <div class="building"></div>
+                <div
+                    class="building building-3"
+                ></div>
 
-                <div class="building"></div>
+                <div
+                    class="building building-4"
+                ></div>
 
-                <div class="building"></div>
+                <div
+                    class="building building-5"
+                ></div>
 
-                <div class="building"></div>
+                <div
+                    class="building building-6"
+                ></div>
+
+                <div
+                    class="building building-7"
+                ></div>
+
+                <div
+                    class="building building-8"
+                ></div>
+
+                <div
+                    class="building building-9"
+                ></div>
+
+                <div
+                    class="building building-10"
+                ></div>
+
+                <div
+                    class="building building-11"
+                ></div>
 
             </div>
 
 
-            <!-- TREELINE -->
+            <!-- =================================================
+                 PIXEL TREE LINE
+                 ================================================= -->
 
             <div
-                class="tree-line"
+                class="trees"
             ></div>
 
 
-            <!-- WATER -->
+            <!-- =================================================
+                 WATER
+                 ================================================= -->
 
             <div
                 class="water"

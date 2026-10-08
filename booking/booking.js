@@ -63,8 +63,6 @@ document.addEventListener(
            Alief Neighborhood Center
            11903 Bellaire Blvd
            Houston, TX 77072
-
-           This is the center used for the service-area check.
         */
 
         const SERVICE_CENTER = {
@@ -90,15 +88,7 @@ document.addEventListener(
 
         /* =========================================================
            CAL.COM BOOKING LINKS
-           =========================================================
-
-           Each pricing card on the booking page will contain
-           a data-cal-link attribute.
-
-           The JavaScript reads that link when the customer
-           clicks a detail and loads the matching Cal.com form.
-
-        */
+           ========================================================= */
 
         const CAL_BOOKING_LINKS = {
 
@@ -865,11 +855,6 @@ document.addEventListener(
                 "";
 
 
-            /*
-               A new address starts a fresh
-               eligibility check.
-            */
-
             resetBookingState();
 
 
@@ -1089,15 +1074,19 @@ document.addEventListener(
                 }
 
 
+                /*
+                   THIS IS THE IMPORTANT PART:
+
+                   Once the address is eligible, the pricing
+                   section is immediately made visible.
+                */
+
                 showPricing();
 
 
                 /*
-                   The Cal.com section is intentionally NOT
-                   automatically loaded here.
-
-                   The customer first chooses their detail.
-                   The matching Cal.com booking page then loads.
+                   Cal.com stays hidden until the customer
+                   chooses a detail.
                 */
 
                 prepareCalBooking();
@@ -1163,13 +1152,32 @@ document.addEventListener(
         function showPricing() {
 
             if (!pricingSection) {
+
+                console.error(
+                    "BrightSide Booking: pricing-section was not found."
+                );
+
                 return;
             }
 
 
+            /*
+               Make pricing visible.
+            */
+
             pricingSection.hidden =
                 false;
 
+
+            pricingSection.removeAttribute(
+                "hidden"
+            );
+
+
+            /*
+               Scroll directly to the pricing section
+               after the address has been verified.
+            */
 
             setTimeout(
                 () => {
@@ -1185,7 +1193,7 @@ document.addEventListener(
                     });
 
                 },
-                250
+                300
             );
 
         }
@@ -1212,12 +1220,7 @@ document.addEventListener(
 
         /* =========================================================
            PREPARE CAL.COM
-           =========================================================
-
-           The Cal.com section stays hidden until the customer
-           actually clicks a detail.
-
-        */
+           ========================================================= */
 
         function prepareCalBooking() {
 
@@ -1313,6 +1316,20 @@ document.addEventListener(
 
 
             if (!calLink) {
+                return;
+            }
+
+
+            /*
+               Make sure the address is eligible before
+               allowing the customer to open Cal.com.
+            */
+
+            if (
+                serviceAreaStatus &&
+                serviceAreaStatus.value !==
+                    "eligible"
+            ) {
 
                 return;
             }
@@ -1322,21 +1339,9 @@ document.addEventListener(
                 calLink;
 
 
-            /*
-               Make the Cal.com section visible.
-            */
-
             calBookingSection.hidden =
                 false;
 
-
-            /*
-               Clear the previous Cal.com page.
-
-               This is what allows the customer to click
-               another detail and replace the previous
-               booking form with the new one.
-            */
 
             calBooking.innerHTML =
                 "";
@@ -1347,10 +1352,9 @@ document.addEventListener(
 
 
 
-            /*
-               If Cal.com has not finished loading yet,
-               wait for it and try again.
-            */
+            /* =====================================================
+               WAIT FOR CAL.COM
+               ===================================================== */
 
             if (
                 typeof window.Cal ===
@@ -1376,12 +1380,6 @@ document.addEventListener(
 
                 setTimeout(
                     () => {
-
-                        /*
-                           Only continue if the customer
-                           has not selected another link
-                           while Cal.com was loading.
-                        */
 
                         if (
                             selectedCalLink ===
@@ -1434,9 +1432,9 @@ document.addEventListener(
 
 
 
-            /*
-               Bring the customer to the booking form.
-            */
+            /* =====================================================
+               SCROLL TO CAL.COM
+               ===================================================== */
 
             setTimeout(
                 () => {
@@ -1461,19 +1459,7 @@ document.addEventListener(
 
         /* =========================================================
            DETAIL CARD CLICK HANDLERS
-           =========================================================
-
-           The booking HTML should give each clickable detail
-           card a data-cal-link attribute.
-
-           Example:
-
-           data-cal-link="brightsidehouston/exterior"
-
-           This allows the same JavaScript to work with all
-           four detail types.
-
-        */
+           ========================================================= */
 
         function initializeDetailBookingCards() {
 
@@ -1484,6 +1470,11 @@ document.addEventListener(
 
 
             if (!detailCards.length) {
+
+                console.warn(
+                    "BrightSide Booking: No detail cards with data-cal-link were found."
+                );
+
                 return;
             }
 
@@ -1494,31 +1485,17 @@ document.addEventListener(
 
 
                     /* =================================================
-                       MOUSE / TOUCH CLICK
+                       MOUSE / TOUCH
                        ================================================= */
 
                     card.addEventListener(
                         "click",
                         () => {
 
-                            /*
-                               Only allow booking after the address
-                               has been confirmed as eligible.
-                            */
-
-                            if (
-                                serviceAreaStatus &&
-                                serviceAreaStatus.value !==
-                                "eligible"
-                            ) {
-
-                                return;
-
-                            }
-
-
                             const calLink =
-                                card.dataset.calLink;
+                                card.getAttribute(
+                                    "data-cal-link"
+                                );
 
 
                             if (!calLink) {
@@ -1536,7 +1513,7 @@ document.addEventListener(
 
 
                     /* =================================================
-                       KEYBOARD ACCESSIBILITY
+                       KEYBOARD
                        ================================================= */
 
                     card.addEventListener(
@@ -1554,19 +1531,10 @@ document.addEventListener(
                                 event.preventDefault();
 
 
-                                if (
-                                    serviceAreaStatus &&
-                                    serviceAreaStatus.value !==
-                                    "eligible"
-                                ) {
-
-                                    return;
-
-                                }
-
-
                                 const calLink =
-                                    card.dataset.calLink;
+                                    card.getAttribute(
+                                        "data-cal-link"
+                                    );
 
 
                                 if (!calLink) {
@@ -1600,8 +1568,16 @@ document.addEventListener(
                 null;
 
 
-            serviceAreaStatus.value =
-                "unchecked";
+            selectedCalLink =
+                null;
+
+
+            if (serviceAreaStatus) {
+
+                serviceAreaStatus.value =
+                    "unchecked";
+
+            }
 
 
             hidePricing();

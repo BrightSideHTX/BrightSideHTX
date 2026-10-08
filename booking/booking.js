@@ -1,1988 +1,2286 @@
-/*
-    ============================================================
-    BRIGHTSIDE HOUSTON DETAILING
-    BOOKING PAGE JAVASCRIPT
-    ============================================================
-
-    Handles:
-    - Mapbox map
-    - 20-mile service radius
-    - Address autocomplete
-    - Address retrieval
-    - Eligibility checking
-    - Service selection
-    - Cal.com booking embeds
-*/
-
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* =========================================================
-       CONFIGURATION
-    ========================================================= */
-
-    /*
-        KEEP YOUR EXISTING MAPBOX PUBLIC TOKEN HERE.
-    */
-    const MAPBOX_TOKEN = "pk.eyJ1IjoiYnJpZ2h0c2lkZWRldGFpbGluZyIsImEiOiJjbXQ5bGEzdTAwMGg0Mnlwd2M1MHlyYWV0In0.Usd3fiKRnMZq1oE6cYy1Jg";
+// ============================================
+// BRIGHTSIDE DETAILING
+// BOOKING PAGE JAVASCRIPT
+// ============================================
+//
+// Handles ONLY:
+// - Mapbox
+// - Address autocomplete
+// - Address retrieval
+// - Service-area radius
+// - Eligibility
+// - Step 2 service selection
+// - Cal.com booking
+//
+// Shared navigation is handled by script.js.
+// ============================================
 
 
-    const SERVICE_CENTER = {
-        latitude: 29.70254,
-        longitude: -95.58891
-    };
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
 
-    const SERVICE_RADIUS_MILES = 20;
+        // ========================================
+        // BOOKING PAGE CHECK
+        // ========================================
 
-
-    const CAL_BOOKING_LINKS = {
-        exterior: "brightsidehouston/exterior",
-        interior: "brightsidehouston/interior",
-        fullDetail: "brightsidehouston/fulldetail",
-        maintenance: "brightsidehouston/maintenace"
-    };
-
-
-    /* =========================================================
-       ELEMENTS
-    ========================================================= */
-
-    const bookingPage =
-        document.querySelector(".booking-page");
-
-    const addressInput =
-        document.querySelector("#address");
-
-    const suggestionsContainer =
-        document.querySelector("#address-suggestions");
-
-    const serviceStatus =
-        document.querySelector("#service-status");
-
-    const mapContainer =
-        document.querySelector("#map");
-
-    const availabilityContainer =
-        document.querySelector("#availability-container");
-
-    const availabilityButton =
-        document.querySelector("#availability-button");
-
-    /*
-        Try several possible IDs/classes so the service
-        selection section is found even if your HTML uses
-        a slightly different container name.
-    */
-    const pricingSection =
-        document.querySelector("#pricing-section") ||
-        document.querySelector("#pricing") ||
-        document.querySelector(".bs-pricing-section") ||
-        document.querySelector(".bs-service-selection") ||
-        document.querySelector(".service-selection");
-
-
-    const calBooking =
-        document.querySelector("#cal-booking");
-
-
-    /* =========================================================
-       PAGE CHECK
-    ========================================================= */
-
-    if (!bookingPage) {
-        console.error(
-            "BrightSide Booking: .booking-page not found."
-        );
-
-        return;
-    }
-
-
-    /* =========================================================
-       MAP STATE
-    ========================================================= */
-
-    let map = null;
-
-    let serviceCenterMarker = null;
-
-    let customerMarker = null;
-
-    let selectedAddress = null;
-
-    let selectedCoordinates = null;
-
-    let selectedDistance = null;
-
-    let searchSessionToken =
-        createSessionToken();
-
-    let suggestionTimeout = null;
-
-
-    /* =========================================================
-       INITIAL STATE
-    ========================================================= */
-
-    hideElement(pricingSection);
-
-    hideElement(calBooking);
-
-    hideElement(availabilityContainer);
-
-    hideElement(suggestionsContainer);
-
-
-    /* =========================================================
-       INITIALIZE MAP
-    ========================================================= */
-
-    initializeMap();
-
-
-    function initializeMap() {
-
-        if (!mapContainer) {
-            console.error(
-                "BrightSide Booking: #map not found."
+        const bookingPage =
+            document.querySelector(
+                ".booking-page"
             );
 
+
+        if (!bookingPage) {
             return;
         }
 
 
-        if (
-            typeof mapboxgl === "undefined"
-        ) {
-            console.error(
-                "BrightSide Booking: Mapbox GL JS is not loaded."
-            );
+        // ========================================
+        // MAPBOX CONFIGURATION
+        // ========================================
 
-            setServiceStatus(
-                "The map could not load. Please refresh the page.",
-                "error"
-            );
+        const MAPBOX_PUBLIC_TOKEN =
+            "pk.eyJ1IjoiYnJpZ2h0c2lkZWRldGFpbGluZyIsImEiOiJjbXQ5bGEzdTAwMGg0Mnlwd2M1MHlyYWV0In0.Usd3fiKRnMZq1oE6cYy1Jg";
 
-            return;
-        }
 
+        const SERVICE_LAT =
+            29.70254;
 
-        if (
-            !MAPBOX_TOKEN ||
-            MAPBOX_TOKEN ===
-                "YOUR_EXISTING_MAPBOX_PUBLIC_TOKEN"
-        ) {
-            console.error(
-                "BrightSide Booking: Mapbox token is missing."
-            );
+        const SERVICE_LNG =
+            -95.58891;
 
-            setServiceStatus(
-                "The map could not connect to Mapbox.",
-                "error"
-            );
+        const SERVICE_RADIUS_MILES =
+            20;
 
-            return;
-        }
 
+        // ========================================
+        // CAL.COM LINKS
+        // ========================================
 
-        mapboxgl.accessToken =
-            MAPBOX_TOKEN;
+        const CAL_BOOKING_LINKS = {
 
+            exterior:
+                "https://cal.com/brightsidehouston/exterior",
 
-        map = new mapboxgl.Map({
-            container: "map",
+            interior:
+                "https://cal.com/brightsidehouston/interior",
 
-            style:
-                "mapbox://styles/mapbox/streets-v12",
+            full:
+                "https://cal.com/brightsidehouston/fulldetail",
 
-            center: [
-                SERVICE_CENTER.longitude,
-                SERVICE_CENTER.latitude
-            ],
+            maintenance:
+                "https://cal.com/brightsidehouston/maintenace"
 
-            zoom: 10.5
-        });
-
-
-        map.addControl(
-            new mapboxgl.NavigationControl(),
-            "top-right"
-        );
-
-
-        map.once(
-            "load",
-            () => {
-
-                drawServiceRadius();
-
-                addServiceCenterMarker();
-
-                fitMapToServiceRadius();
-
-            }
-        );
-
-
-        map.on(
-            "error",
-            (event) => {
-
-                console.error(
-                    "BrightSide Booking: Mapbox error:",
-                    event?.error || event
-                );
-
-            }
-        );
-    }
-
-
-    /* =========================================================
-       DRAW 20-MILE SERVICE RADIUS
-    ========================================================= */
-
-    function drawServiceRadius() {
-
-        if (!map) {
-            return;
-        }
-
-
-        const radiusPolygon =
-            createCirclePolygon(
-                SERVICE_CENTER.longitude,
-                SERVICE_CENTER.latitude,
-                SERVICE_RADIUS_MILES,
-                96
-            );
-
-
-        if (
-            map.getSource(
-                "brightside-service-radius"
-            )
-        ) {
-
-            map.getSource(
-                "brightside-service-radius"
-            ).setData(
-                radiusPolygon
-            );
-
-            return;
-        }
-
-
-        map.addSource(
-            "brightside-service-radius",
-            {
-                type: "geojson",
-                data: radiusPolygon
-            }
-        );
-
-
-        map.addLayer({
-            id:
-                "brightside-service-radius-fill",
-
-            type: "fill",
-
-            source:
-                "brightside-service-radius",
-
-            paint: {
-                "fill-color":
-                    "#1769aa",
-
-                "fill-opacity":
-                    0.10
-            }
-        });
-
-
-        map.addLayer({
-            id:
-                "brightside-service-radius-outline",
-
-            type: "line",
-
-            source:
-                "brightside-service-radius",
-
-            paint: {
-                "line-color":
-                    "#1769aa",
-
-                "line-width":
-                    2,
-
-                "line-opacity":
-                    0.85
-            }
-        });
-    }
-
-
-    /* =========================================================
-       CREATE RADIUS CIRCLE
-    ========================================================= */
-
-    function createCirclePolygon(
-        longitude,
-        latitude,
-        radiusMiles,
-        points
-    ) {
-
-        const coordinates = [];
-
-        const earthRadiusMiles =
-            3958.7613;
-
-        const angularDistance =
-            radiusMiles /
-            earthRadiusMiles;
-
-        const latitudeRadians =
-            latitude *
-            Math.PI /
-            180;
-
-        const longitudeRadians =
-            longitude *
-            Math.PI /
-            180;
-
-
-        for (
-            let index = 0;
-            index <= points;
-            index++
-        ) {
-
-            const bearing =
-                (
-                    index /
-                    points
-                ) *
-                2 *
-                Math.PI;
-
-
-            const newLatitude =
-                Math.asin(
-                    Math.sin(
-                        latitudeRadians
-                    ) *
-                    Math.cos(
-                        angularDistance
-                    ) +
-
-                    Math.cos(
-                        latitudeRadians
-                    ) *
-                    Math.sin(
-                        angularDistance
-                    ) *
-                    Math.cos(
-                        bearing
-                    )
-                );
-
-
-            const newLongitude =
-                longitudeRadians +
-
-                Math.atan2(
-                    Math.sin(
-                        bearing
-                    ) *
-                    Math.sin(
-                        angularDistance
-                    ) *
-                    Math.cos(
-                        latitudeRadians
-                    ),
-
-                    Math.cos(
-                        angularDistance
-                    ) -
-
-                    Math.sin(
-                        latitudeRadians
-                    ) *
-                    Math.sin(
-                        newLatitude
-                    )
-                );
-
-
-            coordinates.push([
-                newLongitude *
-                    180 /
-                    Math.PI,
-
-                newLatitude *
-                    180 /
-                    Math.PI
-            ]);
-        }
-
-
-        return {
-            type: "Feature",
-
-            properties: {},
-
-            geometry: {
-                type: "Polygon",
-
-                coordinates: [
-                    coordinates
-                ]
-            }
         };
-    }
 
 
-    /* =========================================================
-       SERVICE CENTER MARKER
-    ========================================================= */
+        // ========================================
+        // ELEMENT REFERENCES
+        // ========================================
 
-    function addServiceCenterMarker() {
-
-        if (!map) {
-            return;
-        }
-
-
-        serviceCenterMarker =
-            new mapboxgl.Marker({
-                color: "#1769aa"
-            })
-                .setLngLat([
-                    SERVICE_CENTER.longitude,
-                    SERVICE_CENTER.latitude
-                ])
-                .setPopup(
-                    new mapboxgl.Popup({
-                        offset: 25
-                    }).setHTML(
-                        `
-                            <strong>
-                                BrightSide Houston Detailing
-                            </strong>
-                            <br>
-                            Service Center
-                        `
-                    )
-                )
-                .addTo(map);
-    }
-
-
-    /* =========================================================
-       FIT MAP TO SERVICE AREA
-    ========================================================= */
-
-    function fitMapToServiceRadius() {
-
-        if (!map) {
-            return;
-        }
-
-
-        const latitudeOffset =
-            SERVICE_RADIUS_MILES /
-            69;
-
-
-        const longitudeOffset =
-            SERVICE_RADIUS_MILES /
-            (
-                69 *
-                Math.cos(
-                    SERVICE_CENTER.latitude *
-                    Math.PI /
-                    180
-                )
+        const addressInput =
+            document.getElementById(
+                "address"
             );
 
 
-        const bounds =
-            new mapboxgl.LngLatBounds();
-
-
-        bounds.extend([
-            SERVICE_CENTER.longitude -
-                longitudeOffset,
-
-            SERVICE_CENTER.latitude -
-                latitudeOffset
-        ]);
-
-
-        bounds.extend([
-            SERVICE_CENTER.longitude +
-                longitudeOffset,
-
-            SERVICE_CENTER.latitude +
-                latitudeOffset
-        ]);
-
-
-        map.fitBounds(
-            bounds,
-            {
-                padding: 40,
-                duration: 600,
-                maxZoom: 11
-            }
-        );
-    }
-
-
-    /* =========================================================
-       ADDRESS INPUT
-    ========================================================= */
-
-    if (addressInput) {
-
-        addressInput.addEventListener(
-            "input",
-            () => {
-
-                const query =
-                    addressInput.value.trim();
-
-
-                clearTimeout(
-                    suggestionTimeout
-                );
-
-
-                selectedAddress = null;
-
-                selectedCoordinates = null;
-
-                selectedDistance = null;
-
-
-                hideElement(
-                    pricingSection
-                );
-
-                hideElement(
-                    calBooking
-                );
-
-                hideElement(
-                    availabilityContainer
-                );
-
-
-                if (suggestionsContainer) {
-
-                    suggestionsContainer.innerHTML = "";
-
-                    hideElement(
-                        suggestionsContainer
-                    );
-                }
-
-
-                if (query.length < 3) {
-
-                    setServiceStatus(
-                        "",
-                        "hidden"
-                    );
-
-                    return;
-                }
-
-
-                setServiceStatus(
-                    "Searching addresses...",
-                    "checking"
-                );
-
-
-                suggestionTimeout =
-                    setTimeout(
-                        () => {
-
-                            fetchSuggestions(
-                                query
-                            );
-
-                        },
-                        250
-                    );
-            }
-        );
-
-
-        addressInput.addEventListener(
-            "keydown",
-            (event) => {
-
-                if (
-                    event.key !== "Enter"
-                ) {
-                    return;
-                }
-
-
-                const firstSuggestion =
-                    suggestionsContainer?.querySelector(
-                        "[data-mapbox-id]"
-                    );
-
-
-                if (firstSuggestion) {
-
-                    event.preventDefault();
-
-                    firstSuggestion.click();
-                }
-            }
-        );
-    }
-
-
-    /* =========================================================
-       FETCH ADDRESS SUGGESTIONS
-    ========================================================= */
-
-    async function fetchSuggestions(
-        query
-    ) {
-
-        try {
-
-            const url =
-                "https://api.mapbox.com/search/searchbox/v1/suggest" +
-
-                "?q=" +
-                encodeURIComponent(
-                    query
-                ) +
-
-                "&limit=6" +
-
-                "&country=US" +
-
-                "&language=en" +
-
-                "&types=address" +
-
-                "&proximity=" +
-                encodeURIComponent(
-                    `${SERVICE_CENTER.longitude},${SERVICE_CENTER.latitude}`
-                ) +
-
-                "&session_token=" +
-                encodeURIComponent(
-                    searchSessionToken
-                ) +
-
-                "&access_token=" +
-                encodeURIComponent(
-                    MAPBOX_TOKEN
-                );
-
-
-            const response =
-                await fetch(url);
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    `Mapbox request failed: ${response.status}`
-                );
-            }
-
-
-            const data =
-                await response.json();
-
-
-            renderSuggestions(
-                data.suggestions || []
+        const suggestionsContainer =
+            document.getElementById(
+                "address-suggestions"
             );
 
 
-        } catch (error) {
+        const serviceStatus =
+            document.getElementById(
+                "service-status"
+            );
+
+
+        const serviceAreaStatus =
+            document.getElementById(
+                "service-area-status"
+            );
+
+
+        const distanceInformation =
+            document.getElementById(
+                "distance-information"
+            );
+
+
+        const distanceFromAlief =
+            document.getElementById(
+                "distance-from-alief"
+            );
+
+
+        const mapContainer =
+            document.getElementById(
+                "map"
+            );
+
+
+        const pricingSection =
+            document.getElementById(
+                "pricing-section"
+            );
+
+
+        const calBookingSection =
+            document.getElementById(
+                "cal-booking-section"
+            );
+
+
+        const calBooking =
+            document.getElementById(
+                "cal-booking"
+            );
+
+
+        const calBookingTitle =
+            document.getElementById(
+                "cal-booking-title"
+            );
+
+
+        const calBookingDescription =
+            document.getElementById(
+                "cal-booking-description"
+            );
+
+
+        // ========================================
+        // STATE
+        // ========================================
+
+        let map = null;
+
+        let selectedAddress =
+            null;
+
+        let selectedService =
+            null;
+
+        let sessionToken =
+            null;
+
+
+        // ========================================
+        // BASIC VALIDATION
+        // ========================================
+
+        if (!addressInput) {
 
             console.error(
-                "BrightSide Booking: Address search failed.",
-                error
+                "BrightSide Booking: Address input was not found."
             );
 
+            return;
 
-            setServiceStatus(
-                "We couldn't search for that address. Please try again.",
-                "error"
-            );
         }
-    }
 
-
-    /* =========================================================
-       RENDER SUGGESTIONS
-    ========================================================= */
-
-    function renderSuggestions(
-        suggestions
-    ) {
 
         if (!suggestionsContainer) {
-            return;
-        }
 
-
-        suggestionsContainer.innerHTML = "";
-
-
-        if (!suggestions.length) {
-
-            hideElement(
-                suggestionsContainer
-            );
-
-            setServiceStatus(
-                "No matching addresses found.",
-                "error"
+            console.error(
+                "BrightSide Booking: Address suggestions container was not found."
             );
 
             return;
+
         }
 
 
-        suggestions.forEach(
-            (suggestion) => {
-
-                const button =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                button.type = "button";
-
-                button.className =
-                    "address-suggestion";
-
-
-                button.dataset.mapboxId =
-                    suggestion.mapbox_id;
-
-
-                button.innerHTML = `
-                    <span class="address-suggestion-main">
-                        ${escapeHtml(
-                            suggestion.name ||
-                            suggestion.full_address ||
-                            "Address"
-                        )}
-                    </span>
-
-                    ${
-                        suggestion.place_formatted
-                            ? `
-                                <span class="address-suggestion-secondary">
-                                    ${escapeHtml(
-                                        suggestion.place_formatted
-                                    )}
-                                </span>
-                            `
-                            : ""
-                    }
-                `;
-
-
-                button.addEventListener(
-                    "click",
-                    () => {
-
-                        selectAddress(
-                            suggestion
-                        );
-
-                    }
-                );
-
-
-                suggestionsContainer.appendChild(
-                    button
-                );
-            }
-        );
-
-
-        showElement(
-            suggestionsContainer
-        );
-
-
-        setServiceStatus(
-            "Select your address from the list.",
-            "checking"
-        );
-    }
-
-
-    /* =========================================================
-       SELECT ADDRESS
-    ========================================================= */
-
-    async function selectAddress(
-        suggestion
-    ) {
+        // ========================================
+        // MAPBOX TOKEN CHECK
+        // ========================================
 
         if (
-            !suggestion?.mapbox_id
+            !MAPBOX_PUBLIC_TOKEN ||
+            MAPBOX_PUBLIC_TOKEN ===
+                "YOUR_EXISTING_PUBLIC_MAPBOX_TOKEN"
         ) {
-            return;
+
+            console.error(
+                "BrightSide Booking: Add your existing public Mapbox token to booking.js."
+            );
+
         }
 
 
-        hideElement(
-            suggestionsContainer
-        );
+        // ========================================
+        // SESSION TOKEN
+        // ========================================
 
-
-        addressInput.value =
-            suggestion.full_address ||
-            suggestion.place_formatted ||
-            suggestion.name ||
-            "";
-
-
-        setServiceStatus(
-            "Checking your service area...",
-            "checking"
-        );
-
-
-        try {
-
-            const data =
-                await retrieveAddress(
-                    suggestion.mapbox_id
-                );
-
-
-            const feature =
-                data?.features?.[0];
-
-
-            if (!feature) {
-
-                throw new Error(
-                    "No address was returned."
-                );
-            }
-
-
-            const coordinates =
-                feature.geometry?.coordinates;
-
+        function createSessionToken() {
 
             if (
-                !coordinates ||
-                coordinates.length < 2
+                window.crypto &&
+                typeof window.crypto.randomUUID ===
+                    "function"
             ) {
 
-                throw new Error(
-                    "No address coordinates returned."
-                );
+                return window.crypto.randomUUID();
+
             }
 
 
-            const longitude =
-                Number(
-                    coordinates[0]
+            return (
+                "bs-" +
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 12)
+            );
+
+        }
+
+
+        sessionToken =
+            createSessionToken();
+
+
+        // ========================================
+        // MAP INITIALIZATION
+        // ========================================
+
+        function initializeMap() {
+
+            if (
+                typeof mapboxgl ===
+                "undefined"
+            ) {
+
+                console.error(
+                    "BrightSide Booking: Mapbox GL JS is not loaded."
                 );
 
+                return;
 
-            const latitude =
-                Number(
-                    coordinates[1]
+            }
+
+
+            if (!mapContainer) {
+
+                console.error(
+                    "BrightSide Booking: Map container was not found."
                 );
 
+                return;
 
-            selectedCoordinates = {
-                longitude,
-                latitude
-            };
+            }
 
 
-            selectedAddress =
-                feature.properties?.full_address ||
-
-                feature.properties?.place_formatted ||
-
-                feature.properties?.name ||
-
-                addressInput.value;
+            mapboxgl.accessToken =
+                MAPBOX_PUBLIC_TOKEN;
 
 
-            addressInput.value =
-                selectedAddress;
+            map =
+                new mapboxgl.Map({
+
+                    container:
+                        mapContainer,
+
+                    style:
+                        "mapbox://styles/mapbox/streets-v12",
+
+                    center: [
+                        SERVICE_LNG,
+                        SERVICE_LAT
+                    ],
+
+                    zoom: 9.7
+
+                });
+
+
+            map.addControl(
+                new mapboxgl.NavigationControl(),
+                "top-right"
+            );
+
+
+            map.on(
+                "load",
+                () => {
+
+                    drawServiceArea();
+
+                    addServiceCenterMarker();
+
+                }
+            );
+
+
+            map.on(
+                "error",
+                event => {
+
+                    console.error(
+                        "BrightSide Booking: Mapbox map error.",
+                        event
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ========================================
+        // DRAW SERVICE AREA
+        // ========================================
+
+        function drawServiceArea() {
+
+            if (!map) {
+                return;
+            }
 
 
             /*
-                Calculate the distance immediately.
-            */
-            selectedDistance =
-                calculateDistanceMiles(
-                    SERVICE_CENTER.latitude,
-                    SERVICE_CENTER.longitude,
+             * Approximate 20-mile circle.
+             *
+             * The actual eligibility calculation
+             * below uses the Haversine formula.
+             */
 
+            const coordinates = [];
+
+            const earthRadiusMiles =
+                3958.8;
+
+
+            const radiusRadians =
+                SERVICE_RADIUS_MILES /
+                earthRadiusMiles;
+
+
+            for (
+                let i = 0;
+                i <= 128;
+                i++
+            ) {
+
+                const angle =
+                    (
+                        i / 128
+                    ) *
+                    Math.PI *
+                    2;
+
+
+                const latitude =
+                    Math.asin(
+                        Math.sin(
+                            SERVICE_LAT *
+                            Math.PI /
+                            180
+                        ) *
+                        Math.cos(
+                            radiusRadians
+                        ) +
+                        Math.cos(
+                            SERVICE_LAT *
+                            Math.PI /
+                            180
+                        ) *
+                        Math.sin(
+                            radiusRadians
+                        ) *
+                        Math.cos(
+                            angle
+                        )
+                    ) *
+                    180 /
+                    Math.PI;
+
+
+                const longitude =
+                    SERVICE_LNG +
+                    (
+                        Math.atan2(
+                            Math.sin(
+                                angle
+                            ) *
+                            Math.sin(
+                                radiusRadians
+                            ) *
+                            Math.cos(
+                                SERVICE_LAT *
+                                Math.PI /
+                                180
+                            ),
+                            Math.cos(
+                                radiusRadians
+                            ) -
+                            Math.sin(
+                                SERVICE_LAT *
+                                Math.PI /
+                                180
+                            ) *
+                            Math.sin(
+                                latitude *
+                                Math.PI /
+                                180
+                            )
+                        ) *
+                        180 /
+                        Math.PI
+                    );
+
+
+                coordinates.push(
+                    [
+                        longitude,
+                        latitude
+                    ]
+                );
+
+            }
+
+
+            const serviceAreaData = {
+
+                type:
+                    "Feature",
+
+                geometry: {
+
+                    type:
+                        "Polygon",
+
+                    coordinates: [
+                        coordinates
+                    ]
+
+                },
+
+                properties: {}
+
+            };
+
+
+            if (
+                map.getSource(
+                    "brightside-service-area"
+                )
+            ) {
+
+                map.getSource(
+                    "brightside-service-area"
+                ).setData(
+                    serviceAreaData
+                );
+
+                return;
+
+            }
+
+
+            map.addSource(
+                "brightside-service-area",
+                {
+
+                    type:
+                        "geojson",
+
+                    data:
+                        serviceAreaData
+
+                }
+            );
+
+
+            map.addLayer({
+
+                id:
+                    "brightside-service-area-fill",
+
+                type:
+                    "fill",
+
+                source:
+                    "brightside-service-area",
+
+                paint: {
+
+                    "fill-color":
+                        "#1769aa",
+
+                    "fill-opacity":
+                        0.08
+
+                }
+
+            });
+
+
+            map.addLayer({
+
+                id:
+                    "brightside-service-area-outline",
+
+                type:
+                    "line",
+
+                source:
+                    "brightside-service-area",
+
+                paint: {
+
+                    "line-color":
+                        "#1769aa",
+
+                    "line-width":
+                        2,
+
+                    "line-opacity":
+                        0.65
+
+                }
+
+            });
+
+        }
+
+
+        // ========================================
+        // SERVICE CENTER MARKER
+        // ========================================
+
+        function addServiceCenterMarker() {
+
+            if (!map) {
+                return;
+            }
+
+
+            const markerElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            markerElement.style.width =
+                "18px";
+
+
+            markerElement.style.height =
+                "18px";
+
+
+            markerElement.style.borderRadius =
+                "50%";
+
+
+            markerElement.style.background =
+                "#1769aa";
+
+
+            markerElement.style.border =
+                "3px solid white";
+
+
+            markerElement.style.boxShadow =
+                "0 2px 8px rgba(0,0,0,0.25)";
+
+
+            new mapboxgl.Marker(
+                markerElement
+            )
+                .setLngLat([
+                    SERVICE_LNG,
+                    SERVICE_LAT
+                ])
+                .addTo(map);
+
+        }
+
+
+        // ========================================
+        // MAPBOX SEARCH
+        // ========================================
+
+        async function searchAddresses(
+            query
+        ) {
+
+            const cleanQuery =
+                query.trim();
+
+
+            if (
+                cleanQuery.length <
+                3
+            ) {
+
+                hideSuggestions();
+
+                return;
+
+            }
+
+
+            if (
+                !MAPBOX_PUBLIC_TOKEN ||
+                MAPBOX_PUBLIC_TOKEN ===
+                    "YOUR_EXISTING_PUBLIC_MAPBOX_TOKEN"
+            ) {
+
+                console.error(
+                    "BrightSide Booking: Mapbox token is missing."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Search Box API endpoint.
+             *
+             * We explicitly request addresses
+             * and places around Houston.
+             */
+
+            const endpoint =
+                "https://api.mapbox.com/search/searchbox/v1/suggest" +
+                "?q=" +
+                encodeURIComponent(
+                    cleanQuery
+                ) +
+                "&types=address" +
+                "&country=US" +
+                "&language=en" +
+                "&limit=6" +
+                "&session_token=" +
+                encodeURIComponent(
+                    sessionToken
+                ) +
+                "&access_token=" +
+                encodeURIComponent(
+                    MAPBOX_PUBLIC_TOKEN
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        endpoint
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Mapbox request failed with status " +
+                        response.status
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                const suggestions =
+                    Array.isArray(
+                        data.suggestions
+                    )
+                        ? data.suggestions
+                        : [];
+
+
+                /*
+                 * Mapbox can sometimes return no
+                 * address suggestions if the query
+                 * is too short or too broad.
+                 */
+
+                if (
+                    suggestions.length ===
+                    0
+                ) {
+
+                    hideSuggestions();
+
+                    return;
+
+                }
+
+
+                showSuggestions(
+                    suggestions
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "BrightSide Booking: Address search failed.",
+                    error
+                );
+
+
+                hideSuggestions();
+
+            }
+
+        }
+
+
+        // ========================================
+        // SHOW ADDRESS SUGGESTIONS
+        // ========================================
+
+        function showSuggestions(
+            suggestions
+        ) {
+
+            suggestionsContainer.innerHTML =
+                "";
+
+
+            suggestions.forEach(
+                suggestion => {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.type =
+                        "button";
+
+
+                    button.className =
+                        "bs-address-suggestion";
+
+
+                    /*
+                     * Search Box API generally uses
+                     * name + place_formatted.
+                     *
+                     * We also support address/
+                     * full_address as fallbacks.
+                     */
+
+                    const mainText =
+                        suggestion.name ||
+                        suggestion.address ||
+                        "Address";
+
+
+                    const secondaryText =
+                        suggestion.place_formatted ||
+                        suggestion.full_address ||
+                        "";
+
+
+                    const main =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    main.className =
+                        "bs-suggestion-main";
+
+
+                    main.textContent =
+                        mainText;
+
+
+                    const secondary =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    secondary.className =
+                        "bs-suggestion-secondary";
+
+
+                    secondary.textContent =
+                        secondaryText;
+
+
+                    button.appendChild(
+                        main
+                    );
+
+
+                    if (
+                        secondaryText
+                    ) {
+
+                        button.appendChild(
+                            secondary
+                        );
+
+                    }
+
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            retrieveAddress(
+                                suggestion
+                            );
+
+                        }
+                    );
+
+
+                    suggestionsContainer.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+
+            suggestionsContainer.classList.add(
+                "visible"
+            );
+
+        }
+
+
+        // ========================================
+        // RETRIEVE SELECTED ADDRESS
+        // ========================================
+
+        async function retrieveAddress(
+            suggestion
+        ) {
+
+            hideSuggestions();
+
+
+            const mapboxId =
+                suggestion.mapbox_id;
+
+
+            if (!mapboxId) {
+
+                console.error(
+                    "BrightSide Booking: Selected address did not contain a Mapbox ID.",
+                    suggestion
+                );
+
+                return;
+
+            }
+
+
+            const endpoint =
+                "https://api.mapbox.com/search/searchbox/v1/retrieve/" +
+                encodeURIComponent(
+                    mapboxId
+                ) +
+                "?session_token=" +
+                encodeURIComponent(
+                    sessionToken
+                ) +
+                "&access_token=" +
+                encodeURIComponent(
+                    MAPBOX_PUBLIC_TOKEN
+                );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        endpoint
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Mapbox retrieve request failed with status " +
+                        response.status
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                const feature =
+                    data &&
+                    Array.isArray(
+                        data.features
+                    )
+                        ? data.features[0]
+                        : null;
+
+
+                if (
+                    !feature ||
+                    !feature.geometry ||
+                    !Array.isArray(
+                        feature.geometry.coordinates
+                    )
+                ) {
+
+                    throw new Error(
+                        "Mapbox did not return valid coordinates."
+                    );
+
+                }
+
+
+                const coordinates =
+                    feature.geometry.coordinates;
+
+
+                const longitude =
+                    Number(
+                        coordinates[0]
+                    );
+
+
+                const latitude =
+                    Number(
+                        coordinates[1]
+                    );
+
+
+                if (
+                    !Number.isFinite(
+                        longitude
+                    ) ||
+                    !Number.isFinite(
+                        latitude
+                    )
+                ) {
+
+                    throw new Error(
+                        "Mapbox returned invalid coordinates."
+                    );
+
+                }
+
+
+                const placeName =
+                    feature.properties &&
+                    (
+                        feature.properties.full_address ||
+                        feature.properties.name
+                    );
+
+
+                selectedAddress = {
+
+                    latitude:
+                        latitude,
+
+                    longitude:
+                        longitude,
+
+                    text:
+                        placeName ||
+                        suggestion.name ||
+                        addressInput.value
+
+                };
+
+
+                addressInput.value =
+                    selectedAddress.text;
+
+
+                updateMap(
+                    longitude,
+                    latitude
+                );
+
+
+                checkServiceArea(
                     latitude,
                     longitude
                 );
 
 
-            /*
-                Put customer on map.
-            */
-            showCustomerLocation(
-                longitude,
-                latitude
-            );
+                /*
+                 * A new session token should be
+                 * used after retrieving an address.
+                 */
+
+                sessionToken =
+                    createSessionToken();
+
+            } catch (error) {
+
+                console.error(
+                    "BrightSide Booking: Address retrieval failed.",
+                    error
+                );
 
 
-            fitMapToCustomerAndServiceCenter(
-                longitude,
-                latitude
-            );
+                setStatus(
+                    "error",
+                    "Address could not be verified",
+                    "Please select an address directly from the suggestions and try again."
+                );
 
+            }
 
-            /*
-                Move to the eligibility step.
-            */
-            evaluateEligibility(
-                selectedDistance
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "BrightSide Booking: Address retrieval failed.",
-                error
-            );
-
-
-            setServiceStatus(
-                "We couldn't verify that address. Please select the address from the suggestions.",
-                "error"
-            );
-        }
-    }
-
-
-    /* =========================================================
-       RETRIEVE ADDRESS
-    ========================================================= */
-
-    async function retrieveAddress(
-        mapboxId
-    ) {
-
-        const url =
-            "https://api.mapbox.com/search/searchbox/v1/retrieve/" +
-
-            encodeURIComponent(
-                mapboxId
-            ) +
-
-            "?session_token=" +
-
-            encodeURIComponent(
-                searchSessionToken
-            ) +
-
-            "&access_token=" +
-
-            encodeURIComponent(
-                MAPBOX_TOKEN
-            );
-
-
-        const response =
-            await fetch(url);
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `Mapbox retrieve failed: ${response.status}`
-            );
         }
 
 
-        const data =
-            await response.json();
+        // ========================================
+        // UPDATE MAP
+        // ========================================
+
+        function updateMap(
+            longitude,
+            latitude
+        ) {
+
+            if (!map) {
+                return;
+            }
 
 
-        searchSessionToken =
-            createSessionToken();
+            map.flyTo({
+
+                center: [
+                    longitude,
+                    latitude
+                ],
+
+                zoom: 13,
+
+                speed: 1.1,
+
+                essential: true
+
+            });
 
 
-        return data;
-    }
-
-
-    /* =========================================================
-       CUSTOMER MARKER
-    ========================================================= */
-
-    function showCustomerLocation(
-        longitude,
-        latitude
-    ) {
-
-        if (!map) {
-            return;
-        }
-
-
-        if (customerMarker) {
-            customerMarker.remove();
-        }
-
-
-        customerMarker =
-            new mapboxgl.Marker({
-                color: "#102033"
-            })
+            new mapboxgl.Marker()
                 .setLngLat([
                     longitude,
                     latitude
                 ])
-                .setPopup(
-                    new mapboxgl.Popup({
-                        offset: 25
-                    }).setHTML(
-                        `
-                            <strong>
-                                Your Location
-                            </strong>
-                        `
-                    )
-                )
                 .addTo(map);
-    }
 
-
-    /* =========================================================
-       FIT MAP TO CUSTOMER
-    ========================================================= */
-
-    function fitMapToCustomerAndServiceCenter(
-        longitude,
-        latitude
-    ) {
-
-        if (!map) {
-            return;
         }
 
 
-        const bounds =
-            new mapboxgl.LngLatBounds();
+        // ========================================
+        // HAVERSINE DISTANCE
+        // ========================================
+
+        function calculateDistanceMiles(
+            latitude1,
+            longitude1,
+            latitude2,
+            longitude2
+        ) {
+
+            const earthRadiusMiles =
+                3958.8;
 
 
-        bounds.extend([
-            SERVICE_CENTER.longitude,
-            SERVICE_CENTER.latitude
-        ]);
+            const lat1 =
+                latitude1 *
+                Math.PI /
+                180;
 
 
-        bounds.extend([
-            longitude,
-            latitude
-        ]);
+            const lat2 =
+                latitude2 *
+                Math.PI /
+                180;
 
 
-        map.fitBounds(
-            bounds,
-            {
-                padding: 70,
-                duration: 700,
-                maxZoom: 12
+            const deltaLat =
+                (
+                    latitude2 -
+                    latitude1
+                ) *
+                Math.PI /
+                180;
+
+
+            const deltaLng =
+                (
+                    longitude2 -
+                    longitude1
+                ) *
+                Math.PI /
+                180;
+
+
+            const a =
+                Math.sin(
+                    deltaLat / 2
+                ) ** 2 +
+                Math.cos(
+                    lat1
+                ) *
+                Math.cos(
+                    lat2
+                ) *
+                Math.sin(
+                    deltaLng / 2
+                ) ** 2;
+
+
+            const c =
+                2 *
+                Math.atan2(
+                    Math.sqrt(a),
+                    Math.sqrt(
+                        1 - a
+                    )
+                );
+
+
+            return (
+                earthRadiusMiles *
+                c
+            );
+
+        }
+
+
+        // ========================================
+        // CHECK SERVICE AREA
+        // ========================================
+
+        function checkServiceArea(
+            latitude,
+            longitude
+        ) {
+
+            const distance =
+                calculateDistanceMiles(
+                    SERVICE_LAT,
+                    SERVICE_LNG,
+                    latitude,
+                    longitude
+                );
+
+
+            const eligible =
+                distance <=
+                SERVICE_RADIUS_MILES;
+
+
+            if (
+                serviceAreaStatus
+            ) {
+
+                serviceAreaStatus.value =
+                    eligible
+                        ? "eligible"
+                        : "outside";
+
             }
-        );
-    }
 
 
-    /* =========================================================
-       ELIGIBILITY
-    ========================================================= */
+            if (
+                distanceInformation
+            ) {
 
-    function evaluateEligibility(
-        distanceMiles
-    ) {
+                distanceInformation.hidden =
+                    false;
 
-        const distance =
-            distanceMiles.toFixed(1);
+            }
 
 
-        /*
-            ================================================
-            ELIGIBLE
-            ================================================
-        */
+            if (
+                distanceFromAlief
+            ) {
 
-        if (
-            distanceMiles <=
-            SERVICE_RADIUS_MILES
+                distanceFromAlief.textContent =
+                    distance.toFixed(
+                        1
+                    ) +
+                    " miles";
+
+            }
+
+
+            if (eligible) {
+
+                setStatus(
+                    "eligible",
+                    "You're in our service area",
+                    "Great! Your address is within approximately 20 miles of our service area."
+                );
+
+
+                revealPricing();
+
+            } else {
+
+                setStatus(
+                    "outside",
+                    "Outside our current service area",
+                    "We're currently serving locations within approximately 20 miles of the Alief Neighborhood Center."
+                );
+
+
+                hidePricing();
+
+                hideCalBooking();
+
+            }
+
+
+            return eligible;
+
+        }
+
+
+        // ========================================
+        // STATUS DISPLAY
+        // ========================================
+
+        function setStatus(
+            type,
+            title,
+            message
         ) {
 
-            setServiceStatus(
-                `
-                    <div class="service-status-content">
+            if (!serviceStatus) {
+                return;
+            }
 
-                        <strong>
-                            You're in our service area.
-                        </strong>
 
-                        <span>
-                            Your address is approximately
-                            ${distance} miles from our
-                            service center.
-                        </span>
-
-                    </div>
-                `,
-                "eligible"
+            serviceStatus.classList.remove(
+                "eligible",
+                "outside",
+                "error"
             );
 
 
-            /*
-                SHOW THE NEXT STEP.
+            if (type) {
 
-                This is the important fix.
+                serviceStatus.classList.add(
+                    type
+                );
 
-                We explicitly remove:
-                - hidden attribute
-                - display:none
-                - visibility:hidden
-                - max-height restrictions
-            */
-            revealServiceSelection();
+            }
 
 
-            /*
-                Make sure Cal.com is still hidden until
-                the customer actually chooses a service.
-            */
-            hideElement(
-                calBooking
-            );
+            const icon =
+                serviceStatus.querySelector(
+                    ".bs-status-icon"
+                );
 
 
-            /*
-                Scroll to the service selection.
-            */
-            scrollToServiceSelection();
+            const content =
+                serviceStatus.querySelector(
+                    ".bs-status-content"
+                );
 
+
+            if (icon) {
+
+                if (
+                    type ===
+                    "eligible"
+                ) {
+
+                    icon.textContent =
+                        "✓";
+
+                } else if (
+                    type ===
+                    "outside"
+                ) {
+
+                    icon.textContent =
+                        "!";
+
+                } else if (
+                    type ===
+                    "error"
+                ) {
+
+                    icon.textContent =
+                        "!";
+
+                } else {
+
+                    icon.textContent =
+                        "?";
+
+                }
+
+            }
+
+
+            if (content) {
+
+                content.innerHTML =
+                    "";
+
+
+                const strong =
+                    document.createElement(
+                        "strong"
+                    );
+
+
+                strong.textContent =
+                    title;
+
+
+                const paragraph =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                paragraph.textContent =
+                    message;
+
+
+                content.appendChild(
+                    strong
+                );
+
+
+                content.appendChild(
+                    paragraph
+                );
+
+            }
 
         }
 
-        /*
-            ================================================
-            NOT ELIGIBLE
-            ================================================
-        */
 
-        else {
+        // ========================================
+        // REVEAL PRICING / STEP 2
+        // ========================================
 
-            setServiceStatus(
-                `
-                    <div class="service-status-content">
+        function revealPricing() {
 
-                        <strong>
-                            Sorry, you're outside our service area.
-                        </strong>
+            if (!pricingSection) {
 
-                        <span>
-                            Your address is approximately
-                            ${distance} miles from our
-                            service center.
-                        </span>
+                console.error(
+                    "BrightSide Booking: #pricing-section was not found."
+                );
 
-                        <span>
-                            BrightSide currently serves
-                            locations within approximately
-                            ${SERVICE_RADIUS_MILES} miles.
-                        </span>
+                return;
 
-                    </div>
-                `,
-                "ineligible"
-            );
+            }
 
 
-            hideElement(
-                pricingSection
-            );
+            pricingSection.hidden =
+                false;
 
 
-            hideElement(
-                calBooking
-            );
-
-
-            hideElement(
-                availabilityContainer
-            );
-        }
-    }
-
-
-    /* =========================================================
-       REVEAL SERVICE SELECTION
-    ========================================================= */
-
-    function revealServiceSelection() {
-
-        if (!pricingSection) {
-
-            console.error(
-                "BrightSide Booking: Could not find the service-selection/pricing section."
-            );
-
-            return;
-        }
-
-
-        /*
-            Remove all common hiding mechanisms.
-        */
-        pricingSection.hidden =
-            false;
-
-
-        pricingSection.removeAttribute(
-            "hidden"
-        );
-
-
-        pricingSection.removeAttribute(
-            "aria-hidden"
-        );
-
-
-        pricingSection.classList.remove(
-            "hidden"
-        );
-
-
-        pricingSection.classList.remove(
-            "is-hidden"
-        );
-
-
-        /*
-            If previous JavaScript added display:none,
-            clear it.
-        */
-        if (
-            pricingSection.style.display ===
-            "none"
-        ) {
+            /*
+             * Make sure Step 2 is actually
+             * visible after eligibility.
+             */
 
             pricingSection.style.display =
                 "";
+
+
+            /*
+             * Only scroll automatically if
+             * the pricing section is below
+             * the current viewport.
+             */
+
+            setTimeout(
+                () => {
+
+                    pricingSection.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                },
+                150
+            );
+
         }
 
 
-        /*
-            Reveal availability if it exists.
-        */
-        if (availabilityContainer) {
+        function hidePricing() {
 
-            availabilityContainer.hidden =
-                false;
-
-            availabilityContainer.removeAttribute(
-                "hidden"
-            );
-        }
-
-
-        /*
-            Force the section to be visible even if the
-            existing stylesheet uses a visibility rule.
-        */
-        pricingSection.style.visibility =
-            "visible";
-
-
-        pricingSection.style.opacity =
-            "1";
-
-
-        /*
-            Ensure the service cards themselves are visible.
-        */
-        const cards =
-            pricingSection.querySelectorAll(
-                "article, " +
-                ".bs-price-card, " +
-                ".bs-maintenance-card, " +
-                ".pricing-card"
-            );
-
-
-        cards.forEach(
-            (card) => {
-
-                card.hidden =
-                    false;
-
-                card.removeAttribute(
-                    "hidden"
-                );
-
-                card.removeAttribute(
-                    "aria-hidden"
-                );
-
-                card.classList.remove(
-                    "hidden"
-                );
-
-                card.classList.remove(
-                    "is-hidden"
-                );
+            if (!pricingSection) {
+                return;
             }
-        );
-    }
 
 
-    /* =========================================================
-       SCROLL TO SERVICE SELECTION
-    ========================================================= */
+            pricingSection.hidden =
+                true;
 
-    function scrollToServiceSelection() {
-
-        if (!pricingSection) {
-            return;
         }
 
 
-        setTimeout(
-            () => {
+        // ========================================
+        // SERVICE CARD SELECTION
+        // ========================================
 
-                pricingSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+        /*
+         * Event delegation is intentional here.
+         *
+         * Instead of relying on a NodeList that
+         * might be created before the pricing
+         * section is revealed, we listen on the
+         * document and detect the actual card
+         * that was clicked.
+         */
 
-            },
-            300
-        );
-    }
-
-
-    /* =========================================================
-       SERVICE CARD CLICK
-    ========================================================= */
-
-    if (pricingSection) {
-
-        pricingSection.addEventListener(
+        document.addEventListener(
             "click",
-            (event) => {
+            event => {
 
-                const card =
+                const serviceCard =
                     event.target.closest(
-                        "article, " +
-                        ".bs-price-card, " +
-                        ".bs-maintenance-card, " +
-                        ".pricing-card"
+                        "[data-service]"
                     );
 
 
-                if (
-                    !card ||
-                    !pricingSection.contains(card)
-                ) {
+                if (!serviceCard) {
                     return;
                 }
 
 
-                handleServiceSelection(
-                    card
+                if (
+                    !pricingSection ||
+                    !pricingSection.contains(
+                        serviceCard
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                const service =
+                    serviceCard.getAttribute(
+                        "data-service"
+                    );
+
+
+                if (
+                    !CAL_BOOKING_LINKS[
+                        service
+                    ]
+                ) {
+
+                    console.error(
+                        "BrightSide Booking: No Cal.com link exists for service:",
+                        service
+                    );
+
+                    return;
+
+                }
+
+
+                selectService(
+                    service,
+                    serviceCard
                 );
+
             }
         );
 
 
-        pricingSection.addEventListener(
+        // ========================================
+        // KEYBOARD SERVICE SELECTION
+        // ========================================
+
+        document.addEventListener(
             "keydown",
-            (event) => {
+            event => {
 
                 if (
-                    event.key !== "Enter" &&
-                    event.key !== " "
+                    event.key !==
+                        "Enter" &&
+                    event.key !==
+                        " "
                 ) {
+
+                    return;
+
+                }
+
+
+                const serviceCard =
+                    event.target.closest(
+                        "[data-service]"
+                    );
+
+
+                if (!serviceCard) {
                     return;
                 }
 
 
-                const card =
-                    event.target.closest(
-                        "article, " +
-                        ".bs-price-card, " +
-                        ".bs-maintenance-card, " +
-                        ".pricing-card"
-                    );
-
-
                 if (
-                    !card ||
-                    !pricingSection.contains(card)
+                    !pricingSection ||
+                    !pricingSection.contains(
+                        serviceCard
+                    )
                 ) {
+
                     return;
+
                 }
 
 
                 event.preventDefault();
 
 
-                handleServiceSelection(
-                    card
-                );
-            }
-        );
-    }
-
-
-    /* =========================================================
-       DETERMINE SERVICE
-    ========================================================= */
-
-    function handleServiceSelection(
-        card
-    ) {
-
-        const text =
-            card.textContent
-                .toLowerCase()
-                .replace(
-                    /\s+/g,
-                    " "
-                )
-                .trim();
-
-
-        let calLink = null;
-
-        let serviceName = null;
-
-
-        /*
-            Full Detail first.
-        */
-        if (
-            text.includes(
-                "full detail"
-            )
-        ) {
-
-            calLink =
-                CAL_BOOKING_LINKS.fullDetail;
-
-            serviceName =
-                "Full Detail";
-        }
-
-
-        /*
-            Maintenance.
-        */
-        else if (
-            text.includes(
-                "maintenance"
-            )
-        ) {
-
-            calLink =
-                CAL_BOOKING_LINKS.maintenance;
-
-            serviceName =
-                "Maintenance Detail";
-        }
-
-
-        /*
-            Exterior.
-        */
-        else if (
-            text.includes(
-                "exterior"
-            )
-        ) {
-
-            calLink =
-                CAL_BOOKING_LINKS.exterior;
-
-            serviceName =
-                "Exterior Detail";
-        }
-
-
-        /*
-            Interior.
-        */
-        else if (
-            text.includes(
-                "interior"
-            )
-        ) {
-
-            calLink =
-                CAL_BOOKING_LINKS.interior;
-
-            serviceName =
-                "Interior Detail";
-        }
-
-
-        if (
-            !calLink
-        ) {
-
-            return;
-        }
-
-
-        /*
-            Remove previous selected state.
-        */
-        pricingSection
-            .querySelectorAll(
-                "article, " +
-                ".bs-price-card, " +
-                ".bs-maintenance-card, " +
-                ".pricing-card"
-            )
-            .forEach(
-                (otherCard) => {
-
-                    otherCard.classList.remove(
-                        "is-selected"
+                const service =
+                    serviceCard.getAttribute(
+                        "data-service"
                     );
-                }
-            );
 
-
-        /*
-            Select this service.
-        */
-        card.classList.add(
-            "is-selected"
-        );
-
-
-        /*
-            Load the correct Cal.com booking.
-        */
-        loadCalBooking(
-            calLink,
-            serviceName
-        );
-    }
-
-
-    /* =========================================================
-       CAL.COM
-    ========================================================= */
-
-    function loadCalBooking(
-        calLink,
-        serviceName
-    ) {
-
-        if (!calBooking) {
-
-            console.error(
-                "BrightSide Booking: #cal-booking not found."
-            );
-
-            return;
-        }
-
-
-        if (
-            typeof window.Cal !==
-            "function"
-        ) {
-
-            console.error(
-                "BrightSide Booking: Cal.com embed script is not loaded."
-            );
-
-            return;
-        }
-
-
-        /*
-            Show Cal.com.
-        */
-        showElement(
-            calBooking
-        );
-
-
-        /*
-            Clear previous booking.
-        */
-        calBooking.innerHTML =
-            "";
-
-
-        /*
-            Load new booking.
-        */
-        window.Cal(
-            "inline",
-            {
-                elementOrSelector:
-                    "#cal-booking",
-
-                calLink:
-                    calLink,
-
-                config: {
-                    layout:
-                        "month_view",
-
-                    useSlotsViewOnSmallScreen:
-                        true
-                }
-            }
-        );
-
-
-        /*
-            Update heading if present.
-        */
-        const bookingHeading =
-            document.querySelector(
-                "#cal-booking-heading"
-            );
-
-
-        if (bookingHeading) {
-
-            bookingHeading.textContent =
-                `${serviceName} Booking`;
-        }
-
-
-        /*
-            Scroll to Cal.com.
-        */
-        setTimeout(
-            () => {
-
-                calBooking.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-
-            },
-            300
-        );
-    }
-
-
-    /* =========================================================
-       AVAILABILITY BUTTON
-    ========================================================= */
-
-    if (availabilityButton) {
-
-        availabilityButton.addEventListener(
-            "click",
-            () => {
 
                 if (
-                    selectedDistance ===
-                    null
+                    !CAL_BOOKING_LINKS[
+                        service
+                    ]
                 ) {
 
-                    setServiceStatus(
-                        "Please select your address first.",
-                        "error"
+                    return;
+
+                }
+
+
+                selectService(
+                    service,
+                    serviceCard
+                );
+
+            }
+        );
+
+
+        // ========================================
+        // SELECT SERVICE
+        // ========================================
+
+        function selectService(
+            service,
+            selectedCard
+        ) {
+
+            if (!isEligible()) {
+
+                return;
+
+            }
+
+
+            selectedService =
+                service;
+
+
+            /*
+             * Remove selected state from all
+             * service cards.
+             */
+
+            document
+                .querySelectorAll(
+                    "#pricing-section [data-service]"
+                )
+                .forEach(
+                    card => {
+
+                        card.classList.remove(
+                            "selected"
+                        );
+
+
+                        card.setAttribute(
+                            "aria-pressed",
+                            "false"
+                        );
+
+                    }
+                );
+
+
+            /*
+             * Highlight the selected card.
+             */
+
+            if (selectedCard) {
+
+                selectedCard.classList.add(
+                    "selected"
+                );
+
+
+                selectedCard.setAttribute(
+                    "aria-pressed",
+                    "true"
+                );
+
+            }
+
+
+            renderCalBooking();
+
+        }
+
+
+        // ========================================
+        // ELIGIBILITY STATE
+        // ========================================
+
+        function isEligible() {
+
+            return (
+                serviceAreaStatus &&
+                serviceAreaStatus.value ===
+                    "eligible"
+            );
+
+        }
+
+
+        // ========================================
+        // CAL.COM BOOKING
+        // ========================================
+
+        function renderCalBooking() {
+
+            if (
+                !calBookingSection ||
+                !calBooking
+            ) {
+
+                console.error(
+                    "BrightSide Booking: Cal.com booking container was not found."
+                );
+
+                return;
+
+            }
+
+
+            if (!selectedService) {
+                return;
+            }
+
+
+            const bookingLink =
+                CAL_BOOKING_LINKS[
+                    selectedService
+                ];
+
+
+            if (!bookingLink) {
+                return;
+            }
+
+
+            /*
+             * Clear the previous Cal.com
+             * embed before loading another
+             * service.
+             */
+
+            calBooking.innerHTML =
+                "";
+
+
+            /*
+             * Update Step 3 heading.
+             */
+
+            const serviceNames = {
+
+                exterior:
+                    "Exterior Detail",
+
+                interior:
+                    "Interior Detail",
+
+                full:
+                    "Full Detail",
+
+                maintenance:
+                    "Maintenance Detail"
+
+            };
+
+
+            const serviceName =
+                serviceNames[
+                    selectedService
+                ] ||
+                "Detail";
+
+
+            if (
+                calBookingTitle
+            ) {
+
+                calBookingTitle.textContent =
+                    "Book Your " +
+                    serviceName;
+
+            }
+
+
+            if (
+                calBookingDescription
+            ) {
+
+                calBookingDescription.textContent =
+                    "Complete your booking below. Choose your vehicle, add-ons, and available weekend appointment through Cal.com.";
+
+            }
+
+
+            /*
+             * Create the Cal.com embed
+             * container.
+             */
+
+            const embed =
+                document.createElement(
+                    "div"
+                );
+
+
+            embed.style.width =
+                "100%";
+
+
+            embed.style.minHeight =
+                "700px";
+
+
+            embed.setAttribute(
+                "data-cal-link",
+                bookingLink.replace(
+                    "https://cal.com/",
+                    ""
+                )
+            );
+
+
+            embed.setAttribute(
+                "data-cal-origin",
+                "https://cal.com"
+            );
+
+
+            embed.setAttribute(
+                "data-cal-config",
+                JSON.stringify({
+                    layout: "month_view"
+                })
+            );
+
+
+            calBooking.appendChild(
+                embed
+            );
+
+
+            /*
+             * Show Step 3.
+             */
+
+            calBookingSection.hidden =
+                false;
+
+
+            calBookingSection.style.display =
+                "";
+
+
+            /*
+             * Initialize Cal.com.
+             *
+             * The embed script is already loaded
+             * in booking.html. If it is ready,
+             * refresh the embed. Otherwise load
+             * it once.
+             */
+
+            initializeCalEmbed(
+                embed
+            );
+
+
+            setTimeout(
+                () => {
+
+                    calBookingSection.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                },
+                150
+            );
+
+        }
+
+
+        // ========================================
+        // INITIALIZE CAL.COM EMBED
+        // ========================================
+
+        function initializeCalEmbed(
+            embed
+        ) {
+
+            if (
+                typeof window.Cal ===
+                "function"
+            ) {
+
+                try {
+
+                    window.Cal(
+                        "inline",
+                        {
+                            elementOrSelector:
+                                embed,
+
+                            calLink:
+                                embed.getAttribute(
+                                    "data-cal-link"
+                                ),
+
+                            config:
+                                {
+                                    layout:
+                                        "month_view"
+                                }
+
+                        }
                     );
 
                     return;
+
+                } catch (error) {
+
+                    console.warn(
+                        "BrightSide Booking: Cal.com inline initialization failed. Retrying with embed reload.",
+                        error
+                    );
+
+                }
+
+            }
+
+
+            /*
+             * If Cal.com isn't ready yet, wait
+             * briefly and try again.
+             */
+
+            let attempts =
+                0;
+
+
+            const retry =
+                setInterval(
+                    () => {
+
+                        attempts++;
+
+
+                        if (
+                            typeof window.Cal ===
+                            "function"
+                        ) {
+
+                            clearInterval(
+                                retry
+                            );
+
+
+                            try {
+
+                                window.Cal(
+                                    "inline",
+                                    {
+
+                                        elementOrSelector:
+                                            embed,
+
+                                        calLink:
+                                            embed.getAttribute(
+                                                "data-cal-link"
+                                            ),
+
+                                        config:
+                                            {
+                                                layout:
+                                                    "month_view"
+                                            }
+
+                                    }
+                                );
+
+                            } catch (
+                                error
+                            ) {
+
+                                console.error(
+                                    "BrightSide Booking: Cal.com could not be initialized.",
+                                    error
+                                );
+
+                            }
+
+                        }
+
+
+                        if (
+                            attempts >=
+                            20
+                        ) {
+
+                            clearInterval(
+                                retry
+                            );
+
+
+                            console.error(
+                                "BrightSide Booking: Cal.com embed script was not ready."
+                            );
+
+                        }
+
+                    },
+                    250
+                );
+
+        }
+
+
+        // ========================================
+        // HIDE CAL.COM
+        // ========================================
+
+        function hideCalBooking() {
+
+            selectedService =
+                null;
+
+
+            if (
+                calBookingSection
+            ) {
+
+                calBookingSection.hidden =
+                    true;
+
+            }
+
+
+            if (
+                calBooking
+            ) {
+
+                calBooking.innerHTML =
+                    "";
+
+            }
+
+
+            document
+                .querySelectorAll(
+                    "#pricing-section [data-service]"
+                )
+                .forEach(
+                    card => {
+
+                        card.classList.remove(
+                            "selected"
+                        );
+
+
+                        card.setAttribute(
+                            "aria-pressed",
+                            "false"
+                        );
+
+                    }
+                );
+
+        }
+
+
+        // ========================================
+        // HIDE SUGGESTIONS
+        // ========================================
+
+        function hideSuggestions() {
+
+            suggestionsContainer.classList.remove(
+                "visible"
+            );
+
+
+            suggestionsContainer.innerHTML =
+                "";
+
+        }
+
+
+        // ========================================
+        // ADDRESS INPUT
+        // ========================================
+
+        let searchTimer =
+            null;
+
+
+        addressInput.addEventListener(
+            "input",
+            () => {
+
+                const value =
+                    addressInput.value.trim();
+
+
+                /*
+                 * Typing a new address invalidates
+                 * the previously selected address.
+                 */
+
+                selectedAddress =
+                    null;
+
+
+                if (
+                    serviceAreaStatus
+                ) {
+
+                    serviceAreaStatus.value =
+                        "unchecked";
+
                 }
 
 
-                evaluateEligibility(
-                    selectedDistance
+                hidePricing();
+
+                hideCalBooking();
+
+
+                setStatus(
+                    "",
+                    "Enter your address",
+                    "Select your address from the suggestions and we'll check your service eligibility."
                 );
+
+
+                clearTimeout(
+                    searchTimer
+                );
+
+
+                if (
+                    value.length <
+                    3
+                ) {
+
+                    hideSuggestions();
+
+                    return;
+
+                }
+
+
+                searchTimer =
+                    setTimeout(
+                        () => {
+
+                            searchAddresses(
+                                value
+                            );
+
+                        },
+                        300
+                    );
+
             }
         );
-    }
 
 
-    /* =========================================================
-       STATUS
-    ========================================================= */
+        // ========================================
+        // ADDRESS KEYBOARD HANDLING
+        // ========================================
 
-    function setServiceStatus(
-        message,
-        state
-    ) {
+        addressInput.addEventListener(
+            "keydown",
+            event => {
 
-        if (!serviceStatus) {
-            return;
-        }
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    hideSuggestions();
+
+                }
+
+            }
+        );
 
 
-        if (
-            !message ||
-            state === "hidden"
-        ) {
+        // ========================================
+        // CLICK OUTSIDE SUGGESTIONS
+        // ========================================
 
-            hideElement(
-                serviceStatus
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    !event.target.closest(
+                        ".bs-address-input-wrapper"
+                    )
+                ) {
+
+                    hideSuggestions();
+
+                }
+
+            }
+        );
+
+
+        // ========================================
+        // RESET LOCATION
+        // ========================================
+
+        function resetLocation() {
+
+            selectedAddress =
+                null;
+
+            selectedService =
+                null;
+
+
+            if (
+                serviceAreaStatus
+            ) {
+
+                serviceAreaStatus.value =
+                    "unchecked";
+
+            }
+
+
+            if (
+                distanceInformation
+            ) {
+
+                distanceInformation.hidden =
+                    true;
+
+            }
+
+
+            if (
+                distanceFromAlief
+            ) {
+
+                distanceFromAlief.textContent =
+                    "—";
+
+            }
+
+
+            if (
+                pricingSection
+            ) {
+
+                pricingSection.hidden =
+                    true;
+
+            }
+
+
+            if (
+                calBookingSection
+            ) {
+
+                calBookingSection.hidden =
+                    true;
+
+            }
+
+
+            if (
+                calBooking
+            ) {
+
+                calBooking.innerHTML =
+                    "";
+
+            }
+
+
+            setStatus(
+                "",
+                "Enter your address",
+                "Select your address from the suggestions and we'll check your service eligibility."
             );
 
-            serviceStatus.innerHTML =
-                "";
-
-            return;
         }
 
 
-        serviceStatus.className =
-            `service-status ${state}`;
+        // ========================================
+        // INITIALIZE
+        // ========================================
+
+        resetLocation();
 
 
-        serviceStatus.innerHTML =
-            message;
+        /*
+         * Start Mapbox after the DOM is ready.
+         */
+
+        initializeMap();
 
 
-        showElement(
-            serviceStatus
+        console.log(
+            "BrightSide Booking: initialized successfully."
         );
+
     }
-
-
-    /* =========================================================
-       VISIBILITY HELPERS
-    ========================================================= */
-
-    function showElement(
-        element
-    ) {
-
-        if (!element) {
-            return;
-        }
-
-
-        element.hidden =
-            false;
-
-
-        element.removeAttribute(
-            "hidden"
-        );
-
-
-        element.removeAttribute(
-            "aria-hidden"
-        );
-
-
-        element.classList.remove(
-            "hidden"
-        );
-
-
-        element.classList.remove(
-            "is-hidden"
-        );
-    }
-
-
-    function hideElement(
-        element
-    ) {
-
-        if (!element) {
-            return;
-        }
-
-
-        element.hidden =
-            true;
-    }
-
-
-    /* =========================================================
-       DISTANCE CALCULATION
-    ========================================================= */
-
-    function calculateDistanceMiles(
-        latitude1,
-        longitude1,
-        latitude2,
-        longitude2
-    ) {
-
-        const earthRadiusMiles =
-            3958.7613;
-
-
-        const latitude1Radians =
-            latitude1 *
-            Math.PI /
-            180;
-
-
-        const latitude2Radians =
-            latitude2 *
-            Math.PI /
-            180;
-
-
-        const deltaLatitude =
-            (
-                latitude2 -
-                latitude1
-            ) *
-            Math.PI /
-            180;
-
-
-        const deltaLongitude =
-            (
-                longitude2 -
-                longitude1
-            ) *
-            Math.PI /
-            180;
-
-
-        const a =
-            Math.sin(
-                deltaLatitude / 2
-            ) ** 2 +
-
-            Math.cos(
-                latitude1Radians
-            ) *
-
-            Math.cos(
-                latitude2Radians
-            ) *
-
-            Math.sin(
-                deltaLongitude / 2
-            ) ** 2;
-
-
-        const c =
-            2 *
-            Math.atan2(
-                Math.sqrt(a),
-                Math.sqrt(1 - a)
-            );
-
-
-        return (
-            earthRadiusMiles *
-            c
-        );
-    }
-
-
-    /* =========================================================
-       SESSION TOKEN
-    ========================================================= */
-
-    function createSessionToken() {
-
-        if (
-            window.crypto &&
-            typeof window.crypto.randomUUID ===
-            "function"
-        ) {
-
-            return window.crypto.randomUUID();
-        }
-
-
-        return (
-            Date.now().toString(36) +
-            Math.random()
-                .toString(36)
-                .substring(2)
-        );
-    }
-
-
-    /* =========================================================
-       ESCAPE HTML
-    ========================================================= */
-
-    function escapeHtml(
-        value
-    ) {
-
-        return String(value)
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-    }
-
-
-    /* =========================================================
-       INITIALIZATION COMPLETE
-    ========================================================= */
-
-    console.log(
-        "BrightSide Booking: initialized successfully."
-    );
-
-});
+);

@@ -11,7 +11,7 @@
     >
 
     <title>
-        Book Your Detail | BrightSide Houston Detailing
+        Book Your Detail | BrightSide Houston Mobile Detailing
     </title>
 
     <meta
@@ -158,6 +158,9 @@
 
     <!-- =========================================================
          BOOKING PAGE DESIGN
+         ---------------------------------------------------------
+         This styling is intentionally scoped to .bs-booking-page
+         so it does not interfere with the rest of the website.
          ========================================================= -->
 
     <style>
@@ -295,8 +298,6 @@
 
             gap: 30px;
 
-            position: relative;
-
         }
 
 
@@ -315,7 +316,7 @@
 
         .bs-booking-logo-main {
 
-            color: #1769aa;
+            color: var(--bs-text);
 
             font-family:
                 "Space Grotesk",
@@ -335,7 +336,7 @@
 
             margin-top: 5px;
 
-            color: #0b525f;
+            color: var(--bs-blue);
 
             font-size: 20px;
 
@@ -346,10 +347,6 @@
 
         }
 
-
-        /* =======================================================
-           DESKTOP NAVIGATION
-           ======================================================= */
 
         .bs-booking-nav {
 
@@ -393,13 +390,10 @@
                 10px;
 
             background:
-                #1769aa;
+                var(--bs-blue);
 
             color:
                 white;
-
-            white-space:
-                nowrap;
 
         }
 
@@ -412,215 +406,6 @@
 
             color:
                 white;
-
-        }
-
-
-        /* =======================================================
-           MOBILE MENU BUTTON
-           ======================================================= */
-
-        .bs-booking-menu-button {
-
-            display: none;
-
-            width: 46px;
-
-            height: 46px;
-
-            padding: 0;
-
-            border:
-                1px solid
-                var(--bs-border);
-
-            border-radius:
-                10px;
-
-            background:
-                white;
-
-            cursor: pointer;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-direction: column;
-
-            gap: 5px;
-
-            flex-shrink: 0;
-
-        }
-
-
-        .bs-booking-menu-button span {
-
-            display: block;
-
-            width: 22px;
-
-            height: 2px;
-
-            border-radius:
-                999px;
-
-            background:
-                var(--bs-text);
-
-            transition:
-                transform 0.2s ease,
-                opacity 0.2s ease;
-
-        }
-
-
-        /* =======================================================
-           MOBILE NAVIGATION
-           ======================================================= */
-
-        .bs-booking-mobile-menu {
-
-            display: none;
-
-            position: absolute;
-
-            top:
-                calc(100% + 8px);
-
-            left: 14px;
-
-            right: 14px;
-
-            z-index: 100;
-
-            flex-direction: column;
-
-            padding: 10px;
-
-            background:
-                white;
-
-            border:
-                1px solid
-                var(--bs-border);
-
-            border-radius:
-                16px;
-
-            box-shadow:
-                0 18px 45px
-                rgba(
-                    15,
-                    23,
-                    42,
-                    0.14
-                );
-
-        }
-
-
-        .bs-booking-mobile-menu.mobile-open {
-
-            display:
-                flex;
-
-        }
-
-
-        .bs-booking-mobile-menu a {
-
-            display: block;
-
-            padding:
-                13px 14px;
-
-            border-radius:
-                9px;
-
-            color:
-                #4b5563;
-
-            font-size:
-                15px;
-
-            font-weight:
-                600;
-
-        }
-
-
-        .bs-booking-mobile-menu a:hover {
-
-            background:
-                var(--bs-blue-soft);
-
-            color:
-                var(--bs-blue);
-
-        }
-
-
-        .bs-booking-mobile-menu
-        .bs-booking-mobile-button {
-
-            margin-top:
-                5px;
-
-            background:
-                var(--bs-blue);
-
-            color:
-                white;
-
-            text-align:
-                center;
-
-        }
-
-
-        .bs-booking-mobile-menu
-        .bs-booking-mobile-button:hover {
-
-            background:
-                var(--bs-blue-dark);
-
-            color:
-                white;
-
-        }
-
-
-        /* =======================================================
-           HAMBURGER ANIMATION
-           ======================================================= */
-
-        .bs-booking-menu-button.menu-open
-        span:nth-child(1) {
-
-            transform:
-                translateY(7px)
-                rotate(45deg);
-
-        }
-
-
-        .bs-booking-menu-button.menu-open
-        span:nth-child(2) {
-
-            opacity:
-                0;
-
-        }
-
-
-        .bs-booking-menu-button.menu-open
-        span:nth-child(3) {
-
-            transform:
-                translateY(-7px)
-                rotate(-45deg);
 
         }
 
@@ -705,7 +490,7 @@
                 0 0 18px;
 
             color:
-                #1769aa;
+                var(--bs-blue);
 
             font-size: 25px;
 
@@ -715,6 +500,7 @@
                 0.14em;
 
         }
+
 
 
         .bs-booking-hero h1 {
@@ -751,6 +537,9 @@
 
             margin:
                 22px 0 0;
+
+            color:
+                var(--bs-muted);
 
             font-size:
                 18px;
@@ -810,17 +599,14 @@
 
         .bs-step-label {
 
-            margin:
-                0 0 8px;
+            margin: 0 0 8px;
 
             color:
-                #1769aa;
+                var(--bs-blue);
 
-            font-size:
-                25px;
+            font-size: 25px;
 
-            font-weight:
-                700;
+            font-weight: 700;
 
             letter-spacing:
                 0.14em;
@@ -863,8 +649,10 @@
             max-width:
                 700px;
 
-            margin:
-                0;
+            margin: 0;
+
+            color:
+                var(--bs-muted);
 
             line-height:
                 1.65;
@@ -878,8 +666,7 @@
 
         .bs-address-label {
 
-            display:
-                block;
+            display: block;
 
             margin-bottom:
                 9px;
@@ -898,19 +685,16 @@
 
         .bs-address-input-wrapper {
 
-            position:
-                relative;
+            position: relative;
 
         }
 
 
         .bs-address-input {
 
-            width:
-                100%;
+            width: 100%;
 
-            min-height:
-                58px;
+            min-height: 58px;
 
             padding:
                 0 18px;
@@ -922,8 +706,7 @@
             border-radius:
                 12px;
 
-            outline:
-                none;
+            outline: none;
 
             background:
                 white;
@@ -972,23 +755,18 @@
 
         .bs-address-suggestions {
 
-            position:
-                absolute;
+            position: absolute;
 
             top:
                 calc(100% + 8px);
 
-            left:
-                0;
+            left: 0;
 
-            right:
-                0;
+            right: 0;
 
-            z-index:
-                30;
+            z-index: 30;
 
-            overflow:
-                hidden;
+            overflow: hidden;
 
             background:
                 white;
@@ -1009,33 +787,28 @@
                     0.14
                 );
 
-            display:
-                none;
+            display: none;
 
         }
 
 
         .bs-address-suggestions.visible {
 
-            display:
-                block;
+            display: block;
 
         }
 
 
         .bs-address-suggestion {
 
-            display:
-                block;
+            display: block;
 
-            width:
-                100%;
+            width: 100%;
 
             padding:
                 15px 17px;
 
-            border:
-                0;
+            border: 0;
 
             border-bottom:
                 1px solid
@@ -1044,11 +817,9 @@
             background:
                 white;
 
-            text-align:
-                left;
+            text-align: left;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
             transition:
                 background 0.15s ease;
@@ -1058,8 +829,7 @@
 
         .bs-address-suggestion:last-child {
 
-            border-bottom:
-                0;
+            border-bottom: 0;
 
         }
 
@@ -1074,8 +844,7 @@
 
         .bs-suggestion-main {
 
-            display:
-                block;
+            display: block;
 
             color:
                 var(--bs-text);
@@ -1091,8 +860,7 @@
 
         .bs-suggestion-secondary {
 
-            display:
-                block;
+            display: block;
 
             margin-top:
                 3px;
@@ -1112,14 +880,11 @@
 
         .bs-service-status {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                flex-start;
+            align-items: flex-start;
 
-            gap:
-                15px;
+            gap: 15px;
 
             margin-top:
                 20px;
@@ -1142,20 +907,15 @@
 
         .bs-status-icon {
 
-            width:
-                36px;
+            width: 36px;
 
-            height:
-                36px;
+            height: 36px;
 
-            display:
-                grid;
+            display: grid;
 
-            place-items:
-                center;
+            place-items: center;
 
-            flex-shrink:
-                0;
+            flex-shrink: 0;
 
             border-radius:
                 50%;
@@ -1177,8 +937,7 @@
 
         .bs-status-content strong {
 
-            display:
-                block;
+            display: block;
 
             color:
                 var(--bs-text);
@@ -1281,8 +1040,7 @@
 
         .bs-booking-map {
 
-            width:
-                100%;
+            width: 100%;
 
             height:
                 420px;
@@ -1290,8 +1048,7 @@
             margin-top:
                 20px;
 
-            overflow:
-                hidden;
+            overflow: hidden;
 
             border:
                 1px solid
@@ -1308,17 +1065,13 @@
 
         .bs-distance-information {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                20px;
+            gap: 20px;
 
             margin-top:
                 12px;
@@ -1386,25 +1139,10 @@
         }
 
 
-        /* STEP 2 CAPTION */
-
-        .bs-pricing-header .bs-booking-eyebrow {
-
-            color:
-                #000000;
-
-        }
-
-
-        /* STEP 2 MAIN HEADING */
-
         .bs-pricing-header h2 {
 
             margin:
                 0 0 12px;
-
-            color:
-                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -1423,10 +1161,10 @@
         }
 
 
-        .bs-pricing-header p:not(.bs-booking-eyebrow) {
+        .bs-pricing-header p {
+            font-size: larger;
 
-            margin:
-                0;
+            margin: 0;
 
             color:
                 var(--bs-muted);
@@ -1440,32 +1178,29 @@
         /* =======================================================
            PRICE GRID
            ======================================================= */
-.bs-price-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-}
-@media (max-width: 1100px) {
 
-    .bs-price-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+        .bs-price-grid {
 
-}
+            display: grid;
 
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
 
-@media (max-width: 760px) {
+            gap:
+                18px;
 
-    .bs-price-grid {
-        grid-template-columns: 1fr;
-    }
+        }
 
-}
 
         .bs-price-card {
 
-            position:
-                relative;
+            position: relative;
 
             padding:
                 28px;
@@ -1487,154 +1222,6 @@
                     23,
                     42,
                     0.045
-                );
-
-            cursor:
-                pointer;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background-color 0.2s ease;
-
-        }
-
-
-        .bs-price-card:hover {
-
-            transform:
-                translateY(-4px);
-
-            border-color:
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.55
-                );
-
-            box-shadow:
-                0 14px 35px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.12
-                );
-
-        }
-
-
-        .bs-price-card.selected {
-
-            border:
-                2px solid
-                #1769aa;
-
-            background:
-                #f4f9fd;
-
-            box-shadow:
-                0 14px 35px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.16
-                );
-
-            transform:
-                translateY(-3px);
-
-        }
-
-
-        .bs-price-card.selected:hover {
-
-            border-color:
-                #1769aa;
-
-            box-shadow:
-                0 16px 40px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.18
-                );
-
-        }
-
-
-        .bs-price-card:focus-visible {
-
-            outline:
-                3px solid
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.25
-                );
-
-            outline-offset:
-                3px;
-
-        }
-
-
-        .bs-price-card.selected::after {
-
-            content:
-                "✓";
-
-            position:
-                absolute;
-
-            top:
-                16px;
-
-            right:
-                16px;
-
-            width:
-                30px;
-
-            height:
-                30px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                50%;
-
-            background:
-                #1769aa;
-
-            color:
-                white;
-
-            font-size:
-                16px;
-
-            font-weight:
-                700;
-
-            box-shadow:
-                0 4px 12px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.20
                 );
 
         }
@@ -1698,17 +1285,13 @@
 
         .bs-price-row {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                15px;
+            gap: 15px;
 
             padding:
                 13px 0;
@@ -1760,19 +1343,16 @@
             margin:
                 23px 0 0;
 
-            padding:
-                0;
+            padding: 0;
 
-            list-style:
-                none;
+            list-style: none;
 
         }
 
 
         .bs-feature-list li {
 
-            position:
-                relative;
+            position: relative;
 
             padding-left:
                 21px;
@@ -1794,14 +1374,11 @@
             content:
                 "✓";
 
-            position:
-                absolute;
+            position: absolute;
 
-            left:
-                0;
+            left: 0;
 
-            top:
-                0;
+            top: 0;
 
             color:
                 var(--bs-blue);
@@ -1818,17 +1395,13 @@
 
         .bs-maintenance-card {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                30px;
+            gap: 30px;
 
             margin-top:
                 20px;
@@ -1845,134 +1418,6 @@
 
             background:
                 white;
-
-            cursor:
-                pointer;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background-color 0.2s ease;
-
-        }
-
-
-        .bs-maintenance-card:hover {
-
-            transform:
-                translateY(-3px);
-
-            border-color:
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.55
-                );
-
-            background:
-                #f4f9fd;
-
-            box-shadow:
-                0 12px 30px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.10
-                );
-
-        }
-
-
-        .bs-maintenance-card.selected {
-
-            border:
-                2px solid
-                #1769aa;
-
-            background:
-                #f4f9fd;
-
-            box-shadow:
-                0 14px 35px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.16
-                );
-
-            transform:
-                translateY(-3px);
-
-        }
-
-
-        .bs-maintenance-card:focus-visible {
-
-            outline:
-                3px solid
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.25
-                );
-
-            outline-offset:
-                3px;
-
-        }
-
-
-        .bs-maintenance-card.selected::after {
-
-            content:
-                "✓";
-
-            width:
-                30px;
-
-            height:
-                30px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            flex-shrink:
-                0;
-
-            border-radius:
-                50%;
-
-            background:
-                #1769aa;
-
-            color:
-                white;
-
-            font-size:
-                16px;
-
-            font-weight:
-                700;
-
-            box-shadow:
-                0 4px 12px
-                rgba(
-                    23,
-                    105,
-                    170,
-                    0.20
-                );
 
         }
 
@@ -1994,8 +1439,7 @@
 
         .bs-maintenance-card p {
 
-            margin:
-                0;
+            margin: 0;
 
             color:
                 var(--bs-muted);
@@ -2011,8 +1455,7 @@
 
         .bs-coming-soon {
 
-            flex-shrink:
-                0;
+            flex-shrink: 0;
 
             padding:
                 8px 12px;
@@ -2041,27 +1484,15 @@
         /* =======================================================
            ADD-ONS
            ======================================================= */
-
         .bs-price-card-label {
-
-            margin:
-                0 0 7px;
-
-            color:
-                var(--bs-blue);
-
-            font-size:
-                20px;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                0.14em;
-
+            margin: 0 0 7px;
+            color: var(--bs-blue);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
         }
 
-
+        
         .bs-addons-card {
 
             margin-top:
@@ -2100,8 +1531,7 @@
 
         .bs-addon-grid {
 
-            display:
-                grid;
+            display: grid;
 
             grid-template-columns:
                 repeat(
@@ -2120,17 +1550,13 @@
 
         .bs-addon {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                12px;
+            gap: 12px;
 
             min-height:
                 56px;
@@ -2175,8 +1601,7 @@
 
         .bs-addon small {
 
-            display:
-                block;
+            display: block;
 
             margin-top:
                 2px;
@@ -2217,8 +1642,7 @@
 
         .bs-pricing-note strong {
 
-            display:
-                block;
+            display: block;
 
             margin-bottom:
                 5px;
@@ -2231,8 +1655,7 @@
 
         .bs-pricing-note p {
 
-            margin:
-                0;
+            margin: 0;
 
             color:
                 var(--bs-muted);
@@ -2275,25 +1698,10 @@
         }
 
 
-        /* STEP 3 CAPTION */
-
-        .bs-cal-header .bs-booking-eyebrow {
-
-            color:
-                #000000;
-
-        }
-
-
-        /* STEP 3 MAIN HEADING */
-
         .bs-cal-header h2 {
 
             margin:
                 0 0 12px;
-
-            color:
-                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -2312,10 +1720,10 @@
         }
 
 
-        .bs-cal-header p:not(.bs-booking-eyebrow) {
-
-            margin:
-                0;
+        .bs-cal-header p {
+            font-size: larger;
+            
+            margin: 0;
 
             color:
                 var(--bs-muted);
@@ -2328,8 +1736,7 @@
 
         .bs-cal-wrapper {
 
-            overflow:
-                hidden;
+            overflow: hidden;
 
             min-height:
                 700px;
@@ -2361,8 +1768,7 @@
 
         .bs-cal-booking {
 
-            width:
-                100%;
+            width: 100%;
 
             min-height:
                 680px;
@@ -2371,18 +1777,14 @@
 
 
         .bs-cal-loading {
-
-            font-weight:
-                bold;
+            font-weight: bold;
 
             min-height:
                 650px;
 
-            display:
-                grid;
+            display: grid;
 
-            place-items:
-                center;
+            place-items: center;
 
             color:
                 var(--bs-muted);
@@ -2414,28 +1816,21 @@
 
         .bs-booking-footer-inner {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                20px;
+            gap: 20px;
 
         }
 
 
         .bs-booking-footer p {
+            font-weight: bold;
 
-            font-weight:
-                bold;
-
-            margin:
-                0;
+            margin: 0;
 
             color:
                 var(--bs-muted);
@@ -2462,63 +1857,53 @@
         /* =======================================================
            TABLET
            ======================================================= */
-@media (max-width: 1100px) {
 
-    .bs-price-grid {
+        @media (
+            max-width: 1100px
+        ) {
 
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            .bs-price-grid {
 
-    }
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
 
-}
+            }
 
-
-@media (max-width: 760px) {
-
-    .bs-price-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-}
+        }
 
 
-            /*
-               Hide the desktop navigation.
-            */
+        @media (
+            max-width: 900px
+        ) {
+
+            .bs-addon-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
 
             .bs-booking-nav {
 
+                gap:
+                    14px;
+
+            }
+
+
+            .bs-booking-nav a:not(
+                .bs-booking-nav-button
+            ) {
+
                 display:
                     none;
-
-            }
-
-
-            /*
-               Show the hamburger.
-            */
-
-            .bs-booking-menu-button {
-
-                display:
-                    flex;
-
-            }
-
-
-            /*
-               Show the mobile menu when JavaScript
-               adds the mobile-open class.
-            */
-
-            .bs-booking-mobile-menu.mobile-open {
-
-                display:
-                    flex;
 
             }
 
@@ -2533,11 +1918,19 @@
             max-width: 600px
         ) {
 
+            .bs-price-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
             .bs-booking-container {
 
                 width:
                     min(
-                        calc(100% - 28px),
+                        100% - 28px,
                         1180px
                     );
 
@@ -2552,34 +1945,10 @@
             }
 
 
-            .bs-booking-logo-main {
-
-                font-size:
-                    28px;
-
-            }
-
-
-            .bs-booking-logo-sub {
-
-                font-size:
-                    15px;
-
-            }
-
-
             .bs-booking-hero {
 
                 padding:
                     55px 0 45px;
-
-            }
-
-
-            .bs-booking-eyebrow {
-
-                font-size:
-                    17px;
 
             }
 
@@ -2697,20 +2066,6 @@
 
             }
 
-
-            .bs-maintenance-card.selected::after {
-
-                position:
-                    absolute;
-
-                top:
-                    16px;
-
-                right:
-                    16px;
-
-            }
-
         }
 
     </style>
@@ -2718,10 +2073,7 @@
 </head>
 
 
-<body
-    id="booking-page"
-    class="booking-page bs-booking-page"
->
+<body class="booking-page bs-booking-page">
 
 
     <!-- =========================================================
@@ -2733,8 +2085,6 @@
         <div
             class="bs-booking-container bs-booking-header-inner"
         >
-
-            <!-- LOGO -->
 
             <a
                 href="../index.html"
@@ -2753,7 +2103,7 @@
             </a>
 
 
-            <!-- =================================================
+                        <!-- =================================================
                  DESKTOP NAVIGATION
                  ================================================= -->
 
@@ -2783,7 +2133,7 @@
                 </a>
 
                 <a
-                    href="../booking/index.html"
+                    href="./booking.html"
                     class="bs-booking-nav-button"
                 >
                     Book Now
@@ -2804,11 +2154,9 @@
                 aria-controls="bookingMobileMenu"
                 aria-expanded="false"
             >
-
                 <span></span>
                 <span></span>
                 <span></span>
-
             </button>
 
 
@@ -2830,12 +2178,12 @@
                     Packages
                 </a>
 
-                <a href="../how-it-works/index.html">
-                    Referral Rewards
-                </a>
-
                 <a href="../results/index.html">
                     Results
+                </a>
+
+                <a href="../how-it-works/index.html">
+                    How It Works
                 </a>
 
                 <a href="../about/index.html">
@@ -3064,7 +2412,7 @@
                     </h2>
 
                     <p>
-                        Once your address is eligible, select and review
+                        Once your address is confirmed, review
                         our starting prices before continuing
                         to your appointment booking.
                     </p>
@@ -3082,13 +2430,7 @@
 
                     <!-- EXTERIOR -->
 
-                    <article
-                        class="bs-price-card"
-                        data-service="exterior"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Select Exterior Detail"
-                    >
+                    <article class="bs-price-card">
 
                         <p class="bs-price-card-label">
                             EXTERIOR
@@ -3102,7 +2444,6 @@
                         <div class="bs-price-list">
 
                             <div class="bs-price-row">
-
                                 <span>
                                     Sedan/Coupe
                                 </span>
@@ -3110,12 +2451,9 @@
                                 <strong>
                                     $75
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     SUV/Crossover
                                 </span>
@@ -3123,12 +2461,9 @@
                                 <strong>
                                     $85
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Truck
                                 </span>
@@ -3136,12 +2471,9 @@
                                 <strong>
                                     $90
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Large SUV/Van
                                 </span>
@@ -3149,7 +2481,6 @@
                                 <strong>
                                     $100
                                 </strong>
-
                             </div>
 
                         </div>
@@ -3189,13 +2520,7 @@
 
                     <!-- INTERIOR -->
 
-                    <article
-                        class="bs-price-card"
-                        data-service="interior"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Select Interior Detail"
-                    >
+                    <article class="bs-price-card">
 
                         <p class="bs-price-card-label">
                             INTERIOR
@@ -3209,7 +2534,6 @@
                         <div class="bs-price-list">
 
                             <div class="bs-price-row">
-
                                 <span>
                                     Sedan/Coupe
                                 </span>
@@ -3217,12 +2541,9 @@
                                 <strong>
                                     $100
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     SUV/Crossover
                                 </span>
@@ -3230,12 +2551,9 @@
                                 <strong>
                                     $115
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Truck
                                 </span>
@@ -3243,12 +2561,9 @@
                                 <strong>
                                     $125
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Large SUV/Van
                                 </span>
@@ -3256,7 +2571,6 @@
                                 <strong>
                                     $125
                                 </strong>
-
                             </div>
 
                         </div>
@@ -3306,10 +2620,6 @@
 
                     <article
                         class="bs-price-card featured"
-                        data-service="full"
-                        role="button"
-                        tabindex="0"
-                        aria-label="Select Full Detail"
                     >
 
                         <p class="bs-price-card-label">
@@ -3324,7 +2634,6 @@
                         <div class="bs-price-list">
 
                             <div class="bs-price-row">
-
                                 <span>
                                     Sedan/Coupe
                                 </span>
@@ -3332,12 +2641,9 @@
                                 <strong>
                                     $150
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     SUV/Crossover
                                 </span>
@@ -3345,12 +2651,9 @@
                                 <strong>
                                     $175
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Truck
                                 </span>
@@ -3358,12 +2661,9 @@
                                 <strong>
                                     $185
                                 </strong>
-
                             </div>
 
-
                             <div class="bs-price-row">
-
                                 <span>
                                     Large SUV/Van
                                 </span>
@@ -3371,7 +2671,6 @@
                                 <strong>
                                     $200
                                 </strong>
-
                             </div>
 
                         </div>
@@ -3387,136 +2686,114 @@
 
                     </article>
 
+                    <!-- MAINTENANCE -->
+
+                    <article class="bs-price-card">
+
+                        <p class="bs-price-card-label">
+                            RETURNING CUSTOMERS
+                        </p>
+
+                        <h3>
+                            Maintenance Detail
+                        </h3>
+
+
+                        <div class="bs-price-list">
+
+                            <div class="bs-price-row">
+                                <span>
+                                    Sedan/Coupe
+                                </span>
+
+                                <strong>
+                                    $80
+                                </strong>
+                            </div>
+
+                            <div class="bs-price-row">
+                                <span>
+                                    SUV/Crossover
+                                </span>
+
+                                <strong>
+                                    $90
+                                </strong>
+                            </div>
+
+                            <div class="bs-price-row">
+                                <span>
+                                    Truck
+                                </span>
+
+                                <strong>
+                                    $95
+                                </strong>
+                            </div>
+
+                            <div class="bs-price-row">
+                                <span>
+                                    Large SUV/Van
+                                </span>
+
+                                <strong>
+                                    $100
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <p style="
+                            margin: 18px 0 0;
+                            color: #667085;
+                            font-size: 14px;
+                            line-height: 1.55;
+                        ">
+                            A lighter detail designed for returning
+                            customers who regularly maintain their vehicle.
+                        </p>
+
+
+                        <ul class="bs-feature-list">
+
+                            <li>
+                                Exterior foam wash + hand wash
+                            </li>
+
+                            <li>
+                                Wheel & tire cleaning
+                            </li>
+
+                            <li>
+                                Exterior glass cleaning
+                            </li>
+
+                            <li>
+                                Ceramic foam protection
+                            </li>
+
+                            <li>
+                                Interior vacuum
+                            </li>
+
+                            <li>
+                                Dashboard, console & door wipe-down
+                            </li>
+
+                            <li>
+                                Cup holders & interior glass
+                            </li>
+
+                            <li>
+                                Light floor-mat and carpet/upholstery touch-up
+                            </li>
+
+                        </ul>
+
+                    </article>
+
                 </div>
-
-
-
-                <!-- =================================================
-                     MAINTENANCE
-                     ================================================= -->
-
-<!-- =================================================
-     MAINTENANCE DETAIL
-     ================================================= -->
-
-<article
-    class="bs-price-card"
-    data-service="maintenance"
-    role="button"
-    tabindex="0"
-    aria-label="Select Maintenance Detail"
->
-
-    <p class="bs-price-card-label">
-        RETURNING CUSTOMERS
-    </p>
-
-    <h3>
-        Maintenance Detail
-    </h3>
-
-
-    <div class="bs-price-list">
-
-        <div class="bs-price-row">
-
-            <span>
-                Sedan/Coupe
-            </span>
-
-            <strong>
-                $80
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                SUV/Crossover
-            </span>
-
-            <strong>
-                $90
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                Truck
-            </span>
-
-            <strong>
-                $95
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                Large SUV/Van
-            </span>
-
-            <strong>
-                $100
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <ul class="bs-feature-list">
-
-        <li>
-            Exterior foam wash + hand wash
-        </li>
-
-        <li>
-            Wheel & tire cleaning
-        </li>
-
-        <li>
-            Exterior glass cleaning
-        </li>
-
-        <li>
-            Ceramic foam protection
-        </li>
-
-        <li>
-            Interior vacuum
-        </li>
-
-        <li>
-            Dashboard, console & door wipe-down
-        </li>
-
-        <li>
-            Cup holders
-        </li>
-
-        <li>
-            Interior glass
-        </li>
-
-        <li>
-            Light floor-mat cleaning
-        </li>
-
-        <li>
-            Light carpet / upholstery touch-up
-        </li>
-
-    </ul>
-
-</article>
 
 
 
@@ -3634,14 +2911,13 @@
                         STEP 3 — BOOKING
                     </p>
 
-                    <h2 id="cal-booking-title">
+                    <h2>
                         Choose Your Appointment
                     </h2>
 
-                    <p id="cal-booking-description">
-                        Select a detail above to load its booking
-                        calendar. Your vehicle, add-ons, and
-                        appointment time will be selected through
+                    <p>
+                        Select your service, vehicle, add-ons,
+                        and available weekend appointment through
                         Cal.com.
                     </p>
 
@@ -3657,8 +2933,7 @@
                     >
 
                         <div class="bs-cal-loading">
-                            Choose a detail above to load its
-                            booking calendar.
+                            Loading booking options...
                         </div>
 
                     </div>
@@ -3721,6 +2996,10 @@
 
     <!-- =========================================================
          BRIDGE EXISTING JS CLASSES TO NEW UI
+         ---------------------------------------------------------
+         booking.js uses the original IDs. These aliases allow
+         the redesigned UI to keep those IDs while displaying
+         the new scoped design.
          ========================================================= -->
 
     <script>
@@ -3843,199 +3122,6 @@
                     );
 
                 }
-
-            }
-        );
-
-    </script>
-
-
-
-    <!-- =========================================================
-         BOOKING MOBILE MENU
-         ========================================================= -->
-
-    <script>
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-
-                const menuButton =
-                    document.getElementById(
-                        "bookingMenuButton"
-                    );
-
-                const mobileMenu =
-                    document.getElementById(
-                        "bookingMobileMenu"
-                    );
-
-
-                if (
-                    !menuButton ||
-                    !mobileMenu
-                ) {
-
-                    return;
-
-                }
-
-
-                /*
-                   Open / close the mobile menu.
-                */
-
-                menuButton.addEventListener(
-                    "click",
-                    () => {
-
-                        const isOpen =
-                            mobileMenu.classList.toggle(
-                                "mobile-open"
-                            );
-
-
-                        menuButton.classList.toggle(
-                            "menu-open",
-                            isOpen
-                        );
-
-
-                        menuButton.setAttribute(
-                            "aria-expanded",
-                            String(isOpen)
-                        );
-
-
-                        menuButton.setAttribute(
-                            "aria-label",
-                            isOpen
-                                ? "Close navigation menu"
-                                : "Open navigation menu"
-                        );
-
-                    }
-                );
-
-
-                /*
-                   Close the menu after selecting
-                   a navigation link.
-                */
-
-                mobileMenu
-                    .querySelectorAll("a")
-                    .forEach(
-                        (link) => {
-
-                            link.addEventListener(
-                                "click",
-                                () => {
-
-                                    mobileMenu.classList.remove(
-                                        "mobile-open"
-                                    );
-
-                                    menuButton.classList.remove(
-                                        "menu-open"
-                                    );
-
-                                    menuButton.setAttribute(
-                                        "aria-expanded",
-                                        "false"
-                                    );
-
-                                    menuButton.setAttribute(
-                                        "aria-label",
-                                        "Open navigation menu"
-                                    );
-
-                                }
-                            );
-
-                        }
-                    );
-
-
-                /*
-                   Close the menu if the user
-                   clicks outside of it.
-                */
-
-                document.addEventListener(
-                    "click",
-                    (event) => {
-
-                        if (
-                            !mobileMenu.contains(
-                                event.target
-                            ) &&
-                            !menuButton.contains(
-                                event.target
-                            )
-                        ) {
-
-                            mobileMenu.classList.remove(
-                                "mobile-open"
-                            );
-
-                            menuButton.classList.remove(
-                                "menu-open"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-label",
-                                "Open navigation menu"
-                            );
-
-                        }
-
-                    }
-                );
-
-
-                /*
-                   Reset the menu if the user
-                   rotates the phone or returns
-                   to desktop width.
-                */
-
-                window.addEventListener(
-                    "resize",
-                    () => {
-
-                        if (
-                            window.innerWidth > 900
-                        ) {
-
-                            mobileMenu.classList.remove(
-                                "mobile-open"
-                            );
-
-                            menuButton.classList.remove(
-                                "menu-open"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-label",
-                                "Open navigation menu"
-                            );
-
-                        }
-
-                    }
-                );
 
             }
         );

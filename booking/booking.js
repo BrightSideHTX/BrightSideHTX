@@ -4,27 +4,14 @@
     BOOKING PAGE JAVASCRIPT
     ============================================================
 
-    This file handles:
-
-    1. Mapbox map
-    2. 20-mile BrightSide service radius
-    3. Address autocomplete
-    4. Address retrieval
-    5. Service-area eligibility
-    6. Pricing visibility
-    7. Cal.com booking selection
-    8. Exterior / Interior / Full Detail / Maintenance booking
-
-    SERVICE CENTER:
-    Alief Neighborhood Center
-    11903 Bellaire Blvd
-    Houston, TX 77072
-
-    SERVICE RADIUS:
-    20 miles
-
-    IMPORTANT:
-    Keep your existing Mapbox PUBLIC token below.
+    Handles:
+    - Mapbox map
+    - 20-mile service radius
+    - Address autocomplete
+    - Address retrieval
+    - Eligibility checking
+    - Service selection
+    - Cal.com booking embeds
 */
 
 
@@ -36,30 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*
         KEEP YOUR EXISTING MAPBOX PUBLIC TOKEN HERE.
-
-        Do NOT use a secret Mapbox token in frontend code.
     */
     const MAPBOX_TOKEN = "pk.eyJ1IjoiYnJpZ2h0c2lkZWRldGFpbGluZyIsImEiOiJjbXQ5bGEzdTAwMGg0Mnlwd2M1MHlyYWV0In0.Usd3fiKRnMZq1oE6cYy1Jg";
 
 
-    /*
-        BrightSide service center.
-    */
     const SERVICE_CENTER = {
         latitude: 29.70254,
         longitude: -95.58891
     };
 
 
-    /*
-        BrightSide service radius.
-    */
     const SERVICE_RADIUS_MILES = 20;
 
 
-    /*
-        Exact Cal.com event links.
-    */
     const CAL_BOOKING_LINKS = {
         exterior: "brightsidehouston/exterior",
         interior: "brightsidehouston/interior",
@@ -69,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       PAGE ELEMENTS
+       ELEMENTS
     ========================================================= */
 
     const bookingPage =
@@ -93,20 +69,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const availabilityButton =
         document.querySelector("#availability-button");
 
+    /*
+        Try several possible IDs/classes so the service
+        selection section is found even if your HTML uses
+        a slightly different container name.
+    */
     const pricingSection =
-        document.querySelector("#pricing-section");
+        document.querySelector("#pricing-section") ||
+        document.querySelector("#pricing") ||
+        document.querySelector(".bs-pricing-section") ||
+        document.querySelector(".bs-service-selection") ||
+        document.querySelector(".service-selection");
+
 
     const calBooking =
         document.querySelector("#cal-booking");
 
 
     /* =========================================================
-       BASIC PAGE CHECK
+       PAGE CHECK
     ========================================================= */
 
     if (!bookingPage) {
         console.error(
-            "BrightSide Booking: .booking-page was not found."
+            "BrightSide Booking: .booking-page not found."
         );
 
         return;
@@ -114,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       MAPBOX STATE
+       MAP STATE
     ========================================================= */
 
     let map = null;
@@ -129,13 +115,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedDistance = null;
 
-    let searchSessionToken = createSessionToken();
+    let searchSessionToken =
+        createSessionToken();
 
     let suggestionTimeout = null;
 
 
     /* =========================================================
-       INITIAL PAGE STATE
+       INITIAL STATE
     ========================================================= */
 
     hideElement(pricingSection);
@@ -148,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       INITIALIZE MAPBOX
+       INITIALIZE MAP
     ========================================================= */
 
     initializeMap();
@@ -158,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!mapContainer) {
             console.error(
-                "BrightSide Booking: #map was not found."
+                "BrightSide Booking: #map not found."
             );
 
             return;
@@ -183,14 +170,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (
             !MAPBOX_TOKEN ||
-            MAPBOX_TOKEN === "YOUR_EXISTING_MAPBOX_PUBLIC_TOKEN"
+            MAPBOX_TOKEN ===
+                "YOUR_EXISTING_MAPBOX_PUBLIC_TOKEN"
         ) {
             console.error(
-                "BrightSide Booking: Add your existing Mapbox public token."
+                "BrightSide Booking: Mapbox token is missing."
             );
 
             setServiceStatus(
-                "The map could not connect to Mapbox. Please check the Mapbox token.",
+                "The map could not connect to Mapbox.",
                 "error"
             );
 
@@ -198,75 +186,61 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        mapboxgl.accessToken = MAPBOX_TOKEN;
+        mapboxgl.accessToken =
+            MAPBOX_TOKEN;
 
 
-        /*
-            Create the map immediately.
-
-            The map is centered around the BrightSide service
-            center so the user does not have to wait for an
-            address search before seeing the service area.
-        */
         map = new mapboxgl.Map({
-            container: mapContainer,
-            style: "mapbox://styles/mapbox/streets-v12",
+            container: "map",
+
+            style:
+                "mapbox://styles/mapbox/streets-v12",
 
             center: [
                 SERVICE_CENTER.longitude,
                 SERVICE_CENTER.latitude
             ],
 
-            zoom: 10.5,
-
-            attributionControl: true
+            zoom: 10.5
         });
 
 
-        /*
-            Navigation controls.
-        */
         map.addControl(
             new mapboxgl.NavigationControl(),
             "top-right"
         );
 
 
-        /*
-            Once the Mapbox style has completely loaded,
-            immediately draw the 20-mile service area.
-        */
-        map.once("load", () => {
+        map.once(
+            "load",
+            () => {
 
-            drawServiceRadius();
+                drawServiceRadius();
 
-            addServiceCenterMarker();
+                addServiceCenterMarker();
 
-            /*
-                Fit the map to the entire 20-mile radius.
-            */
-            fitMapToServiceRadius();
+                fitMapToServiceRadius();
 
-        });
+            }
+        );
 
 
-        /*
-            Catch Mapbox loading errors instead of leaving
-            the user with an empty map.
-        */
-        map.on("error", (event) => {
+        map.on(
+            "error",
+            (event) => {
 
-            console.error(
-                "BrightSide Booking: Mapbox error:",
-                event?.error || event
-            );
+                console.error(
+                    "BrightSide Booking: Mapbox error:",
+                    event?.error || event
+                );
 
-        });
+            }
+        );
     }
 
 
     /* =========================================================
-       CREATE 20-MILE SERVICE RADIUS
+       DRAW 20-MILE SERVICE RADIUS
     ========================================================= */
 
     function drawServiceRadius() {
@@ -276,13 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-            Create a GeoJSON polygon approximating a circle.
-
-            96 points gives the radius a smooth appearance
-            without unnecessarily increasing the amount of
-            geometry rendered by Mapbox.
-        */
         const radiusPolygon =
             createCirclePolygon(
                 SERVICE_CENTER.longitude,
@@ -292,22 +259,22 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        /*
-            If the source already exists, update it.
-        */
-        if (map.getSource("brightside-service-radius")) {
+        if (
+            map.getSource(
+                "brightside-service-radius"
+            )
+        ) {
 
             map.getSource(
                 "brightside-service-radius"
-            ).setData(radiusPolygon);
+            ).setData(
+                radiusPolygon
+            );
 
             return;
         }
 
 
-        /*
-            Add the radius as a GeoJSON source.
-        */
         map.addSource(
             "brightside-service-radius",
             {
@@ -317,44 +284,50 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-            Transparent blue fill.
-        */
         map.addLayer({
-            id: "brightside-service-radius-fill",
+            id:
+                "brightside-service-radius-fill",
 
             type: "fill",
 
-            source: "brightside-service-radius",
+            source:
+                "brightside-service-radius",
 
             paint: {
-                "fill-color": "#1769aa",
-                "fill-opacity": 0.10
+                "fill-color":
+                    "#1769aa",
+
+                "fill-opacity":
+                    0.10
             }
         });
 
 
-        /*
-            Blue radius outline.
-        */
         map.addLayer({
-            id: "brightside-service-radius-outline",
+            id:
+                "brightside-service-radius-outline",
 
             type: "line",
 
-            source: "brightside-service-radius",
+            source:
+                "brightside-service-radius",
 
             paint: {
-                "line-color": "#1769aa",
-                "line-width": 2,
-                "line-opacity": 0.85
+                "line-color":
+                    "#1769aa",
+
+                "line-width":
+                    2,
+
+                "line-opacity":
+                    0.85
             }
         });
     }
 
 
     /* =========================================================
-       CREATE CIRCLE POLYGON
+       CREATE RADIUS CIRCLE
     ========================================================= */
 
     function createCirclePolygon(
@@ -366,24 +339,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const coordinates = [];
 
-        /*
-            Approximate Earth radius.
-        */
-        const earthRadiusMiles = 3958.7613;
+        const earthRadiusMiles =
+            3958.7613;
 
-
-        /*
-            Convert radius from miles to angular distance.
-        */
         const angularDistance =
-            radiusMiles / earthRadiusMiles;
-
+            radiusMiles /
+            earthRadiusMiles;
 
         const latitudeRadians =
-            latitude * Math.PI / 180;
+            latitude *
+            Math.PI /
+            180;
 
         const longitudeRadians =
-            longitude * Math.PI / 180;
+            longitude *
+            Math.PI /
+            180;
 
 
         for (
@@ -393,19 +364,32 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
             const bearing =
-                (index / points) *
+                (
+                    index /
+                    points
+                ) *
                 2 *
                 Math.PI;
 
 
             const newLatitude =
                 Math.asin(
-                    Math.sin(latitudeRadians) *
-                    Math.cos(angularDistance) +
+                    Math.sin(
+                        latitudeRadians
+                    ) *
+                    Math.cos(
+                        angularDistance
+                    ) +
 
-                    Math.cos(latitudeRadians) *
-                    Math.sin(angularDistance) *
-                    Math.cos(bearing)
+                    Math.cos(
+                        latitudeRadians
+                    ) *
+                    Math.sin(
+                        angularDistance
+                    ) *
+                    Math.cos(
+                        bearing
+                    )
                 );
 
 
@@ -413,28 +397,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 longitudeRadians +
 
                 Math.atan2(
-                    Math.sin(bearing) *
-                    Math.sin(angularDistance) *
-                    Math.cos(latitudeRadians),
+                    Math.sin(
+                        bearing
+                    ) *
+                    Math.sin(
+                        angularDistance
+                    ) *
+                    Math.cos(
+                        latitudeRadians
+                    ),
 
-                    Math.cos(angularDistance) -
-                    Math.sin(latitudeRadians) *
-                    Math.sin(newLatitude)
+                    Math.cos(
+                        angularDistance
+                    ) -
+
+                    Math.sin(
+                        latitudeRadians
+                    ) *
+                    Math.sin(
+                        newLatitude
+                    )
                 );
 
 
             coordinates.push([
-                newLongitude * 180 / Math.PI,
-                newLatitude * 180 / Math.PI
+                newLongitude *
+                    180 /
+                    Math.PI,
+
+                newLatitude *
+                    180 /
+                    Math.PI
             ]);
         }
 
 
         return {
             type: "Feature",
+
             properties: {},
+
             geometry: {
                 type: "Polygon",
+
                 coordinates: [
                     coordinates
                 ]
@@ -444,18 +449,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       ADD SERVICE CENTER MARKER
+       SERVICE CENTER MARKER
     ========================================================= */
 
     function addServiceCenterMarker() {
 
         if (!map) {
             return;
-        }
-
-
-        if (serviceCenterMarker) {
-            serviceCenterMarker.remove();
         }
 
 
@@ -485,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       FIT MAP TO 20-MILE RADIUS
+       FIT MAP TO SERVICE AREA
     ========================================================= */
 
     function fitMapToServiceRadius() {
@@ -495,22 +495,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        const radius =
-            SERVICE_RADIUS_MILES;
-
-
-        /*
-            Rough latitude conversion.
-        */
         const latitudeOffset =
-            radius / 69;
+            SERVICE_RADIUS_MILES /
+            69;
 
 
-        /*
-            Longitude conversion depends on latitude.
-        */
         const longitudeOffset =
-            radius /
+            SERVICE_RADIUS_MILES /
             (
                 69 *
                 Math.cos(
@@ -527,19 +518,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         bounds.extend([
             SERVICE_CENTER.longitude -
-            longitudeOffset,
+                longitudeOffset,
 
             SERVICE_CENTER.latitude -
-            latitudeOffset
+                latitudeOffset
         ]);
 
 
         bounds.extend([
             SERVICE_CENTER.longitude +
-            longitudeOffset,
+                longitudeOffset,
 
             SERVICE_CENTER.latitude +
-            latitudeOffset
+                latitudeOffset
         ]);
 
 
@@ -573,10 +564,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                /*
-                    A new search means the previous
-                    eligibility result is no longer valid.
-                */
                 selectedAddress = null;
 
                 selectedCoordinates = null;
@@ -584,11 +571,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 selectedDistance = null;
 
 
-                hideElement(pricingSection);
+                hideElement(
+                    pricingSection
+                );
 
-                hideElement(calBooking);
+                hideElement(
+                    calBooking
+                );
 
-                hideElement(availabilityContainer);
+                hideElement(
+                    availabilityContainer
+                );
 
 
                 if (suggestionsContainer) {
@@ -618,12 +611,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                /*
-                    Wait briefly before sending a request.
-
-                    This prevents a request on every single
-                    keystroke while the user is typing.
-                */
                 suggestionTimeout =
                     setTimeout(
                         () => {
@@ -639,9 +626,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-            Enter selects the first suggestion.
-        */
         addressInput.addEventListener(
             "keydown",
             (event) => {
@@ -671,21 +655,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       MAPBOX ADDRESS SUGGESTIONS
+       FETCH ADDRESS SUGGESTIONS
     ========================================================= */
 
     async function fetchSuggestions(
         query
     ) {
-
-        if (
-            !MAPBOX_TOKEN ||
-            MAPBOX_TOKEN ===
-                "YOUR_EXISTING_MAPBOX_PUBLIC_TOKEN"
-        ) {
-            return;
-        }
-
 
         try {
 
@@ -693,7 +668,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 "https://api.mapbox.com/search/searchbox/v1/suggest" +
 
                 "?q=" +
-                encodeURIComponent(query) +
+                encodeURIComponent(
+                    query
+                ) +
 
                 "&limit=6" +
 
@@ -726,7 +703,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
 
                 throw new Error(
-                    `Mapbox suggest request failed: ${response.status}`
+                    `Mapbox request failed: ${response.status}`
                 );
             }
 
@@ -806,27 +783,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     suggestion.mapbox_id;
 
 
-                const primaryText =
-                    suggestion.name ||
-                    suggestion.full_address ||
-                    "Address";
-
-
-                const secondaryText =
-                    suggestion.place_formatted ||
-                    "";
-
-
                 button.innerHTML = `
                     <span class="address-suggestion-main">
-                        ${escapeHtml(primaryText)}
+                        ${escapeHtml(
+                            suggestion.name ||
+                            suggestion.full_address ||
+                            "Address"
+                        )}
                     </span>
 
                     ${
-                        secondaryText
+                        suggestion.place_formatted
                             ? `
                                 <span class="address-suggestion-secondary">
-                                    ${escapeHtml(secondaryText)}
+                                    ${escapeHtml(
+                                        suggestion.place_formatted
+                                    )}
                                 </span>
                             `
                             : ""
@@ -874,8 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
         if (
-            !suggestion ||
-            !suggestion.mapbox_id
+            !suggestion?.mapbox_id
         ) {
             return;
         }
@@ -886,9 +857,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-            Display the selected address immediately.
-        */
         addressInput.value =
             suggestion.full_address ||
             suggestion.place_formatted ||
@@ -900,16 +868,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "Checking your service area...",
             "checking"
         );
-
-
-        /*
-            Clear old booking/pricing state.
-        */
-        hideElement(pricingSection);
-
-        hideElement(calBooking);
-
-        hideElement(availabilityContainer);
 
 
         try {
@@ -927,7 +885,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!feature) {
 
                 throw new Error(
-                    "No address feature returned."
+                    "No address was returned."
                 );
             }
 
@@ -942,7 +900,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ) {
 
                 throw new Error(
-                    "No coordinates returned for address."
+                    "No address coordinates returned."
                 );
             }
 
@@ -957,17 +915,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 Number(
                     coordinates[1]
                 );
-
-
-            if (
-                !Number.isFinite(longitude) ||
-                !Number.isFinite(latitude)
-            ) {
-
-                throw new Error(
-                    "Invalid address coordinates."
-                );
-            }
 
 
             selectedCoordinates = {
@@ -991,7 +938,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-                Calculate eligibility immediately.
+                Calculate the distance immediately.
             */
             selectedDistance =
                 calculateDistanceMiles(
@@ -1004,7 +951,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-                Put customer's location on map.
+                Put customer on map.
             */
             showCustomerLocation(
                 longitude,
@@ -1012,10 +959,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            /*
-                Zoom to show both the service center
-                and the customer's address.
-            */
             fitMapToCustomerAndServiceCenter(
                 longitude,
                 latitude
@@ -1023,10 +966,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-                MOST IMPORTANT PART:
-
-                Determine eligibility immediately after
-                coordinates are retrieved.
+                Move to the eligibility step.
             */
             evaluateEligibility(
                 selectedDistance
@@ -1041,30 +981,16 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            selectedAddress = null;
-
-            selectedCoordinates = null;
-
-            selectedDistance = null;
-
-
             setServiceStatus(
-                "We couldn't verify that address. Please select an address from the suggestions.",
+                "We couldn't verify that address. Please select the address from the suggestions.",
                 "error"
             );
-
-
-            hideElement(pricingSection);
-
-            hideElement(calBooking);
-
-            hideElement(availabilityContainer);
         }
     }
 
 
     /* =========================================================
-       RETRIEVE SELECTED ADDRESS
+       RETRIEVE ADDRESS
     ========================================================= */
 
     async function retrieveAddress(
@@ -1098,7 +1024,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!response.ok) {
 
             throw new Error(
-                `Mapbox retrieve request failed: ${response.status}`
+                `Mapbox retrieve failed: ${response.status}`
             );
         }
 
@@ -1107,10 +1033,6 @@ document.addEventListener("DOMContentLoaded", () => {
             await response.json();
 
 
-        /*
-            A completed suggest/retrieve session should
-            receive a fresh token for the next search.
-        */
         searchSessionToken =
             createSessionToken();
 
@@ -1120,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       CUSTOMER LOCATION MARKER
+       CUSTOMER MARKER
     ========================================================= */
 
     function showCustomerLocation(
@@ -1162,7 +1084,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       FIT MAP TO CUSTOMER + SERVICE CENTER
+       FIT MAP TO CUSTOMER
     ========================================================= */
 
     function fitMapToCustomerAndServiceCenter(
@@ -1210,56 +1132,58 @@ document.addEventListener("DOMContentLoaded", () => {
         distanceMiles
     ) {
 
-        const roundedDistance =
+        const distance =
             distanceMiles.toFixed(1);
 
+
+        /*
+            ================================================
+            ELIGIBLE
+            ================================================
+        */
 
         if (
             distanceMiles <=
             SERVICE_RADIUS_MILES
         ) {
 
-            /*
-                CUSTOMER IS ELIGIBLE
-            */
-
             setServiceStatus(
                 `
                     <div class="service-status-content">
+
                         <strong>
                             You're in our service area.
                         </strong>
 
                         <span>
                             Your address is approximately
-                            ${roundedDistance} miles
-                            from our service center.
+                            ${distance} miles from our
+                            service center.
                         </span>
 
-                        <span>
-                            You can continue below to choose your detail.
-                        </span>
                     </div>
                 `,
                 "eligible"
             );
 
 
-            showElement(
-                availabilityContainer
-            );
+            /*
+                SHOW THE NEXT STEP.
 
+                This is the important fix.
 
-            showElement(
-                pricingSection
-            );
+                We explicitly remove:
+                - hidden attribute
+                - display:none
+                - visibility:hidden
+                - max-height restrictions
+            */
+            revealServiceSelection();
 
 
             /*
-                IMPORTANT:
-                Cal.com does NOT automatically open.
-
-                Customer chooses their service first.
+                Make sure Cal.com is still hidden until
+                the customer actually chooses a service.
             */
             hideElement(
                 calBooking
@@ -1267,50 +1191,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /*
-                Scroll to pricing so the customer immediately
-                sees what to do next.
+                Scroll to the service selection.
             */
-            setTimeout(
-                () => {
-
-                    if (pricingSection) {
-
-                        pricingSection.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
-
-                    }
-
-                },
-                250
-            );
+            scrollToServiceSelection();
 
 
-        } else {
+        }
 
-            /*
-                CUSTOMER IS OUTSIDE SERVICE AREA
-            */
+        /*
+            ================================================
+            NOT ELIGIBLE
+            ================================================
+        */
+
+        else {
 
             setServiceStatus(
                 `
                     <div class="service-status-content">
+
                         <strong>
                             Sorry, you're outside our service area.
                         </strong>
 
                         <span>
                             Your address is approximately
-                            ${roundedDistance} miles
-                            from our service center.
+                            ${distance} miles from our
+                            service center.
                         </span>
 
                         <span>
-                            BrightSide currently serves locations
-                            within approximately
+                            BrightSide currently serves
+                            locations within approximately
                             ${SERVICE_RADIUS_MILES} miles.
                         </span>
+
                     </div>
                 `,
                 "ineligible"
@@ -1318,11 +1233,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             hideElement(
-                availabilityContainer
-            );
-
-
-            hideElement(
                 pricingSection
             );
 
@@ -1330,12 +1240,163 @@ document.addEventListener("DOMContentLoaded", () => {
             hideElement(
                 calBooking
             );
+
+
+            hideElement(
+                availabilityContainer
+            );
         }
     }
 
 
     /* =========================================================
-       PRICING CARD SELECTION
+       REVEAL SERVICE SELECTION
+    ========================================================= */
+
+    function revealServiceSelection() {
+
+        if (!pricingSection) {
+
+            console.error(
+                "BrightSide Booking: Could not find the service-selection/pricing section."
+            );
+
+            return;
+        }
+
+
+        /*
+            Remove all common hiding mechanisms.
+        */
+        pricingSection.hidden =
+            false;
+
+
+        pricingSection.removeAttribute(
+            "hidden"
+        );
+
+
+        pricingSection.removeAttribute(
+            "aria-hidden"
+        );
+
+
+        pricingSection.classList.remove(
+            "hidden"
+        );
+
+
+        pricingSection.classList.remove(
+            "is-hidden"
+        );
+
+
+        /*
+            If previous JavaScript added display:none,
+            clear it.
+        */
+        if (
+            pricingSection.style.display ===
+            "none"
+        ) {
+
+            pricingSection.style.display =
+                "";
+        }
+
+
+        /*
+            Reveal availability if it exists.
+        */
+        if (availabilityContainer) {
+
+            availabilityContainer.hidden =
+                false;
+
+            availabilityContainer.removeAttribute(
+                "hidden"
+            );
+        }
+
+
+        /*
+            Force the section to be visible even if the
+            existing stylesheet uses a visibility rule.
+        */
+        pricingSection.style.visibility =
+            "visible";
+
+
+        pricingSection.style.opacity =
+            "1";
+
+
+        /*
+            Ensure the service cards themselves are visible.
+        */
+        const cards =
+            pricingSection.querySelectorAll(
+                "article, " +
+                ".bs-price-card, " +
+                ".bs-maintenance-card, " +
+                ".pricing-card"
+            );
+
+
+        cards.forEach(
+            (card) => {
+
+                card.hidden =
+                    false;
+
+                card.removeAttribute(
+                    "hidden"
+                );
+
+                card.removeAttribute(
+                    "aria-hidden"
+                );
+
+                card.classList.remove(
+                    "hidden"
+                );
+
+                card.classList.remove(
+                    "is-hidden"
+                );
+            }
+        );
+    }
+
+
+    /* =========================================================
+       SCROLL TO SERVICE SELECTION
+    ========================================================= */
+
+    function scrollToServiceSelection() {
+
+        if (!pricingSection) {
+            return;
+        }
+
+
+        setTimeout(
+            () => {
+
+                pricingSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            },
+            300
+        );
+    }
+
+
+    /* =========================================================
+       SERVICE CARD CLICK
     ========================================================= */
 
     if (pricingSection) {
@@ -1361,16 +1422,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                handlePricingCardClick(
+                handleServiceSelection(
                     card
                 );
             }
         );
 
 
-        /*
-            Keyboard support.
-        */
         pricingSection.addEventListener(
             "keydown",
             (event) => {
@@ -1403,7 +1461,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
-                handlePricingCardClick(
+                handleServiceSelection(
                     card
                 );
             }
@@ -1412,17 +1470,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       DETERMINE SELECTED SERVICE
+       DETERMINE SERVICE
     ========================================================= */
 
-    function handlePricingCardClick(
+    function handleServiceSelection(
         card
     ) {
 
         const text =
             card.textContent
                 .toLowerCase()
-                .replace(/\s+/g, " ")
+                .replace(
+                    /\s+/g,
+                    " "
+                )
                 .trim();
 
 
@@ -1432,11 +1493,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            FULL DETAIL FIRST.
-
-            This must be checked first because the Full Detail
-            description may contain the words "interior" and
-            "exterior".
+            Full Detail first.
         */
         if (
             text.includes(
@@ -1453,7 +1510,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            MAINTENANCE
+            Maintenance.
         */
         else if (
             text.includes(
@@ -1470,7 +1527,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            EXTERIOR
+            Exterior.
         */
         else if (
             text.includes(
@@ -1487,7 +1544,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            INTERIOR
+            Interior.
         */
         else if (
             text.includes(
@@ -1503,13 +1560,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-            If this isn't one of the four service cards,
-            don't do anything.
-        */
         if (
-            !calLink ||
-            !serviceName
+            !calLink
         ) {
 
             return;
@@ -1517,7 +1569,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            Remove previous selection.
+            Remove previous selected state.
         */
         pricingSection
             .querySelectorAll(
@@ -1532,13 +1584,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     otherCard.classList.remove(
                         "is-selected"
                     );
-
                 }
             );
 
 
         /*
-            Mark current card as selected.
+            Select this service.
         */
         card.classList.add(
             "is-selected"
@@ -1546,7 +1597,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            Load the correct Cal.com form.
+            Load the correct Cal.com booking.
         */
         loadCalBooking(
             calLink,
@@ -1556,7 +1607,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       LOAD CAL.COM
+       CAL.COM
     ========================================================= */
 
     function loadCalBooking(
@@ -1567,7 +1618,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!calBooking) {
 
             console.error(
-                "BrightSide Booking: #cal-booking was not found."
+                "BrightSide Booking: #cal-booking not found."
             );
 
             return;
@@ -1583,19 +1634,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "BrightSide Booking: Cal.com embed script is not loaded."
             );
 
-
-            setServiceStatus(
-                "The booking form could not load. Please refresh the page.",
-                "error"
-            );
-
-
             return;
         }
 
 
         /*
-            Show booking section.
+            Show Cal.com.
         */
         showElement(
             calBooking
@@ -1603,89 +1647,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /*
-            Remove the previous Cal.com embed.
+            Clear previous booking.
         */
-        calBooking.innerHTML = "";
+        calBooking.innerHTML =
+            "";
 
 
         /*
-            Load selected Cal.com event.
+            Load new booking.
         */
-        try {
+        window.Cal(
+            "inline",
+            {
+                elementOrSelector:
+                    "#cal-booking",
 
-            window.Cal(
-                "inline",
-                {
-                    elementOrSelector:
-                        "#cal-booking",
+                calLink:
+                    calLink,
 
-                    calLink:
-                        calLink,
+                config: {
+                    layout:
+                        "month_view",
 
-                    config: {
-                        layout:
-                            "month_view",
-
-                        useSlotsViewOnSmallScreen:
-                            true
-                    }
+                    useSlotsViewOnSmallScreen:
+                        true
                 }
-            );
-
-
-            /*
-                Optional heading if the HTML contains it.
-            */
-            const bookingHeading =
-                document.querySelector(
-                    "#cal-booking-heading"
-                );
-
-
-            if (bookingHeading) {
-
-                bookingHeading.textContent =
-                    `${serviceName} Booking`;
             }
+        );
 
 
-            /*
-                Scroll to booking form.
-            */
-            setTimeout(
-                () => {
-
-                    calBooking.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                },
-                250
+        /*
+            Update heading if present.
+        */
+        const bookingHeading =
+            document.querySelector(
+                "#cal-booking-heading"
             );
 
 
-        } catch (error) {
+        if (bookingHeading) {
 
-            console.error(
-                "BrightSide Booking: Cal.com initialization failed.",
-                error
-            );
-
+            bookingHeading.textContent =
+                `${serviceName} Booking`;
         }
+
+
+        /*
+            Scroll to Cal.com.
+        */
+        setTimeout(
+            () => {
+
+                calBooking.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            },
+            300
+        );
     }
 
 
     /* =========================================================
-       AVAILABILITY
+       AVAILABILITY BUTTON
     ========================================================= */
-
-    /*
-        The old availability button should no longer be
-        responsible for checking the address.
-
-        Address selection itself now performs the check.
-    */
 
     if (availabilityButton) {
 
@@ -1694,7 +1720,8 @@ document.addEventListener("DOMContentLoaded", () => {
             () => {
 
                 if (
-                    selectedDistance === null
+                    selectedDistance ===
+                    null
                 ) {
 
                     setServiceStatus(
@@ -1715,7 +1742,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       STATUS DISPLAY
+       STATUS
     ========================================================= */
 
     function setServiceStatus(
@@ -1737,7 +1764,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 serviceStatus
             );
 
-            serviceStatus.innerHTML = "";
+            serviceStatus.innerHTML =
+                "";
 
             return;
         }
@@ -1758,7 +1786,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       SHOW / HIDE HELPERS
+       VISIBILITY HELPERS
     ========================================================= */
 
     function showElement(
@@ -1770,23 +1798,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        element.hidden = false;
+        element.hidden =
+            false;
+
 
         element.removeAttribute(
             "hidden"
         );
 
 
-        /*
-            Only remove an inline display:none.
-        */
-        if (
-            element.style.display ===
-            "none"
-        ) {
+        element.removeAttribute(
+            "aria-hidden"
+        );
 
-            element.style.display = "";
-        }
+
+        element.classList.remove(
+            "hidden"
+        );
+
+
+        element.classList.remove(
+            "is-hidden"
+        );
     }
 
 
@@ -1799,12 +1832,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        element.hidden = true;
+        element.hidden =
+            true;
     }
 
 
     /* =========================================================
-       HAVERSINE DISTANCE
+       DISTANCE CALCULATION
     ========================================================= */
 
     function calculateDistanceMiles(
@@ -1944,15 +1978,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       FINAL SETUP
+       INITIALIZATION COMPLETE
     ========================================================= */
 
     console.log(
-        "BrightSide Booking initialized."
-    );
-
-    console.log(
-        `Service radius: ${SERVICE_RADIUS_MILES} miles`
+        "BrightSide Booking: initialized successfully."
     );
 
 });

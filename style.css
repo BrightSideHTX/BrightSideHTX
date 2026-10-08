@@ -2188,3 +2188,47 @@ body.mobile-menu-open {
     }
 
 }
+
+/* =========================================================
+   BRIGHTSIDE PACKAGE GRID — 2x2 LAYOUT
+   Keeps package cards organized and evenly spaced.
+   ========================================================= */
+
+.package-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+
+/* =========================================================
+   PACKAGE GRID — TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .package-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   BOOKING PACKAGE GRID — 2x2 LAYOUT
+   ========================================================= */
+
+.bs-price-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+
+/* =========================================================
+   BOOKING PACKAGE GRID — TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .bs-price-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

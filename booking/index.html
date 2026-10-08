@@ -1440,25 +1440,24 @@
         /* =======================================================
            PRICE GRID
            ======================================================= */
+.bs-price-grid {
 
-        .bs-price-grid {
+    display:
+        grid;
 
-            display:
-                grid;
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(
+                0,
+                1fr
+            )
+        );
 
-            grid-template-columns:
-                repeat(
-                    3,
-                    minmax(
-                        0,
-                        1fr
-                    )
-                );
+    gap:
+        20px;
 
-            gap:
-                20px;
-
-        }
+}
 
 
         .bs-price-card {
@@ -2767,7 +2766,7 @@
                 </a>
 
                 <a href="../how-it-works/index.html">
-                    How It Works
+                    Referral Rewards
                 </a>
 
                 <a href="../results/index.html">
@@ -2827,7 +2826,7 @@
                 </a>
 
                 <a href="../how-it-works/index.html">
-                    How It Works
+                    Referral Rewards
                 </a>
 
                 <a href="../results/index.html">
@@ -3060,7 +3059,7 @@
                     </h2>
 
                     <p>
-                        Once your address is confirmed, review
+                        Once your address is eligible, select and review
                         our starting prices before continuing
                         to your appointment booking.
                     </p>
@@ -3391,37 +3390,128 @@
                      MAINTENANCE
                      ================================================= -->
 
-                <article
-                    class="bs-maintenance-card"
-                    data-service="maintenance"
-                    role="button"
-                    tabindex="0"
-                    aria-label="Select Maintenance Detail"
-                >
+<!-- =================================================
+     MAINTENANCE DETAIL
+     ================================================= -->
 
-                    <div>
+<article
+    class="bs-price-card"
+    data-service="maintenance"
+    role="button"
+    tabindex="0"
+    aria-label="Select Maintenance Detail"
+>
 
-                        <p class="bs-price-card-label">
-                            RETURNING CUSTOMERS
-                        </p>
+    <p class="bs-price-card-label">
+        RETURNING CUSTOMERS
+    </p>
 
-                        <h3>
-                            Maintenance Detail
-                        </h3>
-
-                        <p>
-                            A convenient detail option for vehicles
-                            that are regularly maintained.
-                        </p>
-
-                    </div>
+    <h3>
+        Maintenance Detail
+    </h3>
 
 
-                    <span class="bs-coming-soon">
-                        SELECT
-                    </span>
+    <div class="bs-price-list">
 
-                </article>
+        <div class="bs-price-row">
+
+            <span>
+                Sedan/Coupe
+            </span>
+
+            <strong>
+                $80
+            </strong>
+
+        </div>
+
+
+        <div class="bs-price-row">
+
+            <span>
+                SUV/Crossover
+            </span>
+
+            <strong>
+                $90
+            </strong>
+
+        </div>
+
+
+        <div class="bs-price-row">
+
+            <span>
+                Truck
+            </span>
+
+            <strong>
+                $95
+            </strong>
+
+        </div>
+
+
+        <div class="bs-price-row">
+
+            <span>
+                Large SUV/Van
+            </span>
+
+            <strong>
+                $100
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <ul class="bs-feature-list">
+
+        <li>
+            Exterior foam wash + hand wash
+        </li>
+
+        <li>
+            Wheel & tire cleaning
+        </li>
+
+        <li>
+            Exterior glass cleaning
+        </li>
+
+        <li>
+            Ceramic foam protection
+        </li>
+
+        <li>
+            Interior vacuum
+        </li>
+
+        <li>
+            Dashboard, console & door wipe-down
+        </li>
+
+        <li>
+            Cup holders
+        </li>
+
+        <li>
+            Interior glass
+        </li>
+
+        <li>
+            Light floor-mat cleaning
+        </li>
+
+        <li>
+            Light carpet / upholstery touch-up
+        </li>
+
+    </ul>
+
+</article>
 
 
 

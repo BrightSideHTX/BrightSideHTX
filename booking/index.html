@@ -1440,23 +1440,60 @@
         /* =======================================================
            PRICE GRID
            ======================================================= */
-.bs-price-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-}
 
-@media (max-width: 1100px) {
-    .bs-price-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
+        .bs-price-grid {
 
-@media (max-width: 760px) {
-    .bs-price-grid {
-        grid-template-columns: 1fr;
-    }
-}
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                18px;
+
+        }
+
+
+        @media (
+            max-width: 1100px
+        ) {
+
+            .bs-price-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 760px
+        ) {
+
+            .bs-price-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
 
         .bs-price-card {
 
@@ -2459,6 +2496,18 @@
            TABLET
            ======================================================= */
 
+        @media (
+            max-width: 900px
+        ) {
+
+            .bs-price-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
             .bs-addon-grid {
 
                 grid-template-columns:
@@ -3368,136 +3417,133 @@
 
                     </article>
 
+
+
+                    <!-- =================================================
+                         MAINTENANCE DETAIL
+                         ================================================= -->
+
+                    <article
+                        class="bs-price-card"
+                        data-service="maintenance"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Maintenance Detail"
+                    >
+
+                        <p class="bs-price-card-label">
+                            RETURNING CUSTOMERS
+                        </p>
+
+                        <h3>
+                            Maintenance Detail
+                        </h3>
+
+
+                        <div class="bs-price-list">
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Sedan/Coupe
+                                </span>
+
+                                <strong>
+                                    $80
+                                </strong>
+
+                            </div>
+
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    SUV/Crossover
+                                </span>
+
+                                <strong>
+                                    $90
+                                </strong>
+
+                            </div>
+
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Truck
+                                </span>
+
+                                <strong>
+                                    $95
+                                </strong>
+
+                            </div>
+
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Large SUV/Van
+                                </span>
+
+                                <strong>
+                                    $100
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <ul class="bs-feature-list">
+
+                            <li>
+                                Exterior foam wash + hand wash
+                            </li>
+
+                            <li>
+                                Wheel & tire cleaning
+                            </li>
+
+                            <li>
+                                Exterior glass cleaning
+                            </li>
+
+                            <li>
+                                Ceramic foam protection
+                            </li>
+
+                            <li>
+                                Interior vacuum
+                            </li>
+
+                            <li>
+                                Dashboard, console & door wipe-down
+                            </li>
+
+                            <li>
+                                Cup holders
+                            </li>
+
+                            <li>
+                                Interior glass
+                            </li>
+
+                            <li>
+                                Light floor-mat cleaning
+                            </li>
+
+                            <li>
+                                Light carpet / upholstery touch-up
+                            </li>
+
+                        </ul>
+
+                    </article>
+
+
                 </div>
-
-
-
-                <!-- =================================================
-                     MAINTENANCE
-                     ================================================= -->
-
-<!-- =================================================
-     MAINTENANCE DETAIL
-     ================================================= -->
-
-<article
-    class="bs-price-card"
-    data-service="maintenance"
-    role="button"
-    tabindex="0"
-    aria-label="Select Maintenance Detail"
->
-
-    <p class="bs-price-card-label">
-        RETURNING CUSTOMERS
-    </p>
-
-    <h3>
-        Maintenance Detail
-    </h3>
-
-
-    <div class="bs-price-list">
-
-        <div class="bs-price-row">
-
-            <span>
-                Sedan/Coupe
-            </span>
-
-            <strong>
-                $80
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                SUV/Crossover
-            </span>
-
-            <strong>
-                $90
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                Truck
-            </span>
-
-            <strong>
-                $95
-            </strong>
-
-        </div>
-
-
-        <div class="bs-price-row">
-
-            <span>
-                Large SUV/Van
-            </span>
-
-            <strong>
-                $100
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <ul class="bs-feature-list">
-
-        <li>
-            Exterior foam wash + hand wash
-        </li>
-
-        <li>
-            Wheel & tire cleaning
-        </li>
-
-        <li>
-            Exterior glass cleaning
-        </li>
-
-        <li>
-            Ceramic foam protection
-        </li>
-
-        <li>
-            Interior vacuum
-        </li>
-
-        <li>
-            Dashboard, console & door wipe-down
-        </li>
-
-        <li>
-            Cup holders
-        </li>
-
-        <li>
-            Interior glass
-        </li>
-
-        <li>
-            Light floor-mat cleaning
-        </li>
-
-        <li>
-            Light carpet / upholstery touch-up
-        </li>
-
-    </ul>
-
-</article>
 
 
 

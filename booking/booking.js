@@ -70,7 +70,7 @@ document.addEventListener(
                 "https://cal.com/brightsidehouston/fulldetail",
 
             maintenance:
-                "https://cal.com/brightsidehouston/maintenace"
+                "https://cal.com/brightsidehouston/maintenance"
 
         };
 

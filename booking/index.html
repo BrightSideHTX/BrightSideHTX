@@ -1386,10 +1386,25 @@
         }
 
 
+        /* STEP 2 CAPTION */
+
+        .bs-pricing-header .bs-booking-eyebrow {
+
+            color:
+                #000000;
+
+        }
+
+
+        /* STEP 2 MAIN HEADING */
+
         .bs-pricing-header h2 {
 
             margin:
                 0 0 12px;
+
+            color:
+                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -1408,7 +1423,7 @@
         }
 
 
-        .bs-pricing-header p {
+        .bs-pricing-header p:not(.bs-booking-eyebrow) {
 
             margin:
                 0;
@@ -1471,6 +1486,154 @@
                     23,
                     42,
                     0.045
+                );
+
+            cursor:
+                pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+
+        }
+
+
+        .bs-price-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.55
+                );
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.12
+                );
+
+        }
+
+
+        .bs-price-card.selected {
+
+            border:
+                2px solid
+                #1769aa;
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.16
+                );
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        .bs-price-card.selected:hover {
+
+            border-color:
+                #1769aa;
+
+            box-shadow:
+                0 16px 40px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.18
+                );
+
+        }
+
+
+        .bs-price-card:focus-visible {
+
+            outline:
+                3px solid
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.25
+                );
+
+            outline-offset:
+                3px;
+
+        }
+
+
+        .bs-price-card.selected::after {
+
+            content:
+                "✓";
+
+            position:
+                absolute;
+
+            top:
+                16px;
+
+            right:
+                16px;
+
+            width:
+                30px;
+
+            height:
+                30px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                50%;
+
+            background:
+                #1769aa;
+
+            color:
+                white;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 4px 12px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.20
                 );
 
         }
@@ -1681,6 +1844,134 @@
 
             background:
                 white;
+
+            cursor:
+                pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+
+        }
+
+
+        .bs-maintenance-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.55
+                );
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.10
+                );
+
+        }
+
+
+        .bs-maintenance-card.selected {
+
+            border:
+                2px solid
+                #1769aa;
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.16
+                );
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        .bs-maintenance-card:focus-visible {
+
+            outline:
+                3px solid
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.25
+                );
+
+            outline-offset:
+                3px;
+
+        }
+
+
+        .bs-maintenance-card.selected::after {
+
+            content:
+                "✓";
+
+            width:
+                30px;
+
+            height:
+                30px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex-shrink:
+                0;
+
+            border-radius:
+                50%;
+
+            background:
+                #1769aa;
+
+            color:
+                white;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 4px 12px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.20
+                );
 
         }
 
@@ -1983,10 +2274,25 @@
         }
 
 
+        /* STEP 3 CAPTION */
+
+        .bs-cal-header .bs-booking-eyebrow {
+
+            color:
+                #000000;
+
+        }
+
+
+        /* STEP 3 MAIN HEADING */
+
         .bs-cal-header h2 {
 
             margin:
                 0 0 12px;
+
+            color:
+                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -2005,7 +2311,7 @@
         }
 
 
-        .bs-cal-header p {
+        .bs-cal-header p:not(.bs-booking-eyebrow) {
 
             margin:
                 0;
@@ -2384,6 +2690,20 @@
 
                 flex-direction:
                     column;
+
+            }
+
+
+            .bs-maintenance-card.selected::after {
+
+                position:
+                    absolute;
+
+                top:
+                    16px;
+
+                right:
+                    16px;
 
             }
 

@@ -2394,7 +2394,10 @@
 </head>
 
 
-<body class="booking-page bs-booking-page">
+<body
+    id="booking-page"
+    class="booking-page bs-booking-page"
+>
 
 
     <!-- =========================================================
@@ -2755,7 +2758,13 @@
 
                     <!-- EXTERIOR -->
 
-                    <article class="bs-price-card">
+                    <article
+                        class="bs-price-card"
+                        data-service="exterior"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Exterior Detail"
+                    >
 
                         <p class="bs-price-card-label">
                             EXTERIOR
@@ -2856,7 +2865,13 @@
 
                     <!-- INTERIOR -->
 
-                    <article class="bs-price-card">
+                    <article
+                        class="bs-price-card"
+                        data-service="interior"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Interior Detail"
+                    >
 
                         <p class="bs-price-card-label">
                             INTERIOR
@@ -2967,6 +2982,10 @@
 
                     <article
                         class="bs-price-card featured"
+                        data-service="full"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Full Detail"
                     >
 
                         <p class="bs-price-card-label">
@@ -3052,7 +3071,13 @@
                      MAINTENANCE
                      ================================================= -->
 
-                <article class="bs-maintenance-card">
+                <article
+                    class="bs-maintenance-card"
+                    data-service="maintenance"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Select Maintenance Detail"
+                >
 
                     <div>
 
@@ -3061,19 +3086,19 @@
                         </p>
 
                         <h3>
-                            Maintenance Pricing
+                            Maintenance Detail
                         </h3>
 
                         <p>
-                            Maintenance detail packages are
-                            currently being developed.
+                            A convenient detail option for vehicles
+                            that are regularly maintained.
                         </p>
 
                     </div>
 
 
                     <span class="bs-coming-soon">
-                        COMING SOON
+                        SELECT
                     </span>
 
                 </article>
@@ -3194,13 +3219,14 @@
                         STEP 3 — BOOKING
                     </p>
 
-                    <h2>
+                    <h2 id="cal-booking-title">
                         Choose Your Appointment
                     </h2>
 
-                    <p>
-                        Select your service, vehicle, add-ons,
-                        and available weekend appointment through
+                    <p id="cal-booking-description">
+                        Select a detail above to load its booking
+                        calendar. Your vehicle, add-ons, and
+                        appointment time will be selected through
                         Cal.com.
                     </p>
 
@@ -3216,7 +3242,8 @@
                     >
 
                         <div class="bs-cal-loading">
-                            Loading booking options...
+                            Choose a detail above to load its
+                            booking calendar.
                         </div>
 
                     </div>
@@ -3598,159 +3625,8 @@
             }
         );
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    </script>
 
-    const bookingMenuButton =
-        document.getElementById("bookingMenuButton");
-
-    const bookingMobileMenu =
-        document.getElementById("bookingMobileMenu");
-
-
-    /*
-       Stop if the booking navigation does not
-       exist on this page.
-    */
-
-    if (!bookingMenuButton || !bookingMobileMenu) {
-        return;
-    }
-
-
-    /*
-       Open / close booking mobile navigation.
-    */
-
-    bookingMenuButton.addEventListener("click", () => {
-
-        const isOpen =
-            bookingMobileMenu.classList.toggle("mobile-open");
-
-
-        bookingMenuButton.classList.toggle(
-            "is-open",
-            isOpen
-        );
-
-
-        bookingMenuButton.setAttribute(
-            "aria-expanded",
-            String(isOpen)
-        );
-
-
-        bookingMenuButton.setAttribute(
-            "aria-label",
-            isOpen
-                ? "Close navigation menu"
-                : "Open navigation menu"
-        );
-
-    });
-
-
-    /*
-       Close the menu when a navigation link
-       is selected.
-    */
-
-    bookingMobileMenu
-        .querySelectorAll("a")
-        .forEach((link) => {
-
-            link.addEventListener("click", () => {
-
-                bookingMobileMenu.classList.remove(
-                    "mobile-open"
-                );
-
-                bookingMenuButton.classList.remove(
-                    "is-open"
-                );
-
-                bookingMenuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                bookingMenuButton.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
-
-            });
-
-        });
-
-
-    /*
-       Close the menu when clicking outside it.
-    */
-
-    document.addEventListener("click", (event) => {
-
-        if (
-            !bookingMobileMenu.contains(event.target) &&
-            !bookingMenuButton.contains(event.target)
-        ) {
-
-            bookingMobileMenu.classList.remove(
-                "mobile-open"
-            );
-
-            bookingMenuButton.classList.remove(
-                "is-open"
-            );
-
-            bookingMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-            bookingMenuButton.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
-
-        }
-
-    });
-
-
-    /*
-       Close the mobile menu if the screen
-       becomes desktop-sized.
-    */
-
-    window.addEventListener("resize", () => {
-
-        if (window.innerWidth > 900) {
-
-            bookingMobileMenu.classList.remove(
-                "mobile-open"
-            );
-
-            bookingMenuButton.classList.remove(
-                "is-open"
-            );
-
-            bookingMenuButton.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-            bookingMenuButton.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
-
-        }
-
-    });
-
-});
-</script>
 </body>
 
 </html>

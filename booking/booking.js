@@ -11,7 +11,7 @@
    4. Check the 20-mile service radius
    5. Show the selected location on the map
    6. Show pricing after eligibility is confirmed
-   7. Load the Cal.com booking page
+   7. Load the selected Cal.com booking page
 
    CAL.COM RESPONSIBILITIES:
 
@@ -49,11 +49,11 @@ document.addEventListener(
 
         /* =========================================================
            MAPBOX CONFIGURATION
-           ========================================================= */
+           =========================================================
+        */
 
         const MAPBOX_TOKEN =
-            "pk.eyJ1IjoiYnJpZ2h0c2lkZWRldGFpbGluZyIsImEiOiJjbXQ5bGEzdTAwMGg0Mnlwd2M1MHlyYWV0In0.Usd3fiKRnMZq1oE6cYy1Jg";
-
+"pk.eyJ1IjoiYnJpZ2h0c2lkZWRldGFpbGluZyIsImEiOiJjbXQ5bGEzdTAwMGg0Mnlwd2M1MHlyYWV0In0.Usd3fiKRnMZq1oE6cYy1Jg";
 
 
         /* =========================================================
@@ -89,11 +89,32 @@ document.addEventListener(
 
 
         /* =========================================================
-           CAL.COM BOOKING PAGE
-           =========================================================*/
+           CAL.COM BOOKING LINKS
+           =========================================================
 
-        const CAL_BOOKING_LINK =
-            "brightsidehouston/booking";
+           Each pricing card on the booking page will contain
+           a data-cal-link attribute.
+
+           The JavaScript reads that link when the customer
+           clicks a detail and loads the matching Cal.com form.
+
+        */
+
+        const CAL_BOOKING_LINKS = {
+
+            exterior:
+                "brightsidehouston/exterior",
+
+            maintenance:
+                "brightsidehouston/maintenace",
+
+            interior:
+                "brightsidehouston/interior",
+
+            fullDetail:
+                "brightsidehouston/fulldetail"
+
+        };
 
 
 
@@ -175,6 +196,8 @@ document.addEventListener(
         let searchTimeout = null;
 
         let sessionToken = null;
+
+        let selectedCalLink = null;
 
 
 
@@ -259,7 +282,7 @@ document.addEventListener(
             if (
                 !MAPBOX_TOKEN ||
                 MAPBOX_TOKEN ===
-                "YOUR_EXISTING_MAPBOX_PUBLIC_TOKEN"
+                "YOUR_NEW_MAPBOX_PUBLIC_TOKEN"
             ) {
 
                 console.error(
@@ -1069,7 +1092,15 @@ document.addEventListener(
                 showPricing();
 
 
-                showCalBooking();
+                /*
+                   The Cal.com section is intentionally NOT
+                   automatically loaded here.
+
+                   The customer first chooses their detail.
+                   The matching Cal.com booking page then loads.
+                */
+
+                prepareCalBooking();
 
             }
 
@@ -1180,10 +1211,15 @@ document.addEventListener(
 
 
         /* =========================================================
-           SHOW CAL.COM
-           ========================================================= */
+           PREPARE CAL.COM
+           =========================================================
 
-        function showCalBooking() {
+           The Cal.com section stays hidden until the customer
+           actually clicks a detail.
+
+        */
+
+        function prepareCalBooking() {
 
             if (!calBookingSection) {
                 return;
@@ -1191,21 +1227,29 @@ document.addEventListener(
 
 
             calBookingSection.hidden =
-                false;
+                true;
 
 
-            if (
-                calBooking &&
-                calBooking.dataset.loaded ===
-                    "true"
-            ) {
+            selectedCalLink =
+                null;
 
-                return;
+
+            if (calBooking) {
+
+                calBooking.innerHTML = `
+
+                    <div class="cal-loading">
+
+                        Select a detail above to begin booking.
+
+                    </div>
+
+                `;
+
+                calBooking.dataset.loaded =
+                    "false";
 
             }
-
-
-            initializeCalBooking();
 
         }
 
@@ -1226,13 +1270,19 @@ document.addEventListener(
                 true;
 
 
+            selectedCalLink =
+                null;
+
+
             if (calBooking) {
 
                 calBooking.innerHTML =
                     `
                         <div class="cal-loading">
+
                             Booking options will appear
                             after your address is verified.
+
                         </div>
                     `;
 
@@ -1246,26 +1296,61 @@ document.addEventListener(
 
 
         /* =========================================================
-           INITIALIZE CAL.COM
+           LOAD SELECTED CAL.COM BOOKING PAGE
            ========================================================= */
 
-        function initializeCalBooking() {
-
-            if (!calBooking) {
-                return;
-            }
-
+        function loadCalBooking(
+            calLink
+        ) {
 
             if (
-                calBooking.dataset.loaded ===
-                    "true"
+                !calBookingSection ||
+                !calBooking
             ) {
 
                 return;
-
             }
 
 
+            if (!calLink) {
+
+                return;
+            }
+
+
+            selectedCalLink =
+                calLink;
+
+
+            /*
+               Make the Cal.com section visible.
+            */
+
+            calBookingSection.hidden =
+                false;
+
+
+            /*
+               Clear the previous Cal.com page.
+
+               This is what allows the customer to click
+               another detail and replace the previous
+               booking form with the new one.
+            */
+
+            calBooking.innerHTML =
+                "";
+
+
+            calBooking.dataset.loaded =
+                "false";
+
+
+
+            /*
+               If Cal.com has not finished loading yet,
+               wait for it and try again.
+            */
 
             if (
                 typeof window.Cal ===
@@ -1290,7 +1375,26 @@ document.addEventListener(
 
 
                 setTimeout(
-                    initializeCalBooking,
+                    () => {
+
+                        /*
+                           Only continue if the customer
+                           has not selected another link
+                           while Cal.com was loading.
+                        */
+
+                        if (
+                            selectedCalLink ===
+                            calLink
+                        ) {
+
+                            loadCalBooking(
+                                calLink
+                            );
+
+                        }
+
+                    },
                     1000
                 );
 
@@ -1300,12 +1404,9 @@ document.addEventListener(
 
 
 
-            /*
-               Embed the customer's single Cal.com
-               booking page.
-
-               https://cal.com/brightsidehouston/booking
-            */
+            /* =====================================================
+               LOAD CAL.COM
+               ===================================================== */
 
             Cal(
                 "inline",
@@ -1315,7 +1416,7 @@ document.addEventListener(
                         "#cal-booking",
 
                     calLink:
-                        CAL_BOOKING_LINK,
+                        calLink,
 
                     config: {
 
@@ -1330,6 +1431,160 @@ document.addEventListener(
 
             calBooking.dataset.loaded =
                 "true";
+
+
+
+            /*
+               Bring the customer to the booking form.
+            */
+
+            setTimeout(
+                () => {
+
+                    calBookingSection.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                },
+                150
+            );
+
+        }
+
+
+
+        /* =========================================================
+           DETAIL CARD CLICK HANDLERS
+           =========================================================
+
+           The booking HTML should give each clickable detail
+           card a data-cal-link attribute.
+
+           Example:
+
+           data-cal-link="brightsidehouston/exterior"
+
+           This allows the same JavaScript to work with all
+           four detail types.
+
+        */
+
+        function initializeDetailBookingCards() {
+
+            const detailCards =
+                document.querySelectorAll(
+                    "[data-cal-link]"
+                );
+
+
+            if (!detailCards.length) {
+                return;
+            }
+
+
+
+            detailCards.forEach(
+                (card) => {
+
+
+                    /* =================================================
+                       MOUSE / TOUCH CLICK
+                       ================================================= */
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            /*
+                               Only allow booking after the address
+                               has been confirmed as eligible.
+                            */
+
+                            if (
+                                serviceAreaStatus &&
+                                serviceAreaStatus.value !==
+                                "eligible"
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            const calLink =
+                                card.dataset.calLink;
+
+
+                            if (!calLink) {
+                                return;
+                            }
+
+
+                            loadCalBooking(
+                                calLink
+                            );
+
+                        }
+                    );
+
+
+
+                    /* =================================================
+                       KEYBOARD ACCESSIBILITY
+                       ================================================= */
+
+                    card.addEventListener(
+                        "keydown",
+                        (event) => {
+
+                            if (
+                                event.key ===
+                                    "Enter" ||
+
+                                event.key ===
+                                    " "
+                            ) {
+
+                                event.preventDefault();
+
+
+                                if (
+                                    serviceAreaStatus &&
+                                    serviceAreaStatus.value !==
+                                    "eligible"
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                const calLink =
+                                    card.dataset.calLink;
+
+
+                                if (!calLink) {
+                                    return;
+                                }
+
+
+                                loadCalBooking(
+                                    calLink
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
 
         }
 
@@ -1786,6 +2041,14 @@ document.addEventListener(
                 );
 
         }
+
+
+
+        /* =========================================================
+           START DETAIL CARD LISTENERS
+           ========================================================= */
+
+        initializeDetailBookingCards();
 
 
 

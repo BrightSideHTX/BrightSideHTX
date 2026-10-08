@@ -2245,8 +2245,43 @@ body.mobile-menu-open {
 
 
 /* =========================================================
-   BOOKING PACKAGE GRID — 4 ACROSS
-   Keeps all four package choices in one row.
+   BRIGHTSIDE PACKAGE GRIDS — 4 ACROSS
+   Homepage + Packages page
+   ========================================================= */
+
+.package-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+/* =========================================================
+   PACKAGE GRIDS — TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .package-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   PACKAGE GRIDS — MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .package-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   BOOKING PAGE PACKAGE GRID — 4 ACROSS
    ========================================================= */
 
 .bs-price-grid {
@@ -2255,10 +2290,10 @@ body.mobile-menu-open {
 
 
 /* =========================================================
-   BOOKING PACKAGE GRID — TABLET / MOBILE
+   BOOKING PAGE PACKAGE GRID — TABLET
    ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
     .bs-price-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2266,6 +2301,10 @@ body.mobile-menu-open {
 
 }
 
+
+/* =========================================================
+   BOOKING PAGE PACKAGE GRID — MOBILE
+   ========================================================= */
 
 @media (max-width: 760px) {
 

@@ -2213,17 +2213,59 @@ body.mobile-menu-open {
 
 
 /* =========================================================
-   BOOKING PACKAGE GRID — 2x2 LAYOUT
+   BRIGHTSIDE PACKAGE GRID — 4 ACROSS
+   Homepage package cards stay in one horizontal row.
+   ========================================================= */
+
+.package-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+/* =========================================================
+   PACKAGE GRID — TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .package-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 760px) {
+
+    .package-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   BOOKING PACKAGE GRID — 4 ACROSS
+   Keeps all four package choices in one row.
    ========================================================= */
 
 .bs-price-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 
 /* =========================================================
    BOOKING PACKAGE GRID — TABLET / MOBILE
    ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .bs-price-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
 
 @media (max-width: 760px) {
 

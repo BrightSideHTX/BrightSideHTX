@@ -2590,3 +2590,45 @@ body.mobile-menu-open {
     }
 
 }
+```css
+/* =========================================
+   NAVIGATION — LOGO ONLY
+   Clean sizing for desktop and mobile
+========================================= */
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 160px;
+    flex-shrink: 0;
+
+    text-decoration: none;
+}
+
+.navbar .nav-logo-image {
+    display: block;
+
+    width: 100%;
+    max-width: 160px;
+    height: 62px;
+
+    object-fit: contain;
+    object-position: left center;
+}
+
+/* Smaller logo on phones */
+@media (max-width: 600px) {
+
+    .navbar .logo {
+        width: 125px;
+    }
+
+    .navbar .nav-logo-image {
+        max-width: 125px;
+        height: 48px;
+    }
+
+}
+```

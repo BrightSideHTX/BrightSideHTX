@@ -114,35 +114,57 @@
 <main>
 
 
-<!-- HERO -->
+
+<!-- =========================================
+     HERO
+     Background video behind the text and logo
+========================================= -->
 
 <section class="hero">
 
+
+    <video
+        class="hero-background-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+        tabindex="-1"
+    >
+        <source
+            src="videos/detailing-hero.mp4"
+            type="video/mp4"
+        >
+    </video>
+
+    <!-- Dark overlay keeps the content readable. -->
+    <div
+        class="hero-video-overlay"
+        aria-hidden="true"
+    ></div>
+
+
+    <!-- Hero text and buttons -->
     <div class="hero-content">
 
         <p class="eyebrow">
             MOBILE CAR DETAILING • ALIEF, TX
         </p>
 
-
         <h1>
-
             Detailing That
 
             <span>
                 Comes To You.
             </span>
-
         </h1>
 
-
         <p class="hero-text">
-
             Interior and exterior car detailing
             brought directly to your location.
-
         </p>
-
 
         <div class="hero-buttons">
 
@@ -152,7 +174,6 @@
             >
                 Book a Detail
             </a>
-
 
             <a
                 href="packages/"
@@ -166,22 +187,22 @@
     </div>
 
 
+    <!-- BrightSide logo displayed over the video -->
     <div class="hero-image">
 
         <div class="image-logo">
 
             <img
                 src="images/BSlogo.PNG"
-                alt="BrightSide Logo"
+                alt="BrightSide Houston Mobile Detailing logo"
             >
-
-            <p></p>
 
         </div>
 
     </div>
 
 </section>
+
 
 
 

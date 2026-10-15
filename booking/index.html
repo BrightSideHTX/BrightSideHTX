@@ -11,7 +11,7 @@
     >
 
     <title>
-        Book Your Detail | BrightSide Houston Detailing
+        Book Your Detail | BrightSide Houston Mobile Detailing
     </title>
 
     <meta
@@ -1386,10 +1386,25 @@
         }
 
 
+        /* STEP 2 CAPTION */
+
+        .bs-pricing-header .bs-booking-eyebrow {
+
+            color:
+                #000000;
+
+        }
+
+
+        /* STEP 2 MAIN HEADING */
+
         .bs-pricing-header h2 {
 
             margin:
                 0 0 12px;
+
+            color:
+                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -1408,7 +1423,7 @@
         }
 
 
-        .bs-pricing-header p {
+        .bs-pricing-header p:not(.bs-booking-eyebrow) {
 
             margin:
                 0;
@@ -1433,7 +1448,7 @@
 
             grid-template-columns:
                 repeat(
-                    3,
+                    4,
                     minmax(
                         0,
                         1fr
@@ -1441,7 +1456,41 @@
                 );
 
             gap:
-                20px;
+                18px;
+
+        }
+
+
+        @media (
+            max-width: 1100px
+        ) {
+
+            .bs-price-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(
+                            0,
+                            1fr
+                        )
+                    );
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 760px
+        ) {
+
+            .bs-price-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
 
         }
 
@@ -1471,6 +1520,154 @@
                     23,
                     42,
                     0.045
+                );
+
+            cursor:
+                pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+
+        }
+
+
+        .bs-price-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.55
+                );
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.12
+                );
+
+        }
+
+
+        .bs-price-card.selected {
+
+            border:
+                2px solid
+                #1769aa;
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.16
+                );
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        .bs-price-card.selected:hover {
+
+            border-color:
+                #1769aa;
+
+            box-shadow:
+                0 16px 40px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.18
+                );
+
+        }
+
+
+        .bs-price-card:focus-visible {
+
+            outline:
+                3px solid
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.25
+                );
+
+            outline-offset:
+                3px;
+
+        }
+
+
+        .bs-price-card.selected::after {
+
+            content:
+                "✓";
+
+            position:
+                absolute;
+
+            top:
+                16px;
+
+            right:
+                16px;
+
+            width:
+                30px;
+
+            height:
+                30px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                50%;
+
+            background:
+                #1769aa;
+
+            color:
+                white;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 4px 12px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.20
                 );
 
         }
@@ -1681,6 +1878,134 @@
 
             background:
                 white;
+
+            cursor:
+                pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+
+        }
+
+
+        .bs-maintenance-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.55
+                );
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.10
+                );
+
+        }
+
+
+        .bs-maintenance-card.selected {
+
+            border:
+                2px solid
+                #1769aa;
+
+            background:
+                #f4f9fd;
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.16
+                );
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        .bs-maintenance-card:focus-visible {
+
+            outline:
+                3px solid
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.25
+                );
+
+            outline-offset:
+                3px;
+
+        }
+
+
+        .bs-maintenance-card.selected::after {
+
+            content:
+                "✓";
+
+            width:
+                30px;
+
+            height:
+                30px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex-shrink:
+                0;
+
+            border-radius:
+                50%;
+
+            background:
+                #1769aa;
+
+            color:
+                white;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            box-shadow:
+                0 4px 12px
+                rgba(
+                    23,
+                    105,
+                    170,
+                    0.20
+                );
 
         }
 
@@ -1983,10 +2308,25 @@
         }
 
 
+        /* STEP 3 CAPTION */
+
+        .bs-cal-header .bs-booking-eyebrow {
+
+            color:
+                #000000;
+
+        }
+
+
+        /* STEP 3 MAIN HEADING */
+
         .bs-cal-header h2 {
 
             margin:
                 0 0 12px;
+
+            color:
+                #1769aa;
 
             font-family:
                 "Space Grotesk",
@@ -2005,7 +2345,7 @@
         }
 
 
-        .bs-cal-header p {
+        .bs-cal-header p:not(.bs-booking-eyebrow) {
 
             margin:
                 0;
@@ -2387,67 +2727,20 @@
 
             }
 
-        }
 
-    
+            .bs-maintenance-card.selected::after {
 
-        /* =======================================================
-           MOBILE MENU VISIBILITY FIX
-           ======================================================= */
+                position:
+                    absolute;
 
-        .bs-booking-header {
-            position: relative;
-            z-index: 1000;
-        }
+                top:
+                    16px;
 
-        .bs-booking-header-inner {
-            position: relative;
-        }
+                right:
+                    16px;
 
-        .bs-booking-menu-button {
-            position: relative;
-            z-index: 1002;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        @media (max-width: 900px) {
-            .bs-booking-header .bs-booking-nav {
-                display: none !important;
             }
 
-            .bs-booking-header .bs-booking-menu-button {
-                display: flex !important;
-            }
-
-            .bs-booking-header .bs-booking-mobile-menu {
-                display: none;
-                position: absolute;
-                top: calc(100% + 8px);
-                left: 14px;
-                right: 14px;
-                z-index: 1001;
-                flex-direction: column;
-                padding: 10px;
-                background: #ffffff;
-                border: 1px solid #e5e7eb;
-                border-radius: 16px;
-                box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
-            }
-
-            .bs-booking-header .bs-booking-mobile-menu.mobile-open {
-                display: flex !important;
-            }
-        }
-
-        @media (min-width: 901px) {
-            .bs-booking-header .bs-booking-mobile-menu {
-                display: none !important;
-            }
-
-            .bs-booking-header .bs-booking-menu-button {
-                display: none !important;
-            }
         }
 
     </style>
@@ -2455,7 +2748,10 @@
 </head>
 
 
-<body class="booking-page bs-booking-page">
+<body
+    id="booking-page"
+    class="booking-page bs-booking-page"
+>
 
 
     <!-- =========================================================
@@ -2505,7 +2801,7 @@
                 </a>
 
                 <a href="../how-it-works/index.html">
-                    How It Works
+                    Referral Rewards
                 </a>
 
                 <a href="../results/index.html">
@@ -2517,7 +2813,7 @@
                 </a>
 
                 <a
-                    href="./booking.html"
+                    href="../booking/index.html"
                     class="bs-booking-nav-button"
                 >
                     Book Now
@@ -2565,7 +2861,7 @@
                 </a>
 
                 <a href="../how-it-works/index.html">
-                    How It Works
+                    Referral Rewards
                 </a>
 
                 <a href="../results/index.html">
@@ -2798,7 +3094,7 @@
                     </h2>
 
                     <p>
-                        Once your address is confirmed, review
+                        Once your address is eligible, select and review
                         our starting prices before continuing
                         to your appointment booking.
                     </p>
@@ -2816,7 +3112,13 @@
 
                     <!-- EXTERIOR -->
 
-                    <article class="bs-price-card">
+                    <article
+                        class="bs-price-card"
+                        data-service="exterior"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Exterior Detail"
+                    >
 
                         <p class="bs-price-card-label">
                             EXTERIOR
@@ -2917,7 +3219,13 @@
 
                     <!-- INTERIOR -->
 
-                    <article class="bs-price-card">
+                    <article
+                        class="bs-price-card"
+                        data-service="interior"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Interior Detail"
+                    >
 
                         <p class="bs-price-card-label">
                             INTERIOR
@@ -3028,6 +3336,10 @@
 
                     <article
                         class="bs-price-card featured"
+                        data-service="full"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Full Detail"
                     >
 
                         <p class="bs-price-card-label">
@@ -3105,39 +3417,133 @@
 
                     </article>
 
-                </div>
 
 
+                    <!-- =================================================
+                         MAINTENANCE DETAIL
+                         ================================================= -->
 
-                <!-- =================================================
-                     MAINTENANCE
-                     ================================================= -->
-
-                <article class="bs-maintenance-card">
-
-                    <div>
+                    <article
+                        class="bs-price-card"
+                        data-service="maintenance"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Select Maintenance Detail"
+                    >
 
                         <p class="bs-price-card-label">
                             RETURNING CUSTOMERS
                         </p>
 
                         <h3>
-                            Maintenance Pricing
+                            Maintenance Detail
                         </h3>
 
-                        <p>
-                            Maintenance detail packages are
-                            currently being developed.
-                        </p>
 
-                    </div>
+                        <div class="bs-price-list">
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Sedan/Coupe
+                                </span>
+
+                                <strong>
+                                    $80
+                                </strong>
+
+                            </div>
 
 
-                    <span class="bs-coming-soon">
-                        COMING SOON
-                    </span>
+                            <div class="bs-price-row">
 
-                </article>
+                                <span>
+                                    SUV/Crossover
+                                </span>
+
+                                <strong>
+                                    $90
+                                </strong>
+
+                            </div>
+
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Truck
+                                </span>
+
+                                <strong>
+                                    $95
+                                </strong>
+
+                            </div>
+
+
+                            <div class="bs-price-row">
+
+                                <span>
+                                    Large SUV/Van
+                                </span>
+
+                                <strong>
+                                    $100
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <ul class="bs-feature-list">
+
+                            <li>
+                                Exterior foam wash + hand wash
+                            </li>
+
+                            <li>
+                                Wheel & tire cleaning
+                            </li>
+
+                            <li>
+                                Exterior glass cleaning
+                            </li>
+
+                            <li>
+                                Ceramic foam protection
+                            </li>
+
+                            <li>
+                                Interior vacuum
+                            </li>
+
+                            <li>
+                                Dashboard, console & door wipe-down
+                            </li>
+
+                            <li>
+                                Cup holders
+                            </li>
+
+                            <li>
+                                Interior glass
+                            </li>
+
+                            <li>
+                                Light floor-mat cleaning
+                            </li>
+
+                            <li>
+                                Light carpet / upholstery touch-up
+                            </li>
+
+                        </ul>
+
+                    </article>
+
+
+                </div>
 
 
 
@@ -3255,13 +3661,14 @@
                         STEP 3 — BOOKING
                     </p>
 
-                    <h2>
+                    <h2 id="cal-booking-title">
                         Choose Your Appointment
                     </h2>
 
-                    <p>
-                        Select your service, vehicle, add-ons,
-                        and available weekend appointment through
+                    <p id="cal-booking-description">
+                        Select a detail above to load its booking
+                        calendar. Your vehicle, add-ons, and
+                        appointment time will be selected through
                         Cal.com.
                     </p>
 
@@ -3277,7 +3684,8 @@
                     >
 
                         <div class="bs-cal-loading">
-                            Loading booking options...
+                            Choose a detail above to load its
+                            booking calendar.
                         </div>
 
                     </div>
@@ -3470,65 +3878,63 @@
 
 
 
-    <!-- =========================================================
-         BOOKING MOBILE MENU
-         ========================================================= -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const menuButton = document.getElementById("bookingMenuButton");
+        const mobileMenu = document.getElementById("bookingMobileMenu");
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const menuButton = document.getElementById("bookingMenuButton");
-            const mobileMenu = document.getElementById("bookingMobileMenu");
+        if (!menuButton || !mobileMenu) {
+            return;
+        }
 
-            if (!menuButton || !mobileMenu) {
-                return;
-            }
+        function setMenuOpen(isOpen) {
+            mobileMenu.classList.toggle("mobile-open", isOpen);
+            menuButton.classList.toggle("menu-open", isOpen);
 
-            function setMenuOpen(isOpen) {
-                mobileMenu.classList.toggle("mobile-open", isOpen);
-                menuButton.classList.toggle("menu-open", isOpen);
-                menuButton.setAttribute("aria-expanded", String(isOpen));
-                menuButton.setAttribute(
-                    "aria-label",
-                    isOpen ? "Close navigation menu" : "Open navigation menu"
-                );
-            }
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+            menuButton.setAttribute(
+                "aria-label",
+                isOpen ? "Close navigation menu" : "Open navigation menu"
+            );
+        }
 
-            menuButton.addEventListener("click", (event) => {
-                event.stopPropagation();
-                setMenuOpen(!mobileMenu.classList.contains("mobile-open"));
-            });
+        menuButton.addEventListener("click", (event) => {
+            event.stopPropagation();
 
-            mobileMenu.querySelectorAll("a").forEach((link) => {
-                link.addEventListener("click", () => {
-                    setMenuOpen(false);
-                });
-            });
-
-            document.addEventListener("click", (event) => {
-                if (
-                    !mobileMenu.contains(event.target) &&
-                    !menuButton.contains(event.target)
-                ) {
-                    setMenuOpen(false);
-                }
-            });
-
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") {
-                    setMenuOpen(false);
-                }
-            });
-
-            window.addEventListener("resize", () => {
-                if (window.innerWidth > 900) {
-                    setMenuOpen(false);
-                }
-            });
-
-            setMenuOpen(false);
+            const isOpen = mobileMenu.classList.contains("mobile-open");
+            setMenuOpen(!isOpen);
         });
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                setMenuOpen(false);
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (
+                !mobileMenu.contains(event.target) &&
+                !menuButton.contains(event.target)
+            ) {
+                setMenuOpen(false);
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 900) {
+                setMenuOpen(false);
+            }
+        });
+
+        setMenuOpen(false);
+    });
+</script>
+
     </script>
 
 </body>
 
 </html>
+
+
+Here is the code only change what we need for the hamburger menu

@@ -3878,195 +3878,118 @@
 
 
 
-    <!-- =========================================================
-         BOOKING MOBILE MENU
-         ========================================================= -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const menuButton = document.getElementById("bookingMenuButton");
+        const mobileMenu = document.getElementById("bookingMobileMenu");
 
-    <script>
+        if (!menuButton || !mobileMenu) {
+            return;
+        }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
+        function setMenuOpen(isOpen) {
+            mobileMenu.classList.toggle("mobile-open", isOpen);
+            menuButton.classList.toggle("menu-open", isOpen);
 
-                const menuButton =
-                    document.getElementById(
-                        "bookingMenuButton"
-                    );
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+            menuButton.setAttribute(
+                "aria-label",
+                isOpen ? "Close navigation menu" : "Open navigation menu"
+            );
+        }
 
-                const mobileMenu =
-                    document.getElementById(
-                        "bookingMobileMenu"
-                    );
+        menuButton.addEventListener("click", (event) => {
+            event.stopPropagation();
 
+            const isOpen = mobileMenu.classList.contains("mobile-open");
+            setMenuOpen(!isOpen);
+        });
 
-                if (
-                    !menuButton ||
-                    !mobileMenu
-                ) {
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                setMenuOpen(false);
+            });
+        });
 
-                    return;
-
-                }
-
-
-                /*
-                   Open / close the mobile menu.
-                */
-
-                menuButton.addEventListener(
-                    "click",
-                    () => {
-
-                        const isOpen =
-                            mobileMenu.classList.toggle(
-                                "mobile-open"
-                            );
-
-
-                        menuButton.classList.toggle(
-                            "menu-open",
-                            isOpen
-                        );
-
-
-                        menuButton.setAttribute(
-                            "aria-expanded",
-                            String(isOpen)
-                        );
-
-
-                        menuButton.setAttribute(
-                            "aria-label",
-                            isOpen
-                                ? "Close navigation menu"
-                                : "Open navigation menu"
-                        );
-
-                    }
-                );
-
-
-                /*
-                   Close the menu after selecting
-                   a navigation link.
-                */
-
-                mobileMenu
-                    .querySelectorAll("a")
-                    .forEach(
-                        (link) => {
-
-                            link.addEventListener(
-                                "click",
-                                () => {
-
-                                    mobileMenu.classList.remove(
-                                        "mobile-open"
-                                    );
-
-                                    menuButton.classList.remove(
-                                        "menu-open"
-                                    );
-
-                                    menuButton.setAttribute(
-                                        "aria-expanded",
-                                        "false"
-                                    );
-
-                                    menuButton.setAttribute(
-                                        "aria-label",
-                                        "Open navigation menu"
-                                    );
-
-                                }
-                            );
-
-                        }
-                    );
-
-
-                /*
-                   Close the menu if the user
-                   clicks outside of it.
-                */
-
-                document.addEventListener(
-                    "click",
-                    (event) => {
-
-                        if (
-                            !mobileMenu.contains(
-                                event.target
-                            ) &&
-                            !menuButton.contains(
-                                event.target
-                            )
-                        ) {
-
-                            mobileMenu.classList.remove(
-                                "mobile-open"
-                            );
-
-                            menuButton.classList.remove(
-                                "menu-open"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-label",
-                                "Open navigation menu"
-                            );
-
-                        }
-
-                    }
-                );
-
-
-                /*
-                   Reset the menu if the user
-                   rotates the phone or returns
-                   to desktop width.
-                */
-
-                window.addEventListener(
-                    "resize",
-                    () => {
-
-                        if (
-                            window.innerWidth > 900
-                        ) {
-
-                            mobileMenu.classList.remove(
-                                "mobile-open"
-                            );
-
-                            menuButton.classList.remove(
-                                "menu-open"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-expanded",
-                                "false"
-                            );
-
-                            menuButton.setAttribute(
-                                "aria-label",
-                                "Open navigation menu"
-                            );
-
-                        }
-
-                    }
-                );
-
+        document.addEventListener("click", (event) => {
+            if (
+                !mobileMenu.contains(event.target) &&
+                !menuButton.contains(event.target)
+            ) {
+                setMenuOpen(false);
             }
-        );
+        });
 
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 900) {
+                setMenuOpen(false);
+            }
+        });
+
+        setMenuOpen(false);
+    });
+</script>
+/* =========================================
+   FIX — BOOKING PAGE MOBILE NAVIGATION
+========================================= */
+
+.bs-booking-header {
+    position: relative;
+    z-index: 1000;
+}
+
+.bs-booking-header-inner {
+    position: relative;
+}
+
+.bs-booking-menu-button {
+    position: relative;
+    z-index: 1002;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Keep the menu hidden until the hamburger is clicked */
+.bs-booking-header .bs-booking-mobile-menu {
+    display: none !important;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 14px;
+    right: 14px;
+    z-index: 1001;
+    flex-direction: column;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+}
+
+/* Show it only when the menu is open on mobile */
+@media (max-width: 900px) {
+    .bs-booking-header .bs-booking-nav {
+        display: none !important;
+    }
+
+    .bs-booking-header .bs-booking-menu-button {
+        display: flex !important;
+    }
+
+    .bs-booking-header .bs-booking-mobile-menu.mobile-open {
+        display: flex !important;
+    }
+}
+
+/* Hide the mobile menu on desktop */
+@media (min-width: 901px) {
+    .bs-booking-header .bs-booking-mobile-menu {
+        display: none !important;
+    }
+
+    .bs-booking-header .bs-booking-menu-button {
+        display: none !important;
+    }
+}
     </script>
 
 </body>

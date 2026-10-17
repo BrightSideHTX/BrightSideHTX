@@ -30,8 +30,8 @@
         ========================================= */
 
         .results-page {
-            color: #172033;
-            background: #f7f9fc;
+            color: #102033;
+            background: #f7faff;
             font-family: "DM Sans", sans-serif;
         }
 
@@ -42,16 +42,16 @@
         }
 
         .results-container {
-            width: min(1120px, calc(100% - 40px));
+            width: min(1180px, 92%);
             margin: 0 auto;
         }
 
         .results-eyebrow {
             margin: 0 0 14px;
-            color: #2563eb;
-            font-size: 12px;
+            color: #1769aa;
+            font-size: 0.9rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
@@ -63,11 +63,11 @@
         }
 
         .results-hero {
-            padding: 100px 0 72px;
+            padding: 100px 0 80px;
             background:
                 radial-gradient(
                     circle at 85% 15%,
-                    rgba(37, 99, 235, 0.10),
+                    rgba(23, 105, 170, 0.10),
                     transparent 34%
                 ),
                 #ffffff;
@@ -76,19 +76,20 @@
         .results-hero h1 {
             max-width: 760px;
             margin: 0;
-            font-size: clamp(42px, 7vw, 72px);
-            line-height: 1.04;
+            color: #102033;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1.05;
         }
 
         .results-hero h1 span {
-            color: #2563eb;
+            color: #1769aa;
         }
 
         .results-hero p:not(.results-eyebrow) {
-            max-width: 610px;
+            max-width: 650px;
             margin: 24px 0 0;
-            color: #596579;
-            font-size: 17px;
+            color: #627589;
+            font-size: 1.2rem;
             line-height: 1.8;
         }
 
@@ -97,27 +98,29 @@
         ========================================= */
 
         .results-gallery {
-            padding: 72px 0 88px;
+            padding: 80px 0;
+            background: #f7faff;
         }
 
         .results-section-heading {
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .results-section-heading h2,
         .results-social h2,
         .results-reviews h2 {
             margin: 0;
-            font-size: clamp(30px, 4vw, 42px);
+            color: #102033;
+            font-size: clamp(2.2rem, 4vw, 3rem);
             line-height: 1.15;
         }
 
         .results-section-heading p:not(.results-eyebrow) {
-            max-width: 600px;
+            max-width: 650px;
             margin: 14px 0 0;
-            color: #647084;
-            font-size: 15px;
-            line-height: 1.75;
+            color: #627589;
+            font-size: 1.05rem;
+            line-height: 1.8;
         }
 
         .results-filters {
@@ -128,13 +131,13 @@
         }
 
         .results-filter {
-            padding: 10px 16px;
-            border: 1px solid #dce3ed;
+            padding: 11px 17px;
+            border: 1px solid #dce6ef;
             border-radius: 999px;
             background: #ffffff;
-            color: #475467;
+            color: #4d6075;
             font: inherit;
-            font-size: 13px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition:
@@ -145,8 +148,8 @@
 
         .results-filter:hover,
         .results-filter.active {
-            border-color: #2563eb;
-            background: #2563eb;
+            border-color: #1769aa;
+            background: #1769aa;
             color: #ffffff;
         }
 
@@ -158,10 +161,10 @@
 
         .result-card {
             overflow: hidden;
-            border: 1px solid #e5eaf1;
-            border-radius: 18px;
+            border: 1px solid #dce6ef;
+            border-radius: 17px;
             background: #ffffff;
-            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+            box-shadow: 0 12px 35px rgba(30, 60, 90, 0.05);
         }
 
         .result-card[hidden] {
@@ -174,43 +177,44 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            background: #eaf0f8;
-            color: #64748b;
+            background: linear-gradient(135deg, #dcecf9, #eef5fb);
+            color: #547089;
             text-align: center;
         }
 
         .result-photo p {
-            max-width: 240px;
+            max-width: 260px;
             margin: 0;
-            font-size: 13px;
+            font-size: 1rem;
             line-height: 1.7;
         }
 
         .result-card-content {
-            padding: 22px;
+            padding: 24px;
         }
 
         .result-category {
             display: inline-block;
             margin-bottom: 10px;
-            color: #2563eb;
-            font-size: 11px;
+            color: #1769aa;
+            font-size: 0.9rem;
             font-weight: 700;
-            letter-spacing: 1.4px;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
         .result-card h3 {
             margin: 0;
-            font-size: 21px;
+            color: #102033;
+            font-size: 1.45rem;
             line-height: 1.3;
         }
 
         .result-card-content p {
             margin: 10px 0 0;
-            color: #647084;
-            font-size: 14px;
-            line-height: 1.7;
+            color: #627589;
+            font-size: 1rem;
+            line-height: 1.75;
         }
 
         /* =========================================
@@ -218,8 +222,8 @@
         ========================================= */
 
         .results-social {
-            padding: 76px 0;
-            border-top: 1px solid #e5eaf1;
+            padding: 80px 0;
+            border-top: 1px solid #dce6ef;
             background: #ffffff;
         }
 
@@ -227,8 +231,8 @@
         .results-reviews-intro {
             max-width: 650px;
             margin: 14px 0 0;
-            color: #647084;
-            font-size: 15px;
+            color: #627589;
+            font-size: 1.05rem;
             line-height: 1.8;
         }
 
@@ -243,17 +247,17 @@
         .instagram-card {
             min-width: 0;
             overflow: hidden;
-            border: 1px solid #e5eaf1;
-            border-radius: 16px;
+            border: 1px solid #dce6ef;
+            border-radius: 17px;
             background: #ffffff;
-            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+            box-shadow: 0 12px 35px rgba(30, 60, 90, 0.05);
         }
 
         .instagram-card-heading {
             padding: 16px 18px;
-            border-bottom: 1px solid #e5eaf1;
-            color: #172033;
-            font-size: 13px;
+            border-bottom: 1px solid #e5edf5;
+            color: #102033;
+            font-size: 1rem;
             font-weight: 700;
         }
 
@@ -269,23 +273,23 @@
             align-items: center;
             justify-content: center;
             padding: 22px;
-            border: 1px dashed #cbd5e1;
+            border: 1px dashed #b9cad9;
             border-radius: 12px;
-            background: #f8fafc;
+            background: #f7faff;
             text-align: center;
         }
 
         .instagram-placeholder strong {
             margin-bottom: 8px;
-            color: #172033;
-            font-size: 15px;
+            color: #102033;
+            font-size: 1rem;
         }
 
         .instagram-placeholder p {
             max-width: 290px;
             margin: 0;
-            color: #647084;
-            font-size: 13px;
+            color: #627589;
+            font-size: 0.95rem;
             line-height: 1.7;
         }
 
@@ -310,11 +314,11 @@
             justify-content: space-between;
             gap: 24px;
             padding: 14px 18px;
-            border: 1px solid #dbe1ea;
+            border: 1px solid #cbd9e7;
             border-radius: 12px;
             background: #ffffff;
-            color: #172033;
-            font-size: 14px;
+            color: #17324d;
+            font-size: 1rem;
             font-weight: 600;
             text-decoration: none;
             transition:
@@ -325,8 +329,8 @@
 
         .results-social-link:hover {
             transform: translateY(-2px);
-            border-color: #2563eb;
-            color: #2563eb;
+            border-color: #1769aa;
+            color: #1769aa;
         }
 
         /* =========================================
@@ -334,9 +338,9 @@
         ========================================= */
 
         .results-reviews {
-            padding: 76px 0;
-            border-top: 1px solid #e5eaf1;
-            background: #f7f9fc;
+            padding: 80px 0;
+            border-top: 1px solid #dce6ef;
+            background: #f7faff;
         }
 
         .reviews-heading-row {
@@ -354,11 +358,11 @@
             justify-content: center;
             gap: 8px;
             padding: 12px 16px;
-            border: 1px solid #dbe1ea;
+            border: 1px solid #cbd9e7;
             border-radius: 10px;
             background: #ffffff;
-            color: #172033;
-            font-size: 13px;
+            color: #17324d;
+            font-size: 1rem;
             font-weight: 700;
             text-decoration: none;
             transition:
@@ -367,8 +371,8 @@
         }
 
         .reviews-google-link:hover {
-            border-color: #2563eb;
-            color: #2563eb;
+            border-color: #1769aa;
+            color: #1769aa;
         }
 
         .google-reviews-widget {
@@ -376,10 +380,10 @@
             min-width: 0;
             padding: 20px;
             overflow: hidden;
-            border: 1px solid #e5eaf1;
-            border-radius: 18px;
+            border: 1px solid #dce6ef;
+            border-radius: 17px;
             background: #ffffff;
-            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+            box-shadow: 0 12px 35px rgba(30, 60, 90, 0.05);
         }
 
         .google-reviews-widget > div {
@@ -388,8 +392,8 @@
 
         .reviews-note {
             margin: 16px 0 0;
-            color: #647084;
-            font-size: 12px;
+            color: #627589;
+            font-size: 0.9rem;
             line-height: 1.7;
         }
 
@@ -398,26 +402,27 @@
         ========================================= */
 
         .results-cta {
-            padding: 76px 0;
-            background: #10264a;
+            padding: 80px 0;
+            background: #102033;
             color: #ffffff;
             text-align: center;
         }
 
         .results-cta .results-eyebrow {
-            color: #93baff;
+            color: #9bd2ff;
         }
 
         .results-cta h2 {
             margin: 0;
-            font-size: clamp(32px, 5vw, 48px);
+            color: #ffffff;
+            font-size: clamp(2.2rem, 4.5vw, 3rem);
         }
 
         .results-cta p:not(.results-eyebrow) {
             max-width: 560px;
             margin: 16px auto 0;
-            color: #d2dced;
-            font-size: 15px;
+            color: #e0eaf4;
+            font-size: 1.1rem;
             line-height: 1.8;
         }
 
@@ -427,21 +432,24 @@
             align-items: center;
             justify-content: center;
             padding: 14px 22px;
-            border: 1px solid #ffffff;
+            border: 1px solid #1769aa;
             border-radius: 10px;
-            background: #ffffff;
-            color: #10264a;
-            font-size: 14px;
+            background: #1769aa;
+            color: #ffffff;
+            font-size: 1rem;
             font-weight: 700;
             text-decoration: none;
             transition:
                 background 0.2s ease,
-                color 0.2s ease;
+                color 0.2s ease,
+                transform 0.2s ease;
         }
 
         .results-cta-button:hover {
-            background: transparent;
+            background: #0f548b;
+            border-color: #0f548b;
             color: #ffffff;
+            transform: translateY(-2px);
         }
 
         /* =========================================
@@ -458,9 +466,20 @@
             }
         }
 
+        @media (max-width: 760px) {
+            .site-footer .footer-container {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .site-footer .footer-links {
+                gap: 32px;
+            }
+        }
+
         @media (max-width: 600px) {
             .results-container {
-                width: min(100% - 32px, 1120px);
+                width: min(100% - 32px, 1180px);
             }
 
             .results-grid,
@@ -468,8 +487,24 @@
                 grid-template-columns: 1fr;
             }
 
-            .result-photo {
-                min-height: 210px;
+            .results-hero {
+                padding: 70px 0 58px;
+            }
+
+            .results-hero p:not(.results-eyebrow) {
+                font-size: 1.05rem;
+            }
+
+            .results-section-heading p:not(.results-eyebrow),
+            .results-social-intro,
+            .results-reviews-intro {
+                font-size: 1rem;
+            }
+
+            .results-gallery,
+            .results-social,
+            .results-reviews {
+                padding: 56px 0;
             }
 
             .results-filters {
@@ -478,7 +513,7 @@
 
             .results-filter {
                 padding: 9px 12px;
-                font-size: 12px;
+                font-size: 0.9rem;
             }
 
             .results-social-links {
@@ -489,12 +524,6 @@
                 width: 100%;
             }
 
-            .results-gallery,
-            .results-social,
-            .results-reviews {
-                padding: 56px 0;
-            }
-
             .reviews-heading-row {
                 align-items: flex-start;
                 flex-direction: column;
@@ -502,6 +531,20 @@
 
             .google-reviews-widget {
                 padding: 10px;
+            }
+
+            .site-footer .footer-container {
+                padding: 42px 0;
+            }
+
+            .site-footer .footer-links {
+                flex-direction: column;
+                gap: 22px;
+            }
+
+            .site-footer .footer-bottom {
+                flex-direction: column;
+                gap: 8px;
             }
         }
     </style>
@@ -544,7 +587,6 @@
         </div>
     </header>
 
-
     <main>
 
         <!-- =========================================
@@ -573,11 +615,9 @@
             </div>
         </section>
 
-
         <!-- =========================================
              RESULTS GALLERY
-
-             Replace these placeholders with real photos
+             Replace placeholders with real photos
              as you complete detailing jobs.
         ========================================== -->
 
@@ -596,6 +636,7 @@
                 </div>
 
                 <div class="results-filters" aria-label="Filter results">
+
                     <button
                         class="results-filter active"
                         type="button"
@@ -631,6 +672,7 @@
                     >
                         Full Detail
                     </button>
+
                 </div>
 
                 <div class="results-grid">
@@ -696,23 +738,14 @@
                     </article>
 
                 </div>
-
             </div>
         </section>
-
 
         <!-- =========================================
              INSTAGRAM POSTS AND REELS
 
-             To add a post or Reel:
-             1. Find instagramPostUrls in the JavaScript below.
-             2. Replace an empty string with the public post URL.
-             3. Commit the changes and reload the page.
-
-             Example URL format:
-             https://www.instagram.com/reel/EXAMPLE_ID/
-
-             Use the actual URL of your own public post or Reel.
+             Add real public Instagram post or Reel URLs
+             to instagramPostUrls in the JavaScript below.
         ========================================== -->
 
         <section class="results-social">
@@ -732,7 +765,7 @@
                     id="instagram-posts"
                     aria-label="Instagram posts and Reels"
                 >
-                    <!-- Instagram embeds or placeholders are added by JavaScript. -->
+                    <!-- Instagram embeds and placeholders are added by JavaScript. -->
                 </div>
 
                 <div class="results-social-links">
@@ -752,12 +785,9 @@
             </div>
         </section>
 
-
         <!-- =========================================
              GOOGLE REVIEWS
-
              SociableKIT widget ID: 25722789
-             The provider loads and displays the reviews.
         ========================================== -->
 
         <section class="results-reviews">
@@ -803,7 +833,6 @@
             </div>
         </section>
 
-
         <!-- =========================================
              BOOKING CALL TO ACTION
         ========================================== -->
@@ -832,41 +861,58 @@
 
     </main>
 
-
     <!-- =========================================
-         SITE FOOTER
+         SHARED SITE FOOTER
     ========================================== -->
 
     <footer class="site-footer">
-        <div class="results-container">
 
-            <a href="../index.html" class="logo">
-                BRIGHTSIDE
-                <span>MOBILE DETAILING</span>
-            </a>
+        <div class="footer-container">
 
-            <p>
-                Mobile detailing serving Alief and surrounding
-                Houston communities.
-            </p>
+            <div class="footer-brand">
 
-            <div class="footer-links">
-                <a href="../index.html">Home</a>
-                <a href="../packages/">Packages</a>
-                <a href="./">Results</a>
-                <a href="../how-it-works/">How It Works</a>
-                <a href="../about/">About</a>
-                <a href="../booking/">Book Now</a>
+                <a href="../index.html" class="logo">
+                    BRIGHTSIDE
+                    <span>MOBILE DETAILING</span>
+                </a>
+
+                <p>
+                    Mobile detailing serving Alief and surrounding
+                    Houston communities.
+                </p>
+
             </div>
 
-            <p class="footer-bottom">
-                © <span id="current-year"></span> BrightSide Detailing.
-                All rights reserved.
-            </p>
+            <div class="footer-links">
+
+                <div>
+                    <h4>Explore</h4>
+                    <a href="../index.html">Home</a>
+                    <a href="../packages/">Packages</a>
+                    <a href="./">Results</a>
+                </div>
+
+                <div>
+                    <h4>Learn More</h4>
+                    <a href="../how-it-works/">How It Works</a>
+                    <a href="../about/">About</a>
+                    <a href="../booking/">Book Now</a>
+                </div>
+
+            </div>
 
         </div>
-    </footer>
 
+        <p class="footer-bottom">
+            <span>
+                © <span id="current-year"></span> BrightSide Detailing.
+                All rights reserved.
+            </span>
+
+            <span>Join the BRIGHTSIDE.</span>
+        </p>
+
+    </footer>
 
     <!-- =========================================
          SOCIABLEKIT GOOGLE REVIEWS SCRIPT
@@ -877,10 +923,9 @@
         defer
     ></script>
 
-
     <!-- =========================================
          INSTAGRAM EMBEDS, GALLERY FILTERS,
-         AND FOOTER YEAR
+         MOBILE NAVIGATION, AND FOOTER YEAR
     ========================================== -->
 
     <script>
@@ -891,7 +936,6 @@
 
                Paste your real public Instagram
                post or Reel URLs between the quotes.
-
                Leave unused entries as empty strings.
             ------------------------------------- */
 
@@ -904,9 +948,6 @@
 
             const instagramContainer =
                 document.getElementById("instagram-posts");
-
-            const instagramProfileUrl =
-                "https://www.instagram.com/brightsidehtxdetails/";
 
             function createInstagramCard(url, index) {
                 const card = document.createElement("article");
@@ -949,6 +990,7 @@
                     const message = document.createElement("p");
                     message.textContent =
                         "This link does not look like an Instagram post or Reel URL.";
+
                     body.appendChild(message);
 
                     return card;
@@ -956,10 +998,12 @@
 
                 const embed = document.createElement("blockquote");
                 embed.className = "instagram-media";
+
                 embed.setAttribute(
                     "data-instgrm-permalink",
                     url.trim()
                 );
+
                 embed.setAttribute("data-instgrm-version", "14");
 
                 body.appendChild(embed);
@@ -973,11 +1017,6 @@
                         createInstagramCard(url, index)
                     );
                 });
-
-                /*
-                 Load Instagram's official embed script after
-                 the embed placeholders have been created.
-                */
 
                 const instagramScript =
                     document.createElement("script");
@@ -998,7 +1037,6 @@
 
                 document.body.appendChild(instagramScript);
             }
-
 
             /* -------------------------------------
                GALLERY FILTERS
@@ -1038,6 +1076,78 @@
                 });
             });
 
+            /* -------------------------------------
+               MOBILE NAVIGATION
+            ------------------------------------- */
+
+            const menuButton =
+                document.querySelector(".menu-button");
+
+            const navLinks =
+                document.querySelector(".nav-links");
+
+            if (menuButton && navLinks) {
+                menuButton.addEventListener("click", function () {
+                    const isOpen =
+                        navLinks.classList.toggle("mobile-open");
+
+                    menuButton.classList.toggle("is-open", isOpen);
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        String(isOpen)
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-label",
+                        isOpen
+                            ? "Close navigation menu"
+                            : "Open navigation menu"
+                    );
+
+                    document.body.classList.toggle(
+                        "mobile-menu-open",
+                        isOpen
+                    );
+                });
+
+                navLinks.querySelectorAll("a").forEach(function (link) {
+                    link.addEventListener("click", function () {
+                        navLinks.classList.remove("mobile-open");
+                        menuButton.classList.remove("is-open");
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                        menuButton.setAttribute(
+                            "aria-label",
+                            "Open navigation menu"
+                        );
+
+                        document.body.classList.remove(
+                            "mobile-menu-open"
+                        );
+                    });
+                });
+
+                window.addEventListener("resize", function () {
+                    if (window.innerWidth > 900) {
+                        navLinks.classList.remove("mobile-open");
+                        menuButton.classList.remove("is-open");
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                        document.body.classList.remove(
+                            "mobile-menu-open"
+                        );
+                    }
+                });
+            }
 
             /* -------------------------------------
                FOOTER YEAR

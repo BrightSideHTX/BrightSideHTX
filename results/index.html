@@ -1,1 +1,729 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Results | BrightSide Detailing</title>
+
+    <meta
+        name="description"
+        content="Explore detailing results from BrightSide Detailing, serving Alief and surrounding Houston communities."
+    >
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* =========================================
+           RESULTS PAGE
+        ========================================= */
+
+        .results-page {
+            color: #172033;
+            background: #f7f9fc;
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .results-page *,
+        .results-page *::before,
+        .results-page *::after {
+            box-sizing: border-box;
+        }
+
+        .results-container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .results-eyebrow {
+            margin: 0 0 14px;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .results-page h1,
+        .results-page h2,
+        .results-page h3 {
+            font-family: "Space Grotesk", sans-serif;
+            letter-spacing: -0.035em;
+        }
+
+        .results-hero {
+            padding: 100px 0 72px;
+            background:
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(37, 99, 235, 0.10),
+                    transparent 34%
+                ),
+                #ffffff;
+        }
+
+        .results-hero h1 {
+            max-width: 760px;
+            margin: 0;
+            font-size: clamp(42px, 7vw, 72px);
+            line-height: 1.04;
+        }
+
+        .results-hero h1 span {
+            color: #2563eb;
+        }
+
+        .results-hero p:not(.results-eyebrow) {
+            max-width: 610px;
+            margin: 24px 0 0;
+            color: #596579;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* Gallery and filters */
+
+        .results-gallery {
+            padding: 72px 0 88px;
+        }
+
+        .results-section-heading {
+            margin-bottom: 28px;
+        }
+
+        .results-section-heading h2 {
+            margin: 0;
+            font-size: clamp(30px, 4vw, 42px);
+            line-height: 1.15;
+        }
+
+        .results-section-heading p:not(.results-eyebrow) {
+            max-width: 600px;
+            margin: 14px 0 0;
+            color: #647084;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .results-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 28px 0 32px;
+        }
+
+        .results-filter {
+            padding: 10px 16px;
+            border: 1px solid #dce3ed;
+            border-radius: 999px;
+            background: #ffffff;
+            color: #475467;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .results-filter:hover,
+        .results-filter.active {
+            border-color: #2563eb;
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .result-card {
+            overflow: hidden;
+            border: 1px solid #e5eaf1;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+        }
+
+        .result-card[hidden] {
+            display: none;
+        }
+
+        .result-photo {
+            display: flex;
+            min-height: 230px;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #eaf0f8;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .result-photo p {
+            max-width: 240px;
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /*
+         Replace each placeholder with your own real detailing photos
+         when you have them. Do not present placeholder blocks as
+         completed customer work.
+        */
+
+        .result-card-content {
+            padding: 22px;
+        }
+
+        .result-category {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #2563eb;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .result-card h3 {
+            margin: 0;
+            font-size: 21px;
+            line-height: 1.3;
+        }
+
+        .result-card-content p {
+            margin: 10px 0 0;
+            color: #647084;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Social links */
+
+        .results-social {
+            padding: 76px 0;
+            border-top: 1px solid #e5eaf1;
+            background: #ffffff;
+        }
+
+        .results-social h2 {
+            margin: 0;
+            font-size: clamp(30px, 4vw, 42px);
+        }
+
+        .results-social-intro {
+            max-width: 620px;
+            margin: 14px 0 0;
+            color: #647084;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .results-social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .results-social-link {
+            display: inline-flex;
+            min-width: 210px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 14px 18px;
+            border: 1px solid #dbe1ea;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #172033;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .results-social-link:hover {
+            transform: translateY(-2px);
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        /* Final call to action */
+
+        .results-cta {
+            padding: 76px 0;
+            background: #10264a;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .results-cta .results-eyebrow {
+            color: #93baff;
+        }
+
+        .results-cta h2 {
+            margin: 0;
+            font-size: clamp(32px, 5vw, 48px);
+        }
+
+        .results-cta p:not(.results-eyebrow) {
+            max-width: 560px;
+            margin: 16px auto 0;
+            color: #d2dced;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .results-cta-button {
+            display: inline-flex;
+            margin-top: 28px;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 22px;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #10264a;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .results-cta-button:hover {
+            background: transparent;
+            color: #ffffff;
+        }
+
+        /* Responsive layout */
+
+        @media (max-width: 850px) {
+            .results-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .results-hero {
+                padding: 78px 0 60px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .results-container {
+                width: min(100% - 32px, 1120px);
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-photo {
+                min-height: 210px;
+            }
+
+            .results-filters {
+                gap: 8px;
+            }
+
+            .results-filter {
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+
+            .results-social-links {
+                flex-direction: column;
+            }
+
+            .results-social-link {
+                width: 100%;
+            }
+
+            .results-gallery,
+            .results-social {
+                padding: 56px 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="results-page">
+
+    <!-- =========================================
+         SITE HEADER
+         Uses the shared website stylesheet.
+    ========================================== -->
+
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="../index.html" class="logo">
+                BRIGHTSIDE
+                <span>MOBILE DETAILING</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../packages/">Packages</a>
+                <a href="./" aria-current="page">Results</a>
+                <a href="../how-it-works/">How It Works</a>
+                <a href="../about/">About</a>
+                <a href="../booking/" class="nav-button">Book Now</a>
+            </nav>
+
+            <button
+                class="menu-button"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- =========================================
+             HERO
+        ========================================== -->
+
+        <section class="results-hero">
+            <div class="results-container">
+
+                <p class="results-eyebrow">
+                    OUR WORK · ALIEF & HOUSTON
+                </p>
+
+                <h1>
+                    Results from<br>
+                    the <span>details.</span>
+                </h1>
+
+                <p>
+                    Every detail is an opportunity to bring a vehicle
+                    back to a cleaner, fresher condition. Explore our
+                    work as we continue building the BrightSide gallery.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- =========================================
+             RESULTS GALLERY
+
+             Replace the placeholder blocks with your own
+             photos as you complete detailing jobs.
+        ========================================== -->
+
+        <section class="results-gallery">
+            <div class="results-container">
+
+                <div class="results-section-heading">
+                    <p class="results-eyebrow">THE GALLERY</p>
+
+                    <h2>See the difference.</h2>
+
+                    <p>
+                        Browse our detailing work by service type.
+                        New projects will be added as the gallery grows.
+                    </p>
+                </div>
+
+
+                <!-- Gallery filter buttons -->
+
+                <div class="results-filters" aria-label="Filter results">
+                    <button
+                        class="results-filter active"
+                        type="button"
+                        data-filter="all"
+                        aria-pressed="true"
+                    >
+                        All Results
+                    </button>
+
+                    <button
+                        class="results-filter"
+                        type="button"
+                        data-filter="interior"
+                        aria-pressed="false"
+                    >
+                        Interior
+                    </button>
+
+                    <button
+                        class="results-filter"
+                        type="button"
+                        data-filter="exterior"
+                        aria-pressed="false"
+                    >
+                        Exterior
+                    </button>
+
+                    <button
+                        class="results-filter"
+                        type="button"
+                        data-filter="full-detail"
+                        aria-pressed="false"
+                    >
+                        Full Detail
+                    </button>
+                </div>
+
+
+                <!-- Result card 1 -->
+
+                <div class="results-grid">
+
+                    <article class="result-card" data-category="interior">
+                        <div class="result-photo">
+                            <p>
+                                Your interior detailing photo will
+                                appear here.
+                            </p>
+                        </div>
+
+                        <div class="result-card-content">
+                            <span class="result-category">Interior</span>
+
+                            <h3>Interior Detail</h3>
+
+                            <p>
+                                Photos and service details will be added
+                                after a completed interior detail.
+                            </p>
+                        </div>
+                    </article>
+
+
+                    <!-- Result card 2 -->
+
+                    <article class="result-card" data-category="exterior">
+                        <div class="result-photo">
+                            <p>
+                                Your exterior wash photo will
+                                appear here.
+                            </p>
+                        </div>
+
+                        <div class="result-card-content">
+                            <span class="result-category">Exterior</span>
+
+                            <h3>Exterior Detail</h3>
+
+                            <p>
+                                Photos and service details will be added
+                                after a completed exterior detail.
+                            </p>
+                        </div>
+                    </article>
+
+
+                    <!-- Result card 3 -->
+
+                    <article class="result-card" data-category="full-detail">
+                        <div class="result-photo">
+                            <p>
+                                Your full-detail photo will
+                                appear here.
+                            </p>
+                        </div>
+
+                        <div class="result-card-content">
+                            <span class="result-category">Full Detail</span>
+
+                            <h3>Full Detail</h3>
+
+                            <p>
+                                Photos and service details will be added
+                                after a completed full detail.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =========================================
+             SOCIAL PROFILES
+        ========================================== -->
+
+        <section class="results-social">
+            <div class="results-container">
+
+                <p class="results-eyebrow">BRIGHTSIDE ONLINE</p>
+
+                <h2>Follow our work.</h2>
+
+                <p class="results-social-intro">
+                    See detailing photos, updates, and business
+                    information on our Instagram and Google Business
+                    Profile.
+                </p>
+
+                <div class="results-social-links">
+
+                    <a
+                        href="https://www.instagram.com/brightsidehtxdetails/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="results-social-link"
+                    >
+                        <span>Instagram</span>
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                    <a
+                        href="https://share.google/ZgSSk3RRMLEiMej0G"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="results-social-link"
+                    >
+                        <span>Google Business Profile</span>
+                        <span aria-hidden="true">↗</span>
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =========================================
+             BOOKING CALL TO ACTION
+        ========================================== -->
+
+        <section class="results-cta">
+            <div class="results-container">
+
+                <p class="results-eyebrow">READY FOR A CLEANER RIDE?</p>
+
+                <h2>Join the BRIGHTSIDE.</h2>
+
+                <p>
+                    Choose your service and find a time that works
+                    for your schedule.
+                </p>
+
+                <a
+                    href="../booking/"
+                    class="results-cta-button"
+                >
+                    Book Your Detail
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         SITE FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+        <div class="results-container">
+
+            <a href="../index.html" class="logo">
+                BRIGHTSIDE
+                <span>MOBILE DETAILING</span>
+            </a>
+
+            <p>
+                Mobile detailing serving Alief and surrounding
+                Houston communities.
+            </p>
+
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="../packages/">Packages</a>
+                <a href="./">Results</a>
+                <a href="../how-it-works/">How It Works</a>
+                <a href="../about/">About</a>
+                <a href="../booking/">Book Now</a>
+            </div>
+
+            <p class="footer-bottom">
+                © <span id="current-year"></span> BrightSide Detailing.
+                All rights reserved.
+            </p>
+
+        </div>
+    </footer>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         Filters the gallery and updates the footer year.
+    ========================================== -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButtons = document.querySelectorAll(".results-filter");
+            const resultCards = document.querySelectorAll(".result-card");
+
+            filterButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const selectedFilter = button.dataset.filter;
+
+                    filterButtons.forEach(function (filterButton) {
+                        const isActive = filterButton === button;
+
+                        filterButton.classList.toggle("active", isActive);
+                        filterButton.setAttribute(
+                            "aria-pressed",
+                            String(isActive)
+                        );
+                    });
+
+                    resultCards.forEach(function (card) {
+                        const matchesFilter =
+                            selectedFilter === "all" ||
+                            card.dataset.category === selectedFilter;
+
+                        card.hidden = !matchesFilter;
+                    });
+                });
+            });
+
+            const yearElement = document.getElementById("current-year");
+
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+
+</body>
+</html>

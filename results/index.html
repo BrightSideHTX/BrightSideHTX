@@ -9,7 +9,7 @@
 
     <meta
         name="description"
-        content="Explore detailing results from BrightSide Detailing, serving Alief and surrounding Houston communities."
+        content="Explore detailing results, Instagram posts, and Google reviews from BrightSide Detailing in Alief and Houston, Texas."
     >
 
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -92,7 +92,9 @@
             line-height: 1.8;
         }
 
-        /* Gallery and filters */
+        /* =========================================
+           GALLERY AND FILTERS
+        ========================================= */
 
         .results-gallery {
             padding: 72px 0 88px;
@@ -102,7 +104,9 @@
             margin-bottom: 28px;
         }
 
-        .results-section-heading h2 {
+        .results-section-heading h2,
+        .results-social h2,
+        .results-reviews h2 {
             margin: 0;
             font-size: clamp(30px, 4vw, 42px);
             line-height: 1.15;
@@ -182,12 +186,6 @@
             line-height: 1.7;
         }
 
-        /*
-         Replace each placeholder with your own real detailing photos
-         when you have them. Do not present placeholder blocks as
-         completed customer work.
-        */
-
         .result-card-content {
             padding: 22px;
         }
@@ -215,7 +213,9 @@
             line-height: 1.7;
         }
 
-        /* Social links */
+        /* =========================================
+           INSTAGRAM SECTION
+        ========================================= */
 
         .results-social {
             padding: 76px 0;
@@ -223,24 +223,84 @@
             background: #ffffff;
         }
 
-        .results-social h2 {
-            margin: 0;
-            font-size: clamp(30px, 4vw, 42px);
-        }
-
-        .results-social-intro {
-            max-width: 620px;
+        .results-social-intro,
+        .results-reviews-intro {
+            max-width: 650px;
             margin: 14px 0 0;
             color: #647084;
             font-size: 15px;
             line-height: 1.8;
         }
 
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .instagram-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid #e5eaf1;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+        }
+
+        .instagram-card-heading {
+            padding: 16px 18px;
+            border-bottom: 1px solid #e5eaf1;
+            color: #172033;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .instagram-card-body {
+            min-height: 180px;
+            padding: 20px;
+        }
+
+        .instagram-placeholder {
+            display: flex;
+            min-height: 150px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            text-align: center;
+        }
+
+        .instagram-placeholder strong {
+            margin-bottom: 8px;
+            color: #172033;
+            font-size: 15px;
+        }
+
+        .instagram-placeholder p {
+            max-width: 290px;
+            margin: 0;
+            color: #647084;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .instagram-card blockquote.instagram-media {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+        }
+
         .results-social-links {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 28px;
         }
 
         .results-social-link {
@@ -269,7 +329,73 @@
             color: #2563eb;
         }
 
-        /* Final call to action */
+        /* =========================================
+           GOOGLE REVIEWS SECTION
+        ========================================= */
+
+        .results-reviews {
+            padding: 76px 0;
+            border-top: 1px solid #e5eaf1;
+            background: #f7f9fc;
+        }
+
+        .reviews-heading-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .reviews-google-link {
+            display: inline-flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 1px solid #dbe1ea;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #172033;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .reviews-google-link:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .google-reviews-widget {
+            width: 100%;
+            min-width: 0;
+            padding: 20px;
+            overflow: hidden;
+            border: 1px solid #e5eaf1;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 8px 28px rgba(23, 32, 51, 0.04);
+        }
+
+        .google-reviews-widget > div {
+            max-width: 100%;
+        }
+
+        .reviews-note {
+            margin: 16px 0 0;
+            color: #647084;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           FINAL CALL TO ACTION
+        ========================================= */
 
         .results-cta {
             padding: 76px 0;
@@ -318,7 +444,9 @@
             color: #ffffff;
         }
 
-        /* Responsive layout */
+        /* =========================================
+           RESPONSIVE LAYOUT
+        ========================================= */
 
         @media (max-width: 850px) {
             .results-grid {
@@ -330,12 +458,13 @@
             }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 600px) {
             .results-container {
                 width: min(100% - 32px, 1120px);
             }
 
-            .results-grid {
+            .results-grid,
+            .instagram-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -361,8 +490,18 @@
             }
 
             .results-gallery,
-            .results-social {
+            .results-social,
+            .results-reviews {
                 padding: 56px 0;
+            }
+
+            .reviews-heading-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .google-reviews-widget {
+                padding: 10px;
             }
         }
     </style>
@@ -372,7 +511,6 @@
 
     <!-- =========================================
          SITE HEADER
-         Uses the shared website stylesheet.
     ========================================== -->
 
     <header class="navbar">
@@ -428,7 +566,8 @@
                 <p>
                     Every detail is an opportunity to bring a vehicle
                     back to a cleaner, fresher condition. Explore our
-                    work as we continue building the BrightSide gallery.
+                    work, follow our latest posts, and see what customers
+                    are saying about BrightSide.
                 </p>
 
             </div>
@@ -438,8 +577,8 @@
         <!-- =========================================
              RESULTS GALLERY
 
-             Replace the placeholder blocks with your own
-             photos as you complete detailing jobs.
+             Replace these placeholders with real photos
+             as you complete detailing jobs.
         ========================================== -->
 
         <section class="results-gallery">
@@ -455,9 +594,6 @@
                         New projects will be added as the gallery grows.
                     </p>
                 </div>
-
-
-                <!-- Gallery filter buttons -->
 
                 <div class="results-filters" aria-label="Filter results">
                     <button
@@ -497,9 +633,6 @@
                     </button>
                 </div>
 
-
-                <!-- Result card 1 -->
-
                 <div class="results-grid">
 
                     <article class="result-card" data-category="interior">
@@ -522,9 +655,6 @@
                         </div>
                     </article>
 
-
-                    <!-- Result card 2 -->
-
                     <article class="result-card" data-category="exterior">
                         <div class="result-photo">
                             <p>
@@ -544,9 +674,6 @@
                             </p>
                         </div>
                     </article>
-
-
-                    <!-- Result card 3 -->
 
                     <article class="result-card" data-category="full-detail">
                         <div class="result-photo">
@@ -575,21 +702,38 @@
 
 
         <!-- =========================================
-             SOCIAL PROFILES
+             INSTAGRAM POSTS AND REELS
+
+             To add a post or Reel:
+             1. Find instagramPostUrls in the JavaScript below.
+             2. Replace an empty string with the public post URL.
+             3. Commit the changes and reload the page.
+
+             Example URL format:
+             https://www.instagram.com/reel/EXAMPLE_ID/
+
+             Use the actual URL of your own public post or Reel.
         ========================================== -->
 
         <section class="results-social">
             <div class="results-container">
 
-                <p class="results-eyebrow">BRIGHTSIDE ONLINE</p>
+                <p class="results-eyebrow">BRIGHTSIDE ON INSTAGRAM</p>
 
-                <h2>Follow our work.</h2>
+                <h2>Follow the latest details.</h2>
 
                 <p class="results-social-intro">
-                    See detailing photos, updates, and business
-                    information on our Instagram and Google Business
-                    Profile.
+                    Watch our latest detailing videos, explore photos,
+                    and follow the progress of BrightSide Detailing.
                 </p>
+
+                <div
+                    class="instagram-grid"
+                    id="instagram-posts"
+                    aria-label="Instagram posts and Reels"
+                >
+                    <!-- Instagram embeds or placeholders are added by JavaScript. -->
+                </div>
 
                 <div class="results-social-links">
 
@@ -599,21 +743,62 @@
                         rel="noopener noreferrer"
                         class="results-social-link"
                     >
-                        <span>Instagram</span>
+                        <span>Visit our Instagram</span>
                         <span aria-hidden="true">↗</span>
                     </a>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- =========================================
+             GOOGLE REVIEWS
+
+             SociableKIT widget ID: 25722789
+             The provider loads and displays the reviews.
+        ========================================== -->
+
+        <section class="results-reviews">
+            <div class="results-container">
+
+                <div class="reviews-heading-row">
+                    <div>
+                        <p class="results-eyebrow">CUSTOMER FEEDBACK</p>
+
+                        <h2>What customers say.</h2>
+
+                        <p class="results-reviews-intro">
+                            Read reviews from our Google Business Profile
+                            and learn about other customers' experiences
+                            with BrightSide Detailing.
+                        </p>
+                    </div>
 
                     <a
                         href="https://share.google/ZgSSk3RRMLEiMej0G"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="results-social-link"
+                        class="reviews-google-link"
                     >
-                        <span>Google Business Profile</span>
+                        View on Google
                         <span aria-hidden="true">↗</span>
                     </a>
-
                 </div>
+
+                <div class="google-reviews-widget">
+                    <div
+                        class="sk-ww-google-reviews"
+                        data-embed-id="25722789"
+                    ></div>
+                </div>
+
+                <p class="reviews-note">
+                    Reviews are displayed through SociableKIT.
+                    Review availability and refresh frequency depend
+                    on the widget provider and your plan.
+                </p>
 
             </div>
         </section>
@@ -684,14 +869,146 @@
 
 
     <!-- =========================================
-         JAVASCRIPT
-         Filters the gallery and updates the footer year.
+         SOCIABLEKIT GOOGLE REVIEWS SCRIPT
+    ========================================== -->
+
+    <script
+        src="https://widgets.sociablekit.com/google-reviews/widget.js"
+        defer
+    ></script>
+
+
+    <!-- =========================================
+         INSTAGRAM EMBEDS, GALLERY FILTERS,
+         AND FOOTER YEAR
     ========================================== -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const filterButtons = document.querySelectorAll(".results-filter");
-            const resultCards = document.querySelectorAll(".result-card");
+
+            /* -------------------------------------
+               INSTAGRAM POST AND REEL URLS
+
+               Paste your real public Instagram
+               post or Reel URLs between the quotes.
+
+               Leave unused entries as empty strings.
+            ------------------------------------- */
+
+            const instagramPostUrls = [
+                "",
+                "",
+                "",
+                ""
+            ];
+
+            const instagramContainer =
+                document.getElementById("instagram-posts");
+
+            const instagramProfileUrl =
+                "https://www.instagram.com/brightsidehtxdetails/";
+
+            function createInstagramCard(url, index) {
+                const card = document.createElement("article");
+                card.className = "instagram-card";
+
+                const heading = document.createElement("div");
+                heading.className = "instagram-card-heading";
+                heading.textContent = "BrightSide on Instagram";
+
+                const body = document.createElement("div");
+                body.className = "instagram-card-body";
+
+                card.appendChild(heading);
+                card.appendChild(body);
+
+                if (!url) {
+                    const placeholder = document.createElement("div");
+                    placeholder.className = "instagram-placeholder";
+
+                    const title = document.createElement("strong");
+                    title.textContent = "Instagram post " + (index + 1);
+
+                    const message = document.createElement("p");
+                    message.textContent =
+                        "Add a public Instagram post or Reel URL to the " +
+                        "instagramPostUrls list in this page's JavaScript.";
+
+                    placeholder.appendChild(title);
+                    placeholder.appendChild(message);
+                    body.appendChild(placeholder);
+
+                    return card;
+                }
+
+                const isInstagramUrl =
+                    /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[^/]+/i
+                        .test(url.trim());
+
+                if (!isInstagramUrl) {
+                    const message = document.createElement("p");
+                    message.textContent =
+                        "This link does not look like an Instagram post or Reel URL.";
+                    body.appendChild(message);
+
+                    return card;
+                }
+
+                const embed = document.createElement("blockquote");
+                embed.className = "instagram-media";
+                embed.setAttribute(
+                    "data-instgrm-permalink",
+                    url.trim()
+                );
+                embed.setAttribute("data-instgrm-version", "14");
+
+                body.appendChild(embed);
+
+                return card;
+            }
+
+            if (instagramContainer) {
+                instagramPostUrls.forEach(function (url, index) {
+                    instagramContainer.appendChild(
+                        createInstagramCard(url, index)
+                    );
+                });
+
+                /*
+                 Load Instagram's official embed script after
+                 the embed placeholders have been created.
+                */
+
+                const instagramScript =
+                    document.createElement("script");
+
+                instagramScript.src =
+                    "https://www.instagram.com/embed.js";
+
+                instagramScript.async = true;
+
+                instagramScript.onload = function () {
+                    if (
+                        window.instgrm &&
+                        window.instgrm.Embeds
+                    ) {
+                        window.instgrm.Embeds.process();
+                    }
+                };
+
+                document.body.appendChild(instagramScript);
+            }
+
+
+            /* -------------------------------------
+               GALLERY FILTERS
+            ------------------------------------- */
+
+            const filterButtons =
+                document.querySelectorAll(".results-filter");
+
+            const resultCards =
+                document.querySelectorAll(".result-card");
 
             filterButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
@@ -700,7 +1017,11 @@
                     filterButtons.forEach(function (filterButton) {
                         const isActive = filterButton === button;
 
-                        filterButton.classList.toggle("active", isActive);
+                        filterButton.classList.toggle(
+                            "active",
+                            isActive
+                        );
+
                         filterButton.setAttribute(
                             "aria-pressed",
                             String(isActive)
@@ -717,11 +1038,19 @@
                 });
             });
 
-            const yearElement = document.getElementById("current-year");
+
+            /* -------------------------------------
+               FOOTER YEAR
+            ------------------------------------- */
+
+            const yearElement =
+                document.getElementById("current-year");
 
             if (yearElement) {
-                yearElement.textContent = new Date().getFullYear();
+                yearElement.textContent =
+                    new Date().getFullYear();
             }
+
         });
     </script>
 

@@ -2518,3 +2518,49 @@ body.mobile-menu-open {
     .hero {
         background: #102033;
     }
+
+   
+.results-social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.results-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-width: 210px;
+    padding: 14px 18px;
+    border: 1px solid #dbe1ea;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #172033;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.results-social-link:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 500px) {
+    .results-social-links {
+        flex-direction: column;
+    }
+
+    .results-social-link {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
